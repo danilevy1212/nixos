@@ -1,0 +1,21 @@
+#!/usr/bin/zsh
+
+### MY ALIASES
+
+# kill emacsclient kill server alias
+alias ek="emacsclient -e '(kill-emacs)'"
+
+# create a terminal emacs
+alias emt="emacs -nw"
+
+# nvim
+if [ "$(command -v nvim)" ]; then
+    alias vim="nvim"
+    alias gvim="nvim-qt"
+fi
+
+# colorized ls
+alias ls='ls --color=auto -a'
+
+# Yarn
+alias yarn="yarn --use-yarnrc $XDG_CONFIG_HOME/yarn/config"

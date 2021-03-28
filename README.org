@@ -1,0 +1,56 @@
+#+TITLE: Dan's nix config
+
+* Introduction.
+
+=nix= is a functional DSL (Domain Specific Language) for creating stable,
+reproducible builds. It can be installed as a standalone program in any linux
+distro and MacOS or on top of it's own distro, =NixOS=.
+
+After some months of experimenting with =nix=, I've come to see it as the 'missing
+glue' of the unix philosophy. In the unix philosophy, the operating system is
+composed of programs that do 'one thing' and do it well. While this facilitates
+that new programs can be easily made by rearranging already existing tools,
+there is a big hole when it comes to how one should obtain these tools and set
+them up to be ready for use.
+
+Package managers in other linux distributions try to fill in this hole. However,
+=Nix= is one of a handful that offer guarantees of reproducibility and near
+endless customization through it's DSL, making it ideal for developers.
+
+* Installation
+
+1. Clone this repository in ~/etc/nixos~.
+
+   Back up all the files there before-hand, specially ~configuration-hardware.nix~.
+
+   #+begin_src sh
+git clone git@github.com:danilevy1212/nixos.git /etc/nixos
+   #+end_src
+
+2. Create the folder in ~hosts/<name-of-host>~, and move the backed-up  ~configuration-hardware.nix~ there.
+
+3. Add a minimal ~default.nix~ that imports ~configuration-hardware.nix~, ~common.nix~ and ~home.nix~.
+
+4. Remove the all current nix-channels and subscribe to =nixos-unstable= and =home-manager= master branch.
+
+   #+begin_src sh
+nix-channel --remove nixos
+nix-channel --add https://nixos.org/channels/nixos-unstable nixos
+nix-channel --add https://github.com/rycee/home-manager/archive/master.tar.gz home-manager
+nix-channel --update
+   #+end_src
+
+5. Build that =NixOS=. Set the path to the host configuration.
+
+   #+begin_src sh
+export NIXOS_CONFIG=/etc/nixos/hosts/<host>/default.nix
+nixos-build switch
+   #+end_src
+
+6. Make =dlevym= the owner of all the files and folders of ~/etc/nixos~.
+
+   #+begin_src sh
+sudo chown -R dlevym:users /etc/nixos
+   #+end_src
+
+7. Install my [[https://github.com/danilevy1212/xmonad][xmonad]] configuration and my [[https://github.com/danilevy1212/doom][doom]] emacs configuration, for maximum enjoyment!

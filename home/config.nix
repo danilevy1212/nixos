@@ -1,0 +1,4 @@
+{
+  # Sorry Stallman!
+  allowUnfree = true;
+}

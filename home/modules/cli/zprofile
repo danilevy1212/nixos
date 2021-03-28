@@ -1,0 +1,13 @@
+#!/usr/bin/zsh
+
+# XDG (PREFIX only used for termux compatibily) --->
+# https://unix.stackexchange.com/questions/310666/nix-desktop-files AND https://wiki.archlinux.org/index.php/XDG_Base_Directory
+# I should only set USER level variables, not SYSTEM level ones!
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_CACHE_HOME="$HOME/.cache"
+export XDG_DATA_HOME="$HOME/.local/share"
+
+# Start the xsession IF xmonad is there and we are in .
+# if [ "$(tty)" = "/dev/tty1" ] && [ -n "$(command -v xmonad)" ]; then
+#  pgrep xmonad || startx
+# fi
