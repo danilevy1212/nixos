@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ config, pkgs, options, ... }:
 
 {
   imports = [
@@ -10,7 +10,17 @@
     <home-manager/nixos> # Home Manager integration.
   ];
 
-  nix.trustedUsers = [ "root" "dlevym" ];
+  nix = {
+    trustedUsers = [ "root" "dlevym" ];
+    nixPath = [
+      "nixos-config=/etc/nixos/hosts/dellXps15/default.nix"
+      "nixpkgs=/nix/var/nix/profiles/per-user/root/channels/nixos"
+      "/nix/var/nix/profiles/per-user/root/channels"
+    ];
+    gc = {
+      automatic = true;
+    };
+  };
 
   # Sorry, Stallman-chan
   nixpkgs.config.allowUnfree = true;
@@ -113,16 +123,16 @@
       QT_IM_MODULE = "ibus";
       XMODIFIERS = "@im=ibus";
       XMODIFIER = "@im=ibus";
-
-      # CURRENT_HOST
-      NIXOS_CONFIG="/etc/config/hosts/dellXps15/default.nix";
     };
     # List packages installed in system profile. To search, run:
     # $ nix search ...
     systemPackages = with pkgs;
       [ wget vim utillinux pciutils lxappearance htop ]
-      ++ (with pkgs.unixtools; [ netstat ifconfig ])
-      ++ [ (import ./../../pkgs/nvidia-offload.nix { inherit pkgs; }).nvidia-offload ];
+      ++ (with pkgs.unixtools; [ netstat ifconfig ]) ++ [
+        (import ./../../pkgs/nvidia-offload.nix {
+          inherit pkgs;
+        }).nvidia-offload
+      ];
   };
 
   # Video Playing acceleration

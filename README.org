@@ -1,6 +1,6 @@
 #+TITLE: Dan's nix config
 
-* Introduction.
+* Introduction
 
 =nix= is a functional DSL (Domain Specific Language) for creating stable,
 reproducible builds. It can be installed as a standalone program in any linux

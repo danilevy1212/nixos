@@ -8,7 +8,7 @@
     # Notifications
     dunst
 
-    # FIXME Replace by xmonad's builtin prompt!
+    # FIXME Remove/Replace once I use awesomewm
     dmenu
 
     # TODO Take out when I deprecate polybar
