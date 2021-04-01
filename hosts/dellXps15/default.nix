@@ -261,6 +261,9 @@
   # Don't bother me for passwords.
   security.polkit.enable = true;
 
+  # Make daily automatic upgrades.
+  system.autoUpgrade.enable = true;
+
   # The just in case desktop
   # services.xserver.desktopManager.plasma5.enable = true;
 
