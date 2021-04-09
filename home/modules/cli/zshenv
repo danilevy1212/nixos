@@ -8,7 +8,7 @@ else
 fi
 
 # default browser
-export BROWSER='firefox'
+export BROWSER='brave'
 
 # default file-browser
 export FILEMANAGER="spacefm"

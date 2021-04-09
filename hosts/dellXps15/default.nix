@@ -17,9 +17,7 @@
       "nixpkgs=/nix/var/nix/profiles/per-user/root/channels/nixos"
       "/nix/var/nix/profiles/per-user/root/channels"
     ];
-    gc = {
-      automatic = true;
-    };
+    gc = { automatic = true; };
   };
 
   # Sorry, Stallman-chan
@@ -40,7 +38,7 @@
 
   # The global useDHCP flag is deprecated, therefore explicitly set to false here.
   # Per-interface useDHCP will be mandatory in the future, so this generated config
-  # replicates the default behaviour.
+  # replicates the default behavior.
   networking = {
     useDHCP = false;
     hostName = "nixosXps15"; # Define your hostname.
@@ -78,6 +76,16 @@
   hardware.pulseaudio = {
     enable = true;
     package = pkgs.pulseaudioFull; # PulseAudio with bluetooth support
+    extraModules = [ pkgs.pulseaudio-modules-bt ];
+    configFile = pkgs.writeText "default.pa" ''
+      load-module module-bluetooth-policy
+      load-module module-bluetooth-discover
+      ## module fails to load with
+      ##   module-bluez5-device.c: Failed to get device path from module arguments
+      ##   module.c: Failed to load module "module-bluez5-device" (argument: ""): initialization failed.
+      # load-module module-bluez5-device
+      # load-module module-bluez5-discover
+    '';
   };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.

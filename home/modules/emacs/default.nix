@@ -56,6 +56,7 @@
 
     # lsp
     unzip
+    python3
 
     # :app
     # everywhere
@@ -63,7 +64,6 @@
     xdotool
     xorg.xprop
     xorg.xwininfo
-
   ];
 
   # TODO
