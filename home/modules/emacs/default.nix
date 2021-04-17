@@ -91,7 +91,10 @@
   };
 
   # For :tools direnv
-  programs.direnv.enable = true;
+  programs.direnv = {
+    enable = true;
+    enableNixDirenvIntegration = true;
+  };
 
   home.sessionVariables = { DOOMDIR = "$XDG_CONFIG_HOME/doom"; };
 }

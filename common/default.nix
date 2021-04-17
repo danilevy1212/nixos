@@ -16,6 +16,11 @@
       "/nix/var/nix/profiles/per-user/root/channels"
     ];
     gc = { automatic = true; };
+    # Protect nix-shell against garbage collection
+    extraOptions = ''
+      keep-outputs = true
+      keep-derivations = true
+    '';
   };
 
   # Sorry, Stallman-chan
