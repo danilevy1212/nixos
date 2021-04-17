@@ -103,8 +103,19 @@
     # List packages installed in system profile. To search, run:
     # $ nix search ...
     systemPackages = with pkgs;
-      [ wget vim utillinux pciutils lxappearance htop ]
+      [ wget vim utillinux pciutils lxappearance htop openvpn ]
       ++ (with pkgs.unixtools; [ netstat ifconfig ]);
+  };
+
+  networking = {
+    networkmanager.packages = [ pkgs.networkmanager_openvpn ];
+    # Port's for work stuff.
+    firewall = {
+      enable = true;
+      allowedTCPPorts = [ 9007 ];
+    };
+    # Give me those sweet interwebs
+    networkmanager = { enable = true; };
   };
 
   # Default shell.
