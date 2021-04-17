@@ -7,8 +7,12 @@
     # Social closeness
     rambox # TODO Contrast with https://getferdi.com/
     skype
+    tdesktop
 
     # Browser for the...
     brave
+
+    # video player
+    mpv-with-scripts
   ];
 }

@@ -89,5 +89,9 @@
       epkgs.org-pdftools
     ];
   };
+
+  # For :tools direnv
+  programs.direnv.enable = true;
+
   home.sessionVariables = { DOOMDIR = "$XDG_CONFIG_HOME/doom"; };
 }
