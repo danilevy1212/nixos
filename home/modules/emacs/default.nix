@@ -20,6 +20,9 @@
     noto-fonts-cjk
     noto-fonts-emoji
     # FIXME MISSING Quivera
+    # :editor
+    # format
+    nodePackages.prettier
 
     # :lang
     # nix

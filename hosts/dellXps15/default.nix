@@ -14,16 +14,8 @@
   # Per-interface useDHCP will be mandatory in the future, so this generated config
   # replicates the default behavior.
   networking = {
-    useDHCP = false;
     hostName = "nixosXps15"; # Define your hostname.
     interfaces = { wlp59s0.useDHCP = true; };
-    # Port's for work stuff.
-    firewall = {
-      enable = true;
-      allowedTCPPorts = [ 9007 ];
-    };
-    # Give me those sweet interwebs
-    networkmanager = { enable = true; };
   };
 
   # Video Playing acceleration
