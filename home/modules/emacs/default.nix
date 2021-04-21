@@ -69,19 +69,10 @@
     xorg.xwininfo
   ];
 
-  # TODO
-  # For spotify
-  # services.spotifyd = {
-  #   enable = true;
-  #   settings = {
-  #     # Options at https://spotifyd.github.io/spotifyd/config/File.html
-  #     global = { user, password, device... };
-  #   };
-  # };
-
   # I cannot live without you, my one true love...
   programs.emacs = {
     enable = true;
+    package = pkgs.emacsPgtkGcc;
     # For vterm.
     extraPackages = epkgs: [
       epkgs.vterm

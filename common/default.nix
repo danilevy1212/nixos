@@ -5,6 +5,13 @@
     <home-manager/nixos> # Home Manager integration.
   ];
 
+  # TODO https://github.com/mjlbach/emacs-overlay
+  nixpkgs.overlays = [
+    (import (builtins.fetchTarball {
+      url = https://github.com/mjlbach/emacs-overlay/archive/feature/flakes.tar.gz;
+    }))
+  ];
+
   # Set your time zone.
   time.timeZone = "Europe/Amsterdam";
 
