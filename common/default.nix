@@ -3,6 +3,7 @@
 {
   imports = [
     <home-manager/nixos> # Home Manager integration.
+    ./../cachix.nix
   ];
 
   # TODO https://github.com/mjlbach/emacs-overlay
@@ -110,7 +111,7 @@
     # List packages installed in system profile. To search, run:
     # $ nix search ...
     systemPackages = with pkgs;
-      [ wget vim utillinux pciutils lxappearance htop openvpn ]
+      [ wget vim utillinux pciutils lxappearance htop openvpn cachix ]
       ++ (with pkgs.unixtools; [ netstat ifconfig ]);
   };
 
