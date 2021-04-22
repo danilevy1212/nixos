@@ -4,4 +4,8 @@
     enable = true;
     path = "${config.home.homeDirectory}/Cloud";
   };
+
+  home.packages = with pkgs; [
+    aws
+  ];
 }

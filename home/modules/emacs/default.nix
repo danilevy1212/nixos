@@ -17,8 +17,11 @@
     dejavu_fonts
     symbola
     noto-fonts
-    noto-fonts-cjk
+    noto-fonts-cjk # FIXME alternative https://github.com/hakatashi/RictyDiminished-with-FiraCode
     noto-fonts-emoji
+    fira-mono
+    fira-code
+    fira-code-symbols
     # FIXME MISSING Quivera
     # :editor
     # format
