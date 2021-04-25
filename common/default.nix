@@ -6,7 +6,6 @@
     ./../cachix.nix
   ];
 
-  # TODO https://github.com/mjlbach/emacs-overlay
   nixpkgs.overlays = [
     (import (builtins.fetchTarball {
       url = https://github.com/mjlbach/emacs-overlay/archive/feature/flakes.tar.gz;
@@ -65,6 +64,9 @@
     support32Bit = true;
     package = pkgs.pulseaudioFull; # PulseAudio with bluetooth support
   };
+
+  # Explicit PulseAudio support in applications
+  nixpkgs.config.pulseaudio = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.dlevym = {

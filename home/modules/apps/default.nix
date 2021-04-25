@@ -6,7 +6,6 @@
 
     # Social closeness
     ferdi
-    skype
 
     # Browser for the...
     brave
