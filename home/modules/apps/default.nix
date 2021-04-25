@@ -5,7 +5,7 @@
     spotify
 
     # Social closeness
-    rambox # TODO Contrast with https://getferdi.com/
+    ferdi
     skype
     tdesktop
 
