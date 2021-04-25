@@ -7,7 +7,6 @@
     # Social closeness
     ferdi
     skype
-    tdesktop
 
     # Browser for the...
     brave
