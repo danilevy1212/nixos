@@ -37,6 +37,9 @@
     # json
     jq
 
+    # lua
+    sumneko-lua-language-server
+
     # :term
     # eshell
     fish

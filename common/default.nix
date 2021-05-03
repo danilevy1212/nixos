@@ -8,7 +8,8 @@
 
   nixpkgs.overlays = [
     (import (builtins.fetchTarball {
-      url = https://github.com/mjlbach/emacs-overlay/archive/feature/flakes.tar.gz;
+      url =
+        "https://github.com/mjlbach/emacs-overlay/archive/feature/flakes.tar.gz";
     }))
   ];
 
@@ -179,16 +180,39 @@
       touchpad = { disableWhileTyping = true; };
     };
     desktopManager = {
-      session = [{
-        name = "home-manager";
-        start = ''
-          ${pkgs.stdenv.shell} $HOME/.xsession-hm &
-          waitPID=$!
-          # TODO Make it a explicit systemd file, at user level!
-          /run/current-system/sw/bin/ibus-daemon -d -x
-          exec $HOME/.local/bin/xmonad
-        '';
-      }];
+      session = [
+        # FIXME DEPRECATED
+        {
+          name = "home-manager+xmonad";
+          start = ''
+            /run/current-system/sw/bin/ibus-daemon -d -x
+
+            # FIXME Ugly hack, remove when I stop using xmonad
+            systemctl --user restart polybar.service
+            systemctl --user restart dunst.service
+            #
+
+            exec $HOME/.local/bin/xmonad
+          '';
+        }
+        {
+          name = "home-manager+awesomewm";
+          start = ''
+            # TODO Make ibus-daemon a systemctl user service
+            /run/current-system/sw/bin/ibus-daemon -d -x
+
+            # FIXME Ugly hack, remove when I stop using xmonad
+            ${pkgs.stdenv.shell} $HOME/.local/share/xsession/xsession-awesome & # FIXME
+            waitPID=$!
+            systemctl --user stop polybar.service
+            systemctl --user stop dunst.service
+            #
+
+            # TODO HOW IT SHOULD BE
+            # exec $HOME/.local/share/xsession/xsession-awesome
+          '';
+        }
+      ];
     };
     displayManager = {
       lightdm.greeters = {

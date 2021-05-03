@@ -1,10 +1,5 @@
 { config, lib, pkgs, ... }: {
   home.packages = with pkgs; [
-    # Development.
-    stack
-    cabal-install
-    haskellPackages.hoogle
-
     # Notifications
     dunst
 
@@ -26,9 +21,6 @@
     # xXxScReeN_SH0TSxXx
     flameshot
 
-    # Development language FIXME Replace with Awesome/lua tools.
-    # haskell-language-server
-
     # Drag and Drop convinience
     dragon-drop
   ];
@@ -43,10 +35,28 @@
 
   # Create the xmonad xsession.
   xsession = {
-    scriptPath = ".xsession-hm";
+    # TODO Look into keychain
+    enable = true;
+    scriptPath =
+      "${config.home.homeDirectory}/.local/share/xsession/xsession-awesome";
+    windowManager.awesome = {
+      enable = true;
+      luaModules = with pkgs.luaPackages;
+        [
+          luarocks # is the package manager for Lua modules
+        ];
+    };
     pointerCursor = {
       name = "Numix-Cursor";
       package = pkgs.numix-cursor-theme;
+    };
+  };
+
+  # Store the config
+  home.file = {
+    "awesome" = {
+      source = ./conf;
+      target = "./.config/awesome";
     };
   };
 
@@ -67,7 +77,7 @@
     };
   };
 
-  # ALERT ME!
+  # TODO DEPRECATED
   services.dunst = {
     enable = true;
     iconTheme = {
@@ -122,7 +132,7 @@
     };
   };
 
-  # TODO I may replace this with TaffyBar eventually.
+  # TODO DEPRECATED
   services.polybar = {
     enable = true;
     package = pkgs.polybar.override { pulseSupport = true; };
