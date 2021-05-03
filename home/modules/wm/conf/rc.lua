@@ -18,6 +18,9 @@ local hotkeys_popup = require("awful.hotkeys_popup")
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
 
+-- My helpers
+local helpers = require("helpers")
+
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
 -- another config (This code will only ever execute for the fallback config)
@@ -85,8 +88,8 @@ awful.layout.layouts = {
 local myawesomemenu = {
    { "hotkeys", function() hotkeys_popup.show_help(nil, awful.screen.focused()) end },
    { "manual", terminal .. " -e man awesome" },
-   { "edit config", editor_cmd .. " " .. awesome.conffile }, -- FIXME
-   { "restart", awesome.restart },
+   { "edit config", editor_cmd .. " " .. awesome.conffile },
+   { "restart", helpers.nix_rebuild_and_awesome_restart },
    { "quit", function() awesome.quit() end },
 }
 
@@ -262,6 +265,7 @@ local globalkeys = gears.table.join(
               {description = "focus the next screen", group = "screen"}),
     awful.key({ modkey, "Control" }, "k", function () awful.screen.focus_relative(-1) end,
               {description = "focus the previous screen", group = "screen"}),
+    -- TODO Jump to specfic screen with mod + , . /
     awful.key({ modkey,           }, "u", awful.client.urgent.jumpto,
               {description = "jump to urgent client", group = "client"}),
     awful.key({ modkey,           }, "Tab",
@@ -276,7 +280,7 @@ local globalkeys = gears.table.join(
     -- Standard program
     awful.key({ modkey,           }, "Return", function () awful.spawn(terminal) end,
               {description = "open a terminal", group = "launcher"}),
-    awful.key({ modkey, "Control" }, "r", awesome.restart, -- TODO Change the configfile to be in /etc/nixos/home/modules/wm/conf/rc.lua
+    awful.key({ modkey, "Control" }, "r", helpers.nix_rebuild_and_awesome_restart,
               {description = "reload awesome", group = "awesome"}),
     awful.key({ modkey, "Shift"   }, "q", awesome.quit,
               {description = "quit awesome", group = "awesome"}),

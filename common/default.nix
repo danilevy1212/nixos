@@ -239,7 +239,14 @@
   services.printing.enable = true;
 
   # So I can change gtk-themes from home-manager.
-  services.dbus.packages = with pkgs; [ gnome3.dconf ];
+  programs.dconf.enable = true;
+
+  # Gnome craziness.
+  services.dbus.packages = with pkgs; [
+    gnome3.dconf
+    gnome3.adwaita-icon-theme
+    gnome2.GConf
+  ];
 
   # Key-Values and pears?
   services.redis.enable = true;
@@ -255,6 +262,12 @@
 
   # Make daily automatic upgrades.
   system.autoUpgrade.enable = true;
+
+  # Remenber me, for longer.
+  security.sudo.extraConfig = "Defaults        timestamp_timeout=300";
+
+  # Bother me, less.
+  services.gnome3.gnome-keyring.enable = true;
 
   # NOTE The just in case desktop
   # services.xserver.desktopManager.plasma5.enable = true;

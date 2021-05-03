@@ -23,6 +23,9 @@
 
     # Drag and Drop convinience
     dragon-drop
+
+    # Do as sudo, graphically
+    gksu
   ];
 
   home.sessionVariables = {
