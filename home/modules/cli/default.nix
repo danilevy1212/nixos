@@ -24,11 +24,11 @@ in { config, lib, pkgs, ... }: {
     enable = true;
     settings = {
       font = {
-        normal = { family = "Hack"; };
-        bold = { family = "Hack"; };
-        italic = { family = "Hack"; };
-        bold-italic = { family = "Hack"; };
-        size = 9.0;
+        normal = { family = "Victor Mono"; };
+        bold = { family = "Victor Mono"; };
+        italic = { family = "Victor Mono"; };
+        bold-italic = { family = "Victor Mono"; };
+        size = 12.0;
       };
       window = { gtk_theme_variant = "nordic"; };
       background_opacity = 0.9;
@@ -114,5 +114,8 @@ in { config, lib, pkgs, ... }: {
   home.packages = with pkgs; [
     # System
     neofetch
+
+    # Terminal Font
+    victor-mono
   ];
 }

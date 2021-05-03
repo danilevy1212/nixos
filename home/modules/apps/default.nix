@@ -6,6 +6,7 @@
 
     # Social closeness
     ferdi
+    tdesktop
 
     # Browser for the...
     brave

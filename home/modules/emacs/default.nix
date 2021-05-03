@@ -1,7 +1,4 @@
 { config, lib, pkgs, ... }: {
-  # TODO Inspiration https://github.com/hlissner/dotfiles/blob/master/modules/editors/emacs.nix, from the horses mouth.
-  # TODO EmacsPgtGcc, try out with cachix+nix-community
-
   # Doom emacs dependencies
   home.packages = with pkgs; [
     # General Dependencies
@@ -19,6 +16,9 @@
     noto-fonts
     noto-fonts-cjk # FIXME alternative https://github.com/hakatashi/RictyDiminished-with-FiraCode
     noto-fonts-emoji
+    victor-mono # For terminal?
+
+    # For emacs
     fira-mono
     fira-code
     fira-code-symbols

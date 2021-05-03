@@ -135,9 +135,6 @@
   # Let me lock the screen. $ TODO Find alternatives.
   programs.slock.enable = true;
 
-  # FIXME https://nixos.org/manual/nixpkgs/stable/#ssec-gnome-common-issues
-  # programs.dconf.enable = true;
-
   # Documentation, documentation, documentation!
   documentation.man = {
     enable = true;
