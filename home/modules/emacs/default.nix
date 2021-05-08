@@ -80,11 +80,10 @@
   # I cannot live without you, my one true love...
   programs.emacs = {
     enable = true;
-    # package = pkgs.emacsGcc; FIXME Wait till they fixed emacs 28 branch
+    package = pkgs.emacsPgtkGcc;
     # For vterm.
     extraPackages = epkgs: [
       epkgs.vterm
-      # spotify
       epkgs.oauth2
       # pdf-tools
       epkgs.pdf-tools
