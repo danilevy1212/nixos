@@ -87,8 +87,7 @@ awful.layout.layouts = {
     awful.layout.suit.tile,
     awful.layout.suit.tile.bottom,
     awful.layout.suit.spiral.dwindle,
-    awful.layout.suit.max,
-    awful.layout.suit.magnifier,
+    awful.layout.suit.magnifier
 }
 -- }}}
 
@@ -238,7 +237,7 @@ awful.screen.connect_for_each_screen(
         set_wallpaper(s)
 
         -- Each screen has its own tag table.
-        awful.tag({"一", "二", "三", "四", "五"}, s, awful.layout.layouts[1])
+        awful.tag({"一", "二", "三", "四", "五", "六"}, s, awful.layout.layouts[1])
 
         -- Create a promptbox for each screen
         s.mypromptbox = awful.widget.prompt()

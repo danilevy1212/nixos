@@ -41,11 +41,11 @@
 
   # Create the xmonad xsession.
   xsession = {
-    # TODO Look into keychain
     enable = true;
     scriptPath =
       "${config.home.homeDirectory}/.local/share/xsession/xsession-awesome";
     windowManager.awesome = {
+      package = pkgs.awesome.override { gtk3Support = true; gtk3 = pkgs.gtk3; };
       enable = true;
       luaModules = with pkgs.luaPackages;
         [
