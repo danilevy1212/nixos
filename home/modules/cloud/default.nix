@@ -10,7 +10,13 @@
   home.sessionVariables = {
     AWS_SHARED_CREDENTIALS_FILE = "$XDG_CONFIG_HOME/aws/credentials";
     AWS_CONFIG_FILE = "$XDG_CONFIG_HOME/aws/config";
-    PATH = "$PATH:$HOME/.krew/bin";
+  };
+
+  # Global packages readily usable.
+  programs.zsh = {
+    envExtra = ''
+      export PATH="$PATH:$HOME/.krew/bin"
+    '';
   };
 
   # Add an alias for kubectl

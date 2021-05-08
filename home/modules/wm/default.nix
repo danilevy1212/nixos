@@ -26,6 +26,9 @@
 
     # Do as sudo, graphically
     gksu
+
+    # Enable awesome-client
+    rlwrap
   ];
 
   home.sessionVariables = {

@@ -39,6 +39,8 @@
 
     # lua
     sumneko-lua-language-server
+    lua
+    # NOTE nodePackages.lua-fmt
 
     # :term
     # eshell
@@ -78,7 +80,7 @@
   # I cannot live without you, my one true love...
   programs.emacs = {
     enable = true;
-    package = pkgs.emacsPgtkGcc;
+    # package = pkgs.emacsGcc; FIXME Wait till they fixed emacs 28 branch
     # For vterm.
     extraPackages = epkgs: [
       epkgs.vterm

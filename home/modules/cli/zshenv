@@ -38,7 +38,7 @@ export PATH="$XDG_DATA_HOME/cargo/bin:$PATH"
 export PATH="$XDG_CONFIG_HOME/emacs/bin:$PATH"
 export DOOMDIR="$XDG_CONFIG_HOME/doom"
 
-# Mongo Memory Server (FIXME Just a hotfix)
+# Mongo Memory Server FIXME Just a hotfix, MOVE TO nix-shell
 export MONGOMS_SYSTEM_BINARY="$(command -v mongod)"
 
 # Tramp

@@ -9,6 +9,9 @@ in { config, lib, pkgs, ... }: {
   # Allow fontconfig to discover fonts and configurations installed through home.packages and nix-env
   fonts.fontconfig.enable = true;
 
+  # TODO Switch to ZPLUG
+  # TODO Move zshenv and zprofile to session variables
+  # TODO Move as much stuff of zshrc to nix
   # ZSH, just as good as eshell
   programs.zsh = {
     enable = true;
@@ -19,6 +22,7 @@ in { config, lib, pkgs, ... }: {
     profileExtra = builtins.readFile ./zprofile;
   };
 
+  # TODO Tryout Kitty
   # A pretty, modern, terminal.
   programs.alacritty = {
     enable = true;
