@@ -84,22 +84,11 @@ local modkey = "Mod4"
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
-    awful.layout.suit.floating,
     awful.layout.suit.tile,
-    awful.layout.suit.tile.left,
     awful.layout.suit.tile.bottom,
-    awful.layout.suit.tile.top,
-    awful.layout.suit.fair,
-    awful.layout.suit.fair.horizontal,
-    awful.layout.suit.spiral,
     awful.layout.suit.spiral.dwindle,
     awful.layout.suit.max,
-    awful.layout.suit.max.fullscreen,
     awful.layout.suit.magnifier,
-    awful.layout.suit.corner.nw
-    -- awful.layout.suit.corner.ne,
-    -- awful.layout.suit.corner.sw,
-    -- awful.layout.suit.corner.se,
 }
 -- }}}
 
@@ -114,7 +103,8 @@ local myawesomemenu = {
     },
     {"manual", terminal .. " -e man awesome"},
     {"edit config", editor_cmd .. " " .. awesome.conffile},
-    {"restart", helpers.nix_rebuild_and_awesome_restart},
+    {"restart", awesome.restart},
+    {"rebuild", helpers.nix_rebuild_and_awesome_restart},
     {
         "quit",
         function()
@@ -248,7 +238,7 @@ awful.screen.connect_for_each_screen(
         set_wallpaper(s)
 
         -- Each screen has its own tag table.
-        awful.tag({"1", "2", "3", "4", "5", "6", "7", "8", "9"}, s, awful.layout.layouts[1])
+        awful.tag({"一", "二", "三", "四", "五"}, s, awful.layout.layouts[1])
 
         -- Create a promptbox for each screen
         s.mypromptbox = awful.widget.prompt()
@@ -432,11 +422,12 @@ local globalkeys =
         end,
         {description = "open a terminal", group = "launcher"}
     ),
+    awful.key({modkey, "Control"}, "r", awesome.restart, {description = "reload awesome", group = "awesome"}),
     awful.key(
-        {modkey, "Control"},
+        {modkey, "Control", "Shift"},
         "r",
         helpers.nix_rebuild_and_awesome_restart,
-        {description = "reload awesome", group = "awesome"}
+        {description = "rebuild awesome", group = "awesome"}
     ),
     awful.key({modkey, "Shift"}, "q", awesome.quit, {description = "quit awesome", group = "awesome"}),
     awful.key(

@@ -32,7 +32,7 @@ in { config, lib, pkgs, ... }: {
         bold = { family = "Victor Mono"; };
         italic = { family = "Victor Mono"; };
         bold-italic = { family = "Victor Mono"; };
-        size = 12.0;
+        size = 9.0;
       };
       window = { gtk_theme_variant = "nordic"; };
       background_opacity = 0.9;
