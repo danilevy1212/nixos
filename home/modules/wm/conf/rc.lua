@@ -545,6 +545,31 @@ local globalkeys =
             menubar.show()
         end,
         {description = "show the menubar", group = "launcher"}
+    ),
+    -- Audio
+    awful.key(
+        {},
+        "XF86AudioRaiseVolume",
+        function()
+            awful.spawn("pulsemixer --change-volume +5")
+        end,
+        {description = "Raise audio volume", group = "audio"}
+    ),
+    awful.key(
+        {},
+        "XF86AudioLowerVolume",
+        function()
+            awful.spawn("pulsemixer --change-volume -5")
+        end,
+        {description = "Lower audio volume", group = "audio"}
+    ),
+    awful.key(
+        {},
+        "XF86AudioMute",
+        function()
+            awful.spawn("pulsemixer --toggle-mute")
+        end,
+        {description = "Toggle mute", group = "audio"}
     )
 )
 

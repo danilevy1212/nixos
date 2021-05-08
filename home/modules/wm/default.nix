@@ -58,7 +58,11 @@
     };
   };
 
-  # Store the config
+  # NOTE For more comfy development, comment this block and create a symlink
+  # between ./conf and ~/.config/awesome
+  # (ln -sL # /etc/nixos/home/modules/wm/conf/ ~/.config/awesome).
+  # When you are done, uncomment this block, remove the link and
+  # `nixos-rebuild switch`
   home.file = {
     "awesome" = {
       source = ./conf;
