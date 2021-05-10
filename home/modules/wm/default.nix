@@ -45,7 +45,6 @@
     scriptPath =
       "${config.home.homeDirectory}/.local/share/xsession/xsession-awesome";
     windowManager.awesome = {
-      package = pkgs.awesome.override { gtk3Support = true; gtk3 = pkgs.gtk3; };
       enable = true;
       luaModules = with pkgs.luaPackages;
         [
@@ -58,17 +57,20 @@
     };
   };
 
+  # Link for the LSP
+  xdg.dataFile."awesome".source = "${pkgs.awesome}/share/awesome";
+
   # NOTE For more comfy development, comment this block and create a symlink
   # between ./conf and ~/.config/awesome
   # (ln -sL # /etc/nixos/home/modules/wm/conf/ ~/.config/awesome).
   # When you are done, uncomment this block, remove the link and
   # `nixos-rebuild switch`
-  home.file = {
-    "awesome" = {
-      source = ./conf;
-      target = "./.config/awesome";
-    };
-  };
+  # home.file = {
+  #   "awesome" = {
+  #     source = ./conf;
+  #     target = "./.config/awesome";
+  #   };
+  # };
 
   # Make me pretty!
   gtk = with pkgs; {
