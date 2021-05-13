@@ -8,7 +8,8 @@
 
   nixpkgs.overlays = [
     (import (builtins.fetchTarball {
-      url = "https://github.com/nix-community/emacs-overlay/archive/master.tar.gz";
+      url =
+        "https://github.com/nix-community/emacs-overlay/archive/master.tar.gz";
     }))
   ];
 
@@ -113,8 +114,17 @@
     # List packages installed in system profile. To search, run:
     # $ nix search ...
     systemPackages = with pkgs;
-      [ wget vim utillinux pciutils lxappearance htop openvpn cachix docker-compose ]
-      ++ (with pkgs.unixtools; [ netstat ifconfig ]);
+      [
+        wget
+        vim
+        utillinux
+        pciutils
+        lxappearance
+        htop
+        openvpn
+        docker-compose
+      ] ++ (with pkgs.unixtools; [ netstat ifconfig ]) # Basic network
+      ++ [ nix-prefetch-git update-nix-fetchgit cachix ]; # Nix convinience
   };
 
   networking = {

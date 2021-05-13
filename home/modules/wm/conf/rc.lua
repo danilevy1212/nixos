@@ -344,9 +344,6 @@ root.buttons(
 local globalkeys =
     gears.table.join(
     awful.key({modkey}, "s", hotkeys_popup.show_help, {description = "show help", group = "awesome"}),
-    awful.key({modkey}, "Left", awful.tag.viewprev, {description = "view previous", group = "tag"}),
-    awful.key({modkey}, "Right", awful.tag.viewnext, {description = "view next", group = "tag"}),
-    awful.key({modkey}, "Escape", awful.tag.history.restore, {description = "go back", group = "tag"}),
     awful.key(
         {modkey},
         "w",
@@ -355,40 +352,6 @@ local globalkeys =
         end,
         {description = "show main menu", group = "awesome"}
     ),
-    -- Layout manipulation
-    awful.key(
-        {modkey, "Shift"},
-        "j",
-        function()
-            awful.client.swap.byidx(1)
-        end,
-        {description = "swap with next client by index", group = "client"}
-    ),
-    awful.key(
-        {modkey, "Shift"},
-        "k",
-        function()
-            awful.client.swap.byidx(-1)
-        end,
-        {description = "swap with previous client by index", group = "client"}
-    ),
-    awful.key(
-        {modkey, "Control"},
-        "j",
-        function()
-            awful.screen.focus_relative(1)
-        end,
-        {description = "focus the next screen", group = "screen"}
-    ),
-    awful.key(
-        {modkey, "Control"},
-        "k",
-        function()
-            awful.screen.focus_relative(-1)
-        end,
-        {description = "focus the previous screen", group = "screen"}
-    ),
-    -- TODO Jump to specfic screen with mod + , . /
     awful.key({modkey}, "u", awful.client.urgent.jumpto, {description = "jump to urgent client", group = "client"}),
     awful.key(
         {modkey},
@@ -457,32 +420,36 @@ local globalkeys =
     awful.key(
         {modkey},
         "j",
-        function()
+        function(c)
             awful.client.focus.global_bydirection("down")
+            if c then c:lower() end
         end,
         {description = "focus next window up", group = "client"}
     ),
     awful.key(
         {modkey},
         "k",
-        function()
+        function(c)
             awful.client.focus.global_bydirection("up")
+            if c then c:lower() end
         end,
         {description = "focus next window down", group = "client"}
     ),
     awful.key(
         {modkey},
         "l",
-        function()
+        function(c)
             awful.client.focus.global_bydirection("right")
+            if c then c:lower() end
         end,
         {description = "focus next window right", group = "client"}
     ),
     awful.key(
         {modkey},
         "h",
-        function()
+        function(c)
             awful.client.focus.global_bydirection("left")
+            if c then c:lower() end
         end,
         {description = "focus next window left", group = "client"}
     ),
@@ -490,32 +457,36 @@ local globalkeys =
     awful.key(
         {modkey, "Shift"},
         "h",
-        function()
-            awful.client.swap.global_bydirection("left")
+        function(c)
+            awful.client.swap.bydirection("left")
+            if c then c:raise() end
         end,
         {description = "swap with left client", group = "client"}
     ),
     awful.key(
         {modkey, "Shift"},
         "l",
-        function()
-            awful.client.swap.global_bydirection("right")
+        function(c)
+            awful.client.swap.bydirection("right")
+            if c then c:raise() end
         end,
         {description = "swap with right client", group = "client"}
     ),
     awful.key(
         {modkey, "Shift"},
         "j",
-        function()
-            awful.client.swap.global_bydirection("down")
+        function(c)
+            awful.client.swap.bydirection("down")
+            if c then c:raise() end
         end,
         {description = "swap with down client", group = "client"}
     ),
     awful.key(
         {modkey, "Shift"},
         "k",
-        function()
-            awful.client.swap.global_bydirection("up")
+        function(c)
+            awful.client.swap.bydirection("up")
+            if c then c:raise() end
         end,
         {description = "swap with up client", group = "client"}
     ),
@@ -659,8 +630,18 @@ local clientkeys =
         "o",
         function(c)
             c:move_to_screen()
+            c:raise()
         end,
-        {description = "move to screen", group = "client"}
+        {description = "move to next screen", group = "client"}
+    ),
+    awful.key(
+        {modkey, "Shift"},
+        "o",
+        function(c)
+            c:move_to_screen(c.screen.index - 1)
+            c:raise()
+        end,
+        {description = "move to previous screen", group = "client"}
     ),
     awful.key(
         {modkey},
@@ -769,6 +750,34 @@ for i = 1, 9 do
                 end
             end,
             {description = "toggle focused client on tag #" .. i, group = "tag"}
+        )
+    )
+end
+
+-- Jump to specfic screen with mod + , . /
+for i, l in ipairs({",", ".", "/"}) do
+    globalkeys =
+        gears.table.join(
+        globalkeys,
+        awful.key(
+            {modkey},
+            l,
+            function(c)
+                awful.screen.focus(i)
+                if c then c:lower() end
+            end,
+            {description = "jump to screen " .. i, group = "screen"}
+        ),
+        awful.key(
+            {modkey, "Shift"},
+            l,
+            function(c)
+                if c then
+                    c:move_to_screen(i)
+                    c:raise()
+                end
+            end,
+            {description = "move client to screen " .. i, group = "screen"}
         )
     )
 end

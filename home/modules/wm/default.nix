@@ -29,6 +29,9 @@
 
     # Enable awesome-client
     rlwrap
+
+    # For REPL sake
+    lua5_4
   ];
 
   home.sessionVariables = {
@@ -46,10 +49,6 @@
       "${config.home.homeDirectory}/.local/share/xsession/xsession-awesome";
     windowManager.awesome = {
       enable = true;
-      luaModules = with pkgs.luaPackages;
-        [
-          luarocks # is the package manager for Lua modules
-        ];
     };
     pointerCursor = {
       name = "Numix-Cursor";
