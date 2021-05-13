@@ -382,6 +382,8 @@ local globalkeys =
         {description = "rebuild awesome", group = "awesome"}
     ),
     awful.key({modkey, "Shift"}, "q", awesome.quit, {description = "quit awesome", group = "awesome"}),
+    -- TODO Put hjkl keys in their own for loop
+    -- TODO Put up down left right int their own for loop
     -- TODO Find alternative
     -- awful.key(
     --     {modkey},
@@ -415,7 +417,6 @@ local globalkeys =
     --     end,
     --     {description = "decrease the number of master clients", group = "layout"}
     -- ),
-
     -- Moving window focus works between desktops
     awful.key(
         {modkey},
@@ -756,9 +757,9 @@ end
 
 -- Jump to specfic screen with mod + , . /
 for i, l in ipairs({",", ".", "/"}) do
-    globalkeys =
+    clientkeys =
         gears.table.join(
-        globalkeys,
+        clientkeys,
         awful.key(
             {modkey},
             l,
@@ -774,7 +775,7 @@ for i, l in ipairs({",", ".", "/"}) do
             function(c)
                 if c then
                     c:move_to_screen(i)
-                    c:raise()
+                    c:lower()
                 end
             end,
             {description = "move client to screen " .. i, group = "screen"}
