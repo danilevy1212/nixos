@@ -276,10 +276,10 @@
   security.sudo.extraConfig = "Defaults        timestamp_timeout=300";
 
   # Bother me, less.
-  services.gnome3.gnome-keyring.enable = true;
+  services.gnome.gnome-keyring.enable = true;
 
   # !https://github.com/NixOS/nixpkgs/issues/16327
-  services.gnome3.at-spi2-core.enable = true;
+  services.gnome.at-spi2-core.enable = true;
 
   # NOTE The just in case desktop
   # services.xserver.desktopManager.plasma5.enable = true;
