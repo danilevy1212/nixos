@@ -66,6 +66,7 @@
     # lsp
     unzip
     python3
+    pipenv
 
     # :app
     # everywhere

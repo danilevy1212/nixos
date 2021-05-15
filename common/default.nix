@@ -18,11 +18,6 @@
 
   nix = {
     trustedUsers = [ "root" "dlevym" ];
-    nixPath = [
-      "nixos-config=/etc/nixos/hosts/dellXps15/default.nix"
-      "nixpkgs=/nix/var/nix/profiles/per-user/root/channels/nixos"
-      "/nix/var/nix/profiles/per-user/root/channels"
-    ];
     gc = { automatic = true; };
     # Protect nix-shell against garbage collection
     extraOptions = ''
@@ -136,6 +131,8 @@
     };
     # Give me those sweet interwebs
     networkmanager = { enable = true; };
+    # No stupid DNS shennanigans
+    resolvconf.dnsExtensionMechanism = false;
   };
 
   # Default shell.

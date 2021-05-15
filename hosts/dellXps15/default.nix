@@ -7,6 +7,13 @@
     ./../../pkgs/nvidia-offload
   ];
 
+  # Bootstrapping
+  nix.nixPath = [
+      "nixos-config=/etc/nixos/hosts/dellXps15/default.nix"
+      "nixpkgs=/nix/var/nix/profiles/per-user/root/channels/nixos"
+      "/nix/var/nix/profiles/per-user/root/channels"
+  ];
+
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
 
@@ -44,9 +51,7 @@
   };
 
   # Configure keymap in X11
-  services.xserver = {
-    videoDrivers = [ "nvidia" ];
-  };
+  services.xserver = { videoDrivers = [ "nvidia" ]; };
 
   # Enable bluetooth
   hardware.bluetooth.enable = true;
