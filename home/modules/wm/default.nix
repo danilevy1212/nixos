@@ -1,14 +1,5 @@
 { config, lib, pkgs, ... }: {
   home.packages = with pkgs; [
-    # Notifications
-    dunst
-
-    # FIXME Remove/Replace once I use awesomewm
-    dmenu
-
-    # TODO Take out when I deprecate polybar
-    xmonad-log
-
     # Let there be control over the sound!
     pulsemixer
     pavucontrol
@@ -21,7 +12,7 @@
     # xXxScReeN_SH0TSxXx
     flameshot
 
-    # Drag and Drop convinience
+    # Drag and Drop convenience
     dragon-drop
 
     # Do as sudo, graphically
@@ -35,20 +26,25 @@
   ];
 
   home.sessionVariables = {
-    # Where stack snapshots are located.
-    STACK_ROOT = "$XDG_DATA_HOME/stack";
-
     # Default theme.
     GTK_THEME = "Nordic";
   };
 
-  # Create the xmonad xsession.
+  # Don't manage the keyboard layout.
+  home.keyboard = null;
+
+  # Create the awesome session.
   xsession = {
     enable = true;
     scriptPath =
       "${config.home.homeDirectory}/.local/share/xsession/xsession-awesome";
     windowManager.awesome = {
       enable = true;
+      luaModules = with pkgs.luaPackages; [
+        luarocks-nix
+        vicious
+        # TODO lain
+      ];
     };
     pointerCursor = {
       name = "Numix-Cursor";
@@ -86,69 +82,6 @@
       name = "Noto Sans";
       package = noto-fonts;
     };
-  };
-
-  # TODO DEPRECATED
-  services.dunst = {
-    enable = true;
-    iconTheme = {
-      name = "breeze";
-      package = pkgs.breeze-icons;
-    };
-    settings = {
-      global = {
-        allow_markup = true;
-        format = "<b><u>%a</u></b>\\n%s\\n\\n%b";
-        sort = false;
-        alignment = "left";
-        indicate_hidden = true;
-        bounce_freq = 0;
-        word_wrap = true;
-        ignore_newline = false;
-        hide_duplicates_count = true;
-        geometry = "400x50+15+40";
-        transparency = 15;
-        idle_threshold = 0;
-        monitor = 0;
-        follow = "keyboard";
-        sticky_history = true;
-        history_length = 15;
-        show_indicators = false;
-        separator_height = 2;
-        padding = 9;
-        horizontal_padding = 12;
-        line_height = 1;
-        separator_color = "frame";
-        icon_position = "left";
-        frame_width = 1;
-        frame_color = "#458588";
-        corner_radius = 14;
-        max_icon_size = 80;
-      };
-      urgency_low = {
-        foreground = "#88c0d0";
-        background = "#282828";
-        timeout = 4;
-      };
-      urgency_normal = {
-        foreground = "#d79921";
-        background = "#282828";
-        timeout = 6;
-      };
-      urgency_critical = {
-        foreground = "#cc241d";
-        background = "#282828";
-        timeout = 8;
-      };
-    };
-  };
-
-  # TODO DEPRECATED
-  services.polybar = {
-    enable = true;
-    package = pkgs.polybar.override { pulseSupport = true; };
-    extraConfig = builtins.readFile "${builtins.toString ./.}/config.ini";
-    script = builtins.readFile "${builtins.toString ./.}/run-polybar.sh";
   };
 
   # Be pretty again.

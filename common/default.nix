@@ -49,7 +49,6 @@
   # Less eye-sore console font.
   console = {
     font = "Lat2-Terminus16";
-    earlySetup = true;
     useXkbConfig = true;
   };
 
@@ -177,45 +176,26 @@
   # Configure keymap in X11
   services.xserver = {
     enable = true;
-    layout = "us(altgr-intl)";
+    layout = "us";
+    xkbVariant = "altgr-intl";
     xkbOptions = "ctrl:nocaps";
     autoRepeatInterval = 25;
     autoRepeatDelay = 200;
+    exportConfiguration = true;
     libinput = {
       enable = true; # Enable touchpad support
       touchpad = { disableWhileTyping = true; };
     };
     desktopManager = {
       session = [
-        # FIXME DEPRECATED
-        {
-          name = "home-manager+xmonad";
-          start = ''
-            /run/current-system/sw/bin/ibus-daemon -d -x
-
-            # FIXME Ugly hack, remove when I stop using xmonad
-            systemctl --user restart polybar.service
-            systemctl --user restart dunst.service
-            #
-
-            exec $HOME/.local/bin/xmonad
-          '';
-        }
         {
           name = "home-manager+awesomewm";
           start = ''
             # TODO Make ibus-daemon a systemctl user service
+            # NOTE Careful! IBUS will overwrite your layout unless you enable "Use system keyboard layout" option in Preferences -> Advanced
             /run/current-system/sw/bin/ibus-daemon -d -x
 
-            # FIXME Ugly hack, remove when I stop using xmonad
-            ${pkgs.stdenv.shell} $HOME/.local/share/xsession/xsession-awesome & # FIXME
-            waitPID=$!
-            systemctl --user stop polybar.service
-            systemctl --user stop dunst.service
-            #
-
-            # TODO HOW IT SHOULD BE
-            # exec $HOME/.local/share/xsession/xsession-awesome
+            exec $HOME/.local/share/xsession/xsession-awesome
           '';
         }
       ];
@@ -243,9 +223,6 @@
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
-
-  # So I can change gtk-themes from home-manager.
-  programs.dconf.enable = true;
 
   # Gnome craziness.
   services.dbus.packages = with pkgs; [
@@ -277,7 +254,4 @@
 
   # !https://github.com/NixOS/nixpkgs/issues/16327
   services.gnome.at-spi2-core.enable = true;
-
-  # NOTE The just in case desktop
-  # services.xserver.desktopManager.plasma5.enable = true;
 }

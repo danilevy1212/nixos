@@ -36,12 +36,6 @@ in { self, config, pkgs, ... }: {
   home.username = "dlevym";
   home.homeDirectory = "/home/dlevym";
 
-  # Keyboard Layout
-  home.keyboard = {
-    layout = "us(altgr-intl)";
-    options = [ "ctrl:nocaps" ];
-  };
-
   # Be quiet, will you?
   news.display = "silent";
 
