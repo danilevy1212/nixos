@@ -5,7 +5,13 @@
     path = "${config.home.homeDirectory}/Cloud";
   };
 
-  home.packages = with pkgs; [ awscli kubectl krew ];
+  home.packages = with pkgs; [
+    awscli
+    kubectl
+    krew
+    telepresence2
+    kubernetes-helm-wrapped
+  ];
 
   home.sessionVariables = {
     AWS_SHARED_CREDENTIALS_FILE = "$XDG_CONFIG_HOME/aws/credentials";

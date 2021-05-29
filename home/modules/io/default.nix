@@ -17,6 +17,11 @@
     postman
   ];
 
+  # default file-browser
+  home.sessionVariables = {
+    FILEMANAGER = "spacefm";
+  };
+
   # Connect up to external devices.
   services.udiskie.enable = true;
 

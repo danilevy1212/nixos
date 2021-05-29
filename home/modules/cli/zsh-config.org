@@ -1,3 +1,12 @@
+#+TITLE: ZSH Configuration
+
+* Motivation
+
+As great as ~zsh~ is, it's documentation is dense and hard to follow. With this file I hope to document it's inner working as I configure the best interactive shell.
+
+* TODO Completion
+
+#+begin_src sh :tangle zshrc
 #!/usr/bin/zsh
 
 ### GENERAL
@@ -116,6 +125,13 @@ fi
 alias tmux=tmux -f "$XDG_CONFIG_HOME"/tmux/tmux.conf
 export TMUX_TMPDIR="$XDG_RUNTIME_DIR"
 
+#+end_src
+
+* TODO ...
+
+* TODO Plugins
+
+#+begin_src sh :tangle zshrc
 ## ZINIT
 declare -A ZINIT
 ZINIT[HOME_DIR]="$XDG_CONFIG_HOME/zinit"
@@ -159,3 +175,4 @@ zinit pack lucid wait for ls_colors
 
 ## Finally, show off! (If I can)
 [ -n "$(command -v neofetch)" ] && { print "\n"; neofetch; }
+#+end_src

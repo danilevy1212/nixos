@@ -15,14 +15,18 @@ in { config, lib, pkgs, ... }: {
   # ZSH, just as good as eshell
   programs.zsh = {
     enable = true;
-    enableCompletion = false;
+    enableCompletion = true;
     dotDir = ".config/nix-zsh"; # NOTE This is just for easier debugging.
     initExtra = builtins.readFile ./zshrc;
-    envExtra = builtins.readFile ./zshenv;
-    profileExtra = builtins.readFile ./zprofile;
+    shellAliases = {
+      # HACK
+      ssh = "TERM=xterm-256color ssh";
+      # colorized ls
+      ls = "ls --color=auto -1a";
+    };
   };
 
-  # TODO Tryout Kitty
+
   # A pretty, modern, terminal.
   programs.alacritty = {
     enable = true;
@@ -32,7 +36,7 @@ in { config, lib, pkgs, ... }: {
         bold = { family = "Victor Mono"; };
         italic = { family = "Victor Mono"; };
         bold-italic = { family = "Victor Mono"; };
-        size = 9.0;
+        size = 10.0;
       };
       window = { gtk_theme_variant = "nordic"; };
       background_opacity = 0.9;
@@ -121,5 +125,8 @@ in { config, lib, pkgs, ... }: {
 
     # Terminal Font
     victor-mono
+
+    # Fun
+    cowsay
   ];
 }

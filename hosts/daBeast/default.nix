@@ -11,18 +11,15 @@
       ./../../common
     ];
 
+  # Bootstrapping
   nix.nixPath = [
     "nixos-config=/etc/nixos/hosts/daBeast/default.nix"
-    "nixpkgs=/nix/var/nix/profiles/per-user/root/channels/nixos"
-    "/nix/var/nix/profiles/per-user/root/channels"
   ];
 
   # Use the GRUB 2 boot loader.
   boot.loader.grub.enable = true;
   boot.loader.grub.version = 2;
   boot.loader.grub.efiSupport = true;
-  # boot.loader.grub.efiInstallAsRemovable = true;
-  # boot.loader.grub.useOSProber = true;
   boot.loader.efi.efiSysMountPoint = "/boot";
   boot.loader.efi.canTouchEfiVariables = true;
   # Define on which hard drive you want to install Grub.

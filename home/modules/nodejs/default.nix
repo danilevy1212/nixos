@@ -12,10 +12,14 @@
     };
   };
 
-  # Global packages readily usable.
   programs.zsh = {
-    envExtra = ''
-      export PATH="$PATH:$XDG_CACHE_HOME/npm/bin"
-    '';
+    shellAliases = {
+      yarn = "yarn --use-yarnrc $XDG_CONFIG_HOME/yarn/config";
+    };
   };
+
+  # Global packages readily usable.
+  home.sessionPath = [
+    "$XDG_CACHE_HOME/npm/bin"
+  ];
 }

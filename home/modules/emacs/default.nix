@@ -96,5 +96,20 @@
     enableNixDirenvIntegration = true;
   };
 
-  home.sessionVariables = { DOOMDIR = "$XDG_CONFIG_HOME/doom"; };
+  # Doom directory.
+  home.sessionVariables = {
+      DOOMDIR = "$XDG_CONFIG_HOME/doom";
+  };
+
+  # Add bin/doom to path.
+  home.sessionPath = [
+      "${config.xdg.configHome}/emacs/bin"
+  ];
+
+  programs.zsh.shellAliases = {
+    # kill emacsclient kill server alias
+    ek = "emacsclient -e '(kill-emacs)'";
+    # create a terminal emacs
+    emt = "emacsclient -nw";
+  };
 }

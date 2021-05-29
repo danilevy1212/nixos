@@ -9,9 +9,7 @@
 
   # Bootstrapping
   nix.nixPath = [
-      "nixos-config=/etc/nixos/hosts/dellXps15/default.nix"
-      "nixpkgs=/nix/var/nix/profiles/per-user/root/channels/nixos"
-      "/nix/var/nix/profiles/per-user/root/channels"
+    "nixos-config=/etc/nixos/hosts/dellXps15/default.nix"
   ];
 
   # Use the systemd-boot EFI boot loader.

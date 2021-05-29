@@ -95,6 +95,7 @@ theme.titlebar_maximized_button_focus_inactive = original_themes_path .. "defaul
 theme.titlebar_maximized_button_normal_active = original_themes_path .. "default/titlebar/maximized_normal_active.png"
 theme.titlebar_maximized_button_focus_active = original_themes_path .. "default/titlebar/maximized_focus_active.png"
 
+-- TODO set this with a lua script
 theme.wallpaper = original_themes_path .. "default/background.png"
 
 -- You can use your own layout icons like this:

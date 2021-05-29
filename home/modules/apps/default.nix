@@ -14,4 +14,9 @@
     # video player
     mpv-with-scripts
   ];
+
+  # default browser
+  home.sessionVariables = {
+      BROWSER = "brave";
+  };
 }

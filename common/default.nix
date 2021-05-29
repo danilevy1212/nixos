@@ -6,6 +6,12 @@
     ./../cachix.nix
   ];
 
+  # Common NIX_PATH
+  nix.nixPath = [
+    "nixpkgs=/nix/var/nix/profiles/per-user/root/channels/nixos"
+    "/nix/var/nix/profiles/per-user/root/channels"
+  ];
+
   nixpkgs.overlays = [
     (import (builtins.fetchTarball {
       url =
@@ -104,13 +110,23 @@
       QT_IM_MODULE = "ibus";
       XMODIFIERS = "@im=ibus";
       XMODIFIER = "@im=ibus";
+
+      # EDITOR TODO Change to `emacs` when theme problems are solved.
+      EDITOR = "nvim";
+
+      # Mongo Memory Server HACK
+      MONGOMS_SYSTEM_BINARY = "${pkgs.mongodb}/bin/mongod";
+    };
+    # Just as good.
+    shellAliases = {
+      vim = "nvim";
     };
     # List packages installed in system profile. To search, run:
     # $ nix search ...
     systemPackages = with pkgs;
       [
         wget
-        vim
+        neovim
         utillinux
         pciutils
         lxappearance
@@ -135,8 +151,10 @@
   };
 
   # Default shell.
-  programs.zsh.enable = true;
   users.extraUsers.dlevym = { shell = pkgs.zsh; };
+  programs.zsh = {
+    enable = true;
+  };
 
   # Let me lock the screen. $ TODO Find alternatives.
   programs.slock.enable = true;
@@ -187,18 +205,16 @@
       touchpad = { disableWhileTyping = true; };
     };
     desktopManager = {
-      session = [
-        {
-          name = "home-manager+awesomewm";
-          start = ''
-            # TODO Make ibus-daemon a systemctl user service
-            # NOTE Careful! IBUS will overwrite your layout unless you enable "Use system keyboard layout" option in Preferences -> Advanced
-            /run/current-system/sw/bin/ibus-daemon -d -x
+      session = [{
+        name = "home-manager+awesomewm";
+        start = ''
+          # TODO Make ibus-daemon a systemctl user service
+          # NOTE Careful! IBUS will overwrite your layout unless you enable "Use system keyboard layout" option in Preferences -> Advanced
+          /run/current-system/sw/bin/ibus-daemon -d -x
 
-            exec $HOME/.local/share/xsession/xsession-awesome
-          '';
-        }
-      ];
+          exec $HOME/.local/share/xsession/xsession-awesome
+        '';
+      }];
     };
     displayManager = {
       lightdm.greeters = {
