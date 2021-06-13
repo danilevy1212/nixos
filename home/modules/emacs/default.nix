@@ -40,6 +40,13 @@
     # lua
     sumneko-lua-language-server
 
+    # python
+    pyright
+    black
+    # python38Packages.nose
+    python38Packages.pyflakes
+    python38Packages.isort
+
     # :term
     # eshell
     fish

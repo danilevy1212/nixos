@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }: {
+{ config, lib, pkgs, nixos ? import <nixos>, ... }: {
   # TODO I shall replace you with rclone and gdrive soon!
   services.dropbox = {
     enable = true;
@@ -11,7 +11,12 @@
     krew
     telepresence2
     kubernetes-helm-wrapped
+    rclone
+    keepassxc
   ];
+
+  # Passwords
+  services.keepassx.enable = true;
 
   home.sessionVariables = {
     AWS_SHARED_CREDENTIALS_FILE = "$XDG_CONFIG_HOME/aws/credentials";
@@ -19,11 +24,9 @@
   };
 
   # Global packages readily usable.
-  programs.zsh = {
-    envExtra = ''
-      export PATH="$PATH:$HOME/.krew/bin"
-    '';
-  };
+  home.sessionPath = [
+    "$HOME/.krew/bin"
+  ];
 
   # Add an alias for kubectl
   programs.zsh.shellAliases = { k = "kubectl"; };
