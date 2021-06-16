@@ -100,7 +100,7 @@
   # For :tools direnv
   programs.direnv = {
     enable = true;
-    enableNixDirenvIntegration = true;
+    nix-direnv.enable = true;
   };
 
   # Doom directory.
