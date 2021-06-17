@@ -4,6 +4,11 @@ in { config, lib, pkgs, ... }: {
     enable = true;
     userName = "Daniel Levy Moreno";
     userEmail = "daniellevymoreno@gmail.com";
+    extraConfig = {
+      merge = {
+        conflictStyle = "diff3";
+      };
+    };
   };
 
   # Allow fontconfig to discover fonts and configurations installed through home.packages and nix-env
