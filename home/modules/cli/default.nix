@@ -14,12 +14,9 @@ in { config, lib, pkgs, ... }: {
   # Allow fontconfig to discover fonts and configurations installed through home.packages and nix-env
   fonts.fontconfig.enable = true;
 
-  # TODO Switch to ZPLUG
-  # TODO Move zshenv and zprofile to session variables
-  # TODO Move as much stuff of zshrc to nix
-  # ZSH, just as good as eshell
+  # ZSH, just as good as eshell, not quite as good as xonsh. # TODO If I like xonsh enough, change it by bash.
   programs.zsh = {
-    enable = true;
+    enable = false;
     enableCompletion = true;
     dotDir = ".config/nix-zsh"; # NOTE This is just for easier debugging.
     initExtra = builtins.readFile ./zshrc;
@@ -27,10 +24,15 @@ in { config, lib, pkgs, ... }: {
       # HACK
       ssh = "TERM=xterm-256color ssh";
       # colorized ls
-      ls = "ls --color=auto -1a";
+      ls = "ls --color=auto";
     };
   };
 
+  # Xonsh
+  xdg.configFile."xonsh/rc.xsh" = {
+    executable = true;
+    text = "neofetch";
+  };
 
   # A pretty, modern, terminal.
   programs.alacritty = {
@@ -131,7 +133,23 @@ in { config, lib, pkgs, ... }: {
     # Terminal Font
     victor-mono
 
+    # TODO Create a welcome script with all of this.
+
     # Fun
     cowsay
+    lolcat
+    cmatrix
+    fortune
+    sl
+    ddate
+    toilet
+    espeak
+    figlet
+
+    # Fake identities
+    rig
+
+    # Text To Speach
+    espeak
   ];
 }

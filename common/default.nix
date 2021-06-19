@@ -118,9 +118,7 @@
       MONGOMS_SYSTEM_BINARY = "${pkgs.mongodb}/bin/mongod";
     };
     # Just as good.
-    shellAliases = {
-      vim = "nvim";
-    };
+    shellAliases = { vim = "nvim"; };
     # List packages installed in system profile. To search, run:
     # $ nix search ...
     systemPackages = with pkgs;
@@ -151,12 +149,22 @@
   };
 
   # Default shell.
-  users.extraUsers.dlevym = { shell = pkgs.zsh; };
-  programs.zsh = {
+  users.extraUsers.dlevym = { shell = (import ./../pkgs/xonsh).xonsh; };
+
+  # Backup shell.
+  programs.zsh = { enable = true; };
+
+  # TODO https://github.com/Mic92/envfs for hardcoded /bin/bash
+  # TODO xonsh, keep track of it. Try out the overlay to fix xpip.
+  # TODO https://xon.sh/xonshrc.html?highlight=nixpkgs#use-the-nix-package-manager-with-xonsh
+  # TODO https://github.com/anki-code/xonsh-cheatsheet/blob/main/README.md
+  # TODO Change xpip to be 'python -m pip'
+  programs.xonsh = {
     enable = true;
+    package = (import ./../pkgs/xonsh).xonsh;
   };
 
-  # Let me lock the screen. $ TODO Find alternatives.
+  # Let me lock the screen. TODO Find alternatives.
   programs.slock.enable = true;
 
   # Documentation, documentation, documentation!
