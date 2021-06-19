@@ -16,10 +16,10 @@ in { config, lib, pkgs, ... }: {
 
   # ZSH, just as good as eshell, not quite as good as xonsh. # TODO If I like xonsh enough, change it by bash.
   programs.zsh = {
-    enable = false;
-    enableCompletion = true;
+    enable = true;
+    # enableCompletion = true;
     dotDir = ".config/nix-zsh"; # NOTE This is just for easier debugging.
-    initExtra = builtins.readFile ./zshrc;
+    # initExtra = builtins.readFile ./zshrc;
     shellAliases = {
       # HACK
       ssh = "TERM=xterm-256color ssh";
@@ -31,7 +31,32 @@ in { config, lib, pkgs, ... }: {
   # Xonsh
   xdg.configFile."xonsh/rc.xsh" = {
     executable = true;
-    text = "neofetch";
+    text = ''
+    # ENV OPTIONS
+    $XONSH_SHOW_TRACEBACK = True
+    $AUTO_CD = True
+    $COMPLETIONS_CONFIRM = True
+
+    # Theme
+    from xonsh.tools import register_custom_style
+    from pygments.styles import get_style_by_name
+    THEME_NAME="nord"
+    nord_pygments = get_style_by_name(THEME_NAME)
+    nord_style = nord_pygments.styles
+    nord_style.update(nord_pygments.style_overrides)
+    register_custom_style(THEME_NAME, nord_style)
+    $XONSH_COLOR_STYLE = THEME_NAME
+
+    # aliases
+    # HACK NOTE Recursive aliases dont work :(,  (will be fixed in next release)
+    def _my_ssh(args):
+        with ''${...}.swap(term="xterm-256color"):
+            @([''$(sh -c 'which ssh').strip()] + list(args))
+
+    aliases['ssh']=_my_ssh
+
+    neofetch
+'';
   };
 
   # A pretty, modern, terminal.
