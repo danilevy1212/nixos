@@ -74,6 +74,7 @@
     unzip
     python3
     pipenv
+    poetry
 
     # :app
     # everywhere

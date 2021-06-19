@@ -15,6 +15,7 @@ let
     nord-pygments
 
     # Xontribs
+    jedi
 
     # bunch of other requirements
     requests
