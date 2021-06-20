@@ -22,12 +22,17 @@ register_custom_style(THEME_NAME, nord_style)
 $XONSH_COLOR_STYLE = THEME_NAME
 
 # aliases
-# HACK NOTE Recursive aliases dont work :(,  (will be fixed in next release)
-def _my_ssh(args):
-    with ${...}.swap(term="xterm-256color"):
+aliases['rm'] = 'rm -i'
+aliases['cp'] = 'cp -i'
+aliases['mv'] = 'mv -i'
+aliases['mkdir'] = 'mkdir -p'
+
+# HACK NOTE Recursive aliases dont work.
+def _ssh(args):
+    with ${...}.swap(TERM="xterm-256color"):
         @([$(sh -c 'which ssh').strip()] + list(args))
 
-aliases['ssh']=_my_ssh
+aliases['ssh'] = _ssh
 
 # xonstribs
 XONTRIBS=[
@@ -36,14 +41,38 @@ XONTRIBS=[
     "prompt_ret_code",
     "distributed",
     "pdb",
-    "bashisms",
     "whole_word_jumping",
     "vox",
     "xog",
+    "z",
+    "argcomplete",
+    "fzf-widgets",
+    "prompt_bar",
+    "sh",
+    # "pipeliner" TODO,
+    # "starship" TODO
 ]
 
+# TODO background load? BIGGEST stopper.
 for contrib in XONTRIBS:
     xontrib load @(contrib)
+
+## fzf
+# Keybinds
+$fzf_history_binding = "c-r"  # Ctrl+R
+$fzf_ssh_binding = "c-s"      # Ctrl+S
+$fzf_file_binding = "c-t"      # Ctrl+T
+$fzf_dir_binding = "c-g"      # Ctrl+G
+
+# Commands
+$fzf_find_command = "fd"
+$fzf_find_dirs_command = "fd -t d"
+
+# Remove color escape codes.
+$FZF_DEFAULT_OPTS='--ansi'
+
+# Z Cache
+$_Z_DATA = $XDG_DATA_HOME + '/z'
 
 # Lastly, the glint!
 neofetch

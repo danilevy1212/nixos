@@ -129,6 +129,7 @@ in { config, lib, pkgs, ... }: {
   home.packages = with pkgs; [
     # System
     neofetch
+    file
 
     # Terminal Font
     victor-mono
