@@ -130,6 +130,7 @@ in { config, lib, pkgs, ... }: {
     # System
     neofetch
     file
+    rsync
 
     # Terminal Font
     victor-mono
