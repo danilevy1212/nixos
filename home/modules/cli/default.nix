@@ -75,6 +75,7 @@ in { config, lib, pkgs, ... }: {
             foreground = "#d8dee9";
           };
         };
+        # TODO Copy for XONSH
         normal = {
           black = "#3b4252";
           red = "#bf616a";

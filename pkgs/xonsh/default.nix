@@ -20,6 +20,7 @@ let
       xontrib-sh
       # xontrib-pipeliner TODO Would require to install xonsh with mach-nix, which may be worth it.
       xontrib-fzf-widgets
+      xontrib-readable-traceback
       # xontrib-prompt-starship TODO
 
       # bunch of other requirements
