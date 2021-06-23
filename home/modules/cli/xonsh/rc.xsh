@@ -2,7 +2,6 @@
 # TODO Analyze the plugins, and the very simple ones, replicate by hand.
 ## xonstribs
 XONTRIBS=[
-    "jedi",
     "coreutils",
     "prompt_ret_code",
     "distributed",
@@ -67,6 +66,9 @@ $PROMPT_FIELDS['prompt_end'] = '@'
 aliases['rm'] = 'rm -i'
 aliases['cp'] = ['rsync', '--progress', '--recursive', '--archive']
 aliases['mkdir'] = 'mkdir -p'
+aliases['k']='kubectl'
+aliases['emt']=['emacsclient', '-t','-a']
+aliases['vim']='nvim'
 
 # Run http server in the current directory.
 aliases['http-here'] = 'python3 -m http.server'
@@ -94,6 +96,10 @@ $FZF_DEFAULT_OPTS='--ansi'
 
 # Z Cache
 $_Z_DATA = $XDG_DATA_HOME + '/z'
+
+# Emacsclient
+$EDITOR='nvim'
+$ALTERNATIVE_EDITOR=''
 
 # Lastly, the glint!
 neofetch

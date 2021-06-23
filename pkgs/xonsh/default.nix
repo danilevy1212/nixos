@@ -12,7 +12,6 @@ let
       nord-pygments # TODO Patch to remove pygments
 
       # Xontribs
-      jedi
       xontrib-argcomplete
       xontrib-z
       xontrib-sh

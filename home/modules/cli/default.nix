@@ -28,10 +28,10 @@ in { config, lib, pkgs, ... }: {
     };
   };
 
-  # Xonsh
-  xdg.configFile."xonsh/rc.xsh" = {
-    executable = true;
-    source = ./xonsh/rc.xsh;
+  # Xonsh config files
+  xdg.configFile."xonsh" = {
+    source = ./xonsh;
+    target = "xonsh";
   };
 
   # A pretty, modern, terminal.
