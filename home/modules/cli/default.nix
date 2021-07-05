@@ -28,6 +28,8 @@ in { config, lib, pkgs, ... }: {
     };
   };
 
+
+  # NOTE For more comfy development, comment this block and create a symlink between ./xonsh and ~/.config/xonsh
   # Xonsh config files
   xdg.configFile."xonsh" = {
     source = ./xonsh;

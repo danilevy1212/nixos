@@ -67,7 +67,7 @@ aliases['rm'] = 'rm -i'
 aliases['cp'] = ['rsync', '--progress', '--recursive', '--archive']
 aliases['mkdir'] = 'mkdir -p'
 aliases['k']='kubectl'
-aliases['emt']=['emacsclient', '-t','-a']
+aliases['emt']=['emacsclient', '-nw','-a']
 aliases['vim']='nvim'
 
 # Run http server in the current directory.

@@ -40,7 +40,7 @@
     supportedFilesystems = [ "ntfs" ];
 
     # Cutting-edgyness
-    kernelPackages = pkgs.linuxPackages_latest;
+    kernelPackages = pkgs.linuxPackages;
   };
 
   # Select internationalisation properties.

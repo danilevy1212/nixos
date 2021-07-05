@@ -22,7 +22,8 @@
     rlwrap
 
     # For REPL sake
-    lua5_4
+    lua
+    luarocks-nix
   ];
 
   home.sessionVariables = {
@@ -41,9 +42,13 @@
     windowManager.awesome = {
       enable = true;
       luaModules = with pkgs.luaPackages; [
-        luarocks-nix
+        # FIXME? Try if can be loaded.
         vicious
-        # TODO lain
+        rapidjson
+        http
+        luarocks-nix
+        # TODO lain TRY to clone it and then create nix file from that. https://stackoverflow.com/questions/12253165/lua-install-a-rock-using-luarocks-from-a-locally-installed-rock-or-from-a-zip
+        # NOTE https://github.com/NixOS/nixpkgs/blob/master/pkgs/top-level/lua-packages.nix
       ];
     };
     pointerCursor = {

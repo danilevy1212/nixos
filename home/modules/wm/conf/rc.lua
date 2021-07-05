@@ -341,6 +341,7 @@ root.buttons(
 -- }}}
 
 -- {{{ Key bindings
+-- TODO "e" emacs, "E" doom everywhere
 local globalkeys =
     gears.table.join(
     awful.key({modkey}, "s", hotkeys_popup.show_help, {description = "show help", group = "awesome"}),
@@ -871,6 +872,7 @@ awful.rules.rules = {
         },
         properties = {titlebars_enabled = false}
     }
+    -- TODO name "Emacs Everywhere ::.+", floating. http://lua-users.org/wiki/PatternsTutorial
 }
 -- }}}
 
