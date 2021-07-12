@@ -37,6 +37,7 @@ $ENABLE_ASYNC_PROMPT = True
 $COMPLETION_IN_THREAD = True
 $HISTCONTROL='ignoredups'
 $MULTILINE_PROMPT=' '
+$XONSH_CAPTURE_ALWAYS=False
 
 # Readable Traceback
 $READABLE_TRACE_STRIP_PATH_ENV = True
@@ -67,7 +68,7 @@ aliases['rm'] = 'rm -i'
 aliases['cp'] = ['rsync', '--progress', '--recursive', '--archive']
 aliases['mkdir'] = 'mkdir -p'
 aliases['k']='kubectl'
-aliases['emt']=['emacsclient', '-nw','-a']
+aliases['emt']=['emacsclient', '-nw']
 aliases['vim']='nvim'
 
 # Run http server in the current directory.

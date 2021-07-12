@@ -9,7 +9,7 @@ let
   xonshDep = mach-nix.mkPython {
     requirements = ''
       # Theme
-      nord-pygments # TODO Patch to remove pygments
+      nord-pygments
 
       # Xontribs
       xontrib-argcomplete
@@ -18,10 +18,11 @@ let
       # xontrib-pipeliner # TODO TRY TO PATCH IT, remove xonsh dependency
       xontrib-fzf-widgets
       xontrib-readable-traceback
-      # xontrib-prompt-starship TODO Maybe overkill
+      # xontrib-prompt-starship NOTE Maybe overkill
 
-      # bunch of other requirements
+      # miscellaneus
       requests
+      jedi
     '';
 
     # _.xontrib-pipeliner.patches [ TODO Remove xonsh from requirements.txt ] # https://github.com/NixOS/nixpkgs/blob/master/pkgs/applications/window-managers/qtile/0001-Substitution-vars-for-absolute-paths.patch
@@ -33,9 +34,13 @@ let
 
 in {
   xonsh = with pkgs;
-    # TODO With pygments patch, just use old.propagatedBuildInputs
-    xonsh39.overrideAttrs (old: {
+    xonsh39.overridePythonAttrs (old: {
+      src = fetchGit {
+        url = "https://github.com/xonsh/xonsh";
+        ref = "main";
+      };
+      doCheck = false; # NOTE The cost of being on the cutting edge.
       propagatedBuildInputs = with python39Packages;
-        [ ply prompt_toolkit ] ++ [ xonshDep ];
+        [ ply prompt_toolkit ] ++ [ (xonshDep.python.pkgs.selectPkgs xonshDep.python.pkgs) ];
     });
 }

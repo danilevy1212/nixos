@@ -47,6 +47,9 @@
     python38Packages.pyflakes
     python38Packages.isort
 
+    # latex
+    texlive.combined.scheme-medium
+
     # :term
     # eshell
     fish
