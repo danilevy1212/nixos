@@ -49,6 +49,10 @@
 
     # latex
     texlive.combined.scheme-medium
+    texlab
+
+    # markdown
+    python38Packages.grip
 
     # :term
     # eshell
