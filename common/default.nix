@@ -132,7 +132,7 @@
         openvpn
         docker-compose
       ] ++ (with pkgs.unixtools; [ netstat ifconfig ]) # Basic network
-      ++ [ nix-prefetch-git update-nix-fetchgit cachix ]; # Nix convinience
+      ++ [ nix-prefetch-git cachix ]; # Nix convinience
   };
 
   networking = {
@@ -198,6 +198,13 @@
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
+
+  # Reuse an already-established connection when creating a new SSH session
+  programs.ssh.extraConfig = ''
+    ControlMaster auto
+    ControlPath ~/.ssh/socket_%r@%h-%p
+    ControlPersist 600
+  '';
 
   # Configure keymap in X11
   services.xserver = {
