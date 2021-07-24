@@ -48,7 +48,7 @@
     python38Packages.isort
 
     # latex
-    texlive.combined.scheme-medium
+    texlive.combined.scheme-full
     texlab
 
     # markdown

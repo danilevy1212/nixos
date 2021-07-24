@@ -2,6 +2,7 @@
 # TODO Analyze the plugins, and the very simple ones, replicate by hand.
 ## xonstribs
 XONTRIBS=[
+    "jedi",
     "coreutils",
     "prompt_ret_code",
     "distributed",

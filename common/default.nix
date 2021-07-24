@@ -223,7 +223,7 @@
       session = [{
         name = "home-manager+awesomewm";
         start = ''
-          # TODO Make ibus-daemon a systemctl user service
+          # TODO Make ibus-daemon a systemctl --user service
           # NOTE Careful! IBUS will overwrite your layout unless you enable "Use system keyboard layout" option in Preferences -> Advanced
           /run/current-system/sw/bin/ibus-daemon -d -x
 
