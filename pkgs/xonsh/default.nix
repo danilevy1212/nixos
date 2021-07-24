@@ -37,7 +37,8 @@ in {
     xonsh39.overridePythonAttrs (old: {
       src = fetchGit {
         url = "https://github.com/xonsh/xonsh";
-        ref = "main";
+        # ref = "main";
+        ref = "refs/tags/0.10.0";
       };
       doCheck = false; # NOTE The cost of being on the cutting edge.
       propagatedBuildInputs = with python39Packages;

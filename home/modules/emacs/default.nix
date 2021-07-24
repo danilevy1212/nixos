@@ -52,7 +52,7 @@
     texlab
 
     # markdown
-    python38Packages.grip
+    pandoc
 
     # :term
     # eshell
