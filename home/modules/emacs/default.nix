@@ -99,9 +99,6 @@
     extraPackages = epkgs: [
       epkgs.vterm
       epkgs.oauth2
-      # pdf-tools
-      epkgs.pdf-tools
-      epkgs.org-pdftools
     ];
   };
 
