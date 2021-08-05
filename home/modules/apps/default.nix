@@ -16,7 +16,14 @@
   ];
 
   # default browser
-  home.sessionVariables = {
-      BROWSER = "brave";
+  home.sessionVariables = { BROWSER = "brave"; };
+
+  # Make brave default browser
+  xdg.mimeApps = {
+    enable = true;
+    associations.added = {
+      "x-scheme-handler/http" = [ "brave-browser.desktop" ];
+      "x-scheme-handler/https" = [ "brave-browser.desktop" ];
+    };
   };
 }

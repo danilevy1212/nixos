@@ -274,6 +274,22 @@
   # Don't bother me for passwords.
   security.polkit.enable = true;
 
+  # Max file limits
+  security.pam.loginLimits = [
+    {
+      domain = "*";
+      type = "soft";
+      item = "nofile";
+      value = "4096";
+    }
+    {
+      domain = "*";
+      type = "hard";
+      item = "nofile";
+      value = "8192";
+    }
+  ];
+
   # Make daily automatic upgrades.
   system.autoUpgrade.enable = true;
 
