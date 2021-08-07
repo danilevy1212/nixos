@@ -13,6 +13,7 @@
     kubernetes-helm-wrapped
     rclone
     keepassxc
+    transmission-qt
   ];
 
   home.sessionVariables = {

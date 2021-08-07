@@ -301,4 +301,9 @@
 
   # !https://github.com/NixOS/nixpkgs/issues/16327
   services.gnome.at-spi2-core.enable = true;
+
+  # Torrents
+  services.transmission = {
+    enable = true;
+  };
 }
