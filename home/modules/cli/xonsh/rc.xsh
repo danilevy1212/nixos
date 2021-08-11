@@ -67,6 +67,7 @@ $PROMPT_FIELDS['prompt_end'] = '@'
 ## aliases
 aliases['rm'] = 'rm -i'
 aliases['cp'] = ['rsync', '--progress', '--recursive', '--archive']
+aliases['mv'] = ['rsync', '--progress', '--recursive', '--remove-source-files']
 aliases['mkdir'] = 'mkdir -p'
 aliases['k']='kubectl'
 aliases['emt']=['emacsclient', '-nw']
