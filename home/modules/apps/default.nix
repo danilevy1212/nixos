@@ -11,8 +11,14 @@
     # Browser for the...
     brave
 
+    # A browser for vimmers
+    vieb
+
     # video player
     mpv-with-scripts
+
+    # Editing documents, normie style
+    libreoffice
   ];
 
   # default browser

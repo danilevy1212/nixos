@@ -70,7 +70,7 @@ aliases['cp'] = ['rsync', '--progress', '--recursive', '--archive']
 aliases['mv'] = ['rsync', '--progress', '--recursive', '--remove-source-files']
 aliases['mkdir'] = 'mkdir -p'
 aliases['k']='kubectl'
-aliases['emt']=['emacsclient', '-nw']
+aliases['et']=['emacsclient', '-nw', '-a', 'nvim']
 aliases['vim']='nvim'
 
 # Run http server in the current directory.
@@ -100,7 +100,7 @@ $FZF_DEFAULT_OPTS='--ansi'
 # Z Cache
 $_Z_DATA = $XDG_DATA_HOME + '/z'
 
-# Emacsclient
+# neovim
 $EDITOR='nvim'
 $ALTERNATIVE_EDITOR=''
 
