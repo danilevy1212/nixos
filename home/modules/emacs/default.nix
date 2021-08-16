@@ -79,6 +79,7 @@
 
     # lsp
     unzip
+    zip
     python3
     pipenv
     poetry
