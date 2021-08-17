@@ -132,7 +132,11 @@
         openvpn
         docker-compose
       ] ++ (with pkgs.unixtools; [ netstat ifconfig ]) # Basic network
-      ++ [ nix-prefetch-git cachix ]; # Nix convinience
+      ++ [ nix-prefetch-git cachix ] # Nix convinience
+      ++ [
+        (import ./../pkgs/xrandr-utils).horizontal
+        (import ./../pkgs/xrandr-utils).solo
+      ];
   };
 
   networking = {
@@ -306,7 +310,5 @@
   services.gnome.at-spi2-core.enable = true;
 
   # Torrents
-  services.transmission = {
-    enable = true;
-  };
+  services.transmission = { enable = true; };
 }
