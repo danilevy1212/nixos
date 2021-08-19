@@ -8,6 +8,6 @@ with import <nixpkgs> { }; {
    solo = pkgs.writeScriptBin "xcreen-solo-xps15" ''
     #!${stdenv.shell}
 
-    exec ${pkgs.xorg.xrandr}/bin/xrandr --output eDP-1 --primary --mode 1920x1080 --pos 0x0 --rotate normal --output DP-1 --off --output DP-2 --off
+    exec ${pkgs.xorg.xrandr}/bin/xrandr --output eDP-1 --primary --mode 1920x1080 --pos 0x0 --rotate normal --output DP-1 --off --output DP-2 --off --output DP-3 --off
   '';
 }

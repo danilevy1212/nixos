@@ -132,11 +132,7 @@
         openvpn
         docker-compose
       ] ++ (with pkgs.unixtools; [ netstat ifconfig ]) # Basic network
-      ++ [ nix-prefetch-git cachix ] # Nix convinience
-      ++ [
-        (import ./../pkgs/xrandr-utils).horizontal
-        (import ./../pkgs/xrandr-utils).solo
-      ];
+      ++ [ nix-prefetch-git cachix ]; # Nix convinience
   };
 
   networking = {

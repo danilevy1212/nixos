@@ -8,9 +8,7 @@
   ];
 
   # Bootstrapping
-  nix.nixPath = [
-    "nixos-config=/etc/nixos/hosts/dellXps15/default.nix"
-  ];
+  nix.nixPath = [ "nixos-config=/etc/nixos/hosts/dellXps15/default.nix" ];
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
@@ -36,6 +34,11 @@
       libvdpau-va-gl
     ];
   };
+
+  environment.systemPackages = [
+    (import ./../../pkgs/xrandr-utils).horizontal
+    (import ./../../pkgs/xrandr-utils).solo
+  ];
 
   # Nvidia offload
   hardware.nvidia.prime = {
