@@ -1,7 +1,4 @@
 let modules = [
-    # My Shell configuration.
-    "cli"
-
     # XDG Base Dir.
     "xdg"
 
@@ -25,6 +22,9 @@ let modules = [
 
     # What's going on out there?
     "io"
+
+    # My Shell configuration.
+    "cli"
     ];
     moduleImports = map (x: ./. + builtins.toPath "/modules/${x}") modules;
 in { self, config, pkgs, ... }: {

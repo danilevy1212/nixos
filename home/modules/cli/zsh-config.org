@@ -1,17 +1,50 @@
 #+TITLE: ZSH Configuration
 
+- References:
+  + [[https://zsh.sourceforge.io/Guide/zshguide.html][Friendly user guide]]
+  + [[https://linux.die.net/man/1/zshall][Man page]]
+
 * Motivation
 
 As great as ~zsh~ is, it's documentation is dense and hard to follow. With this file I hope to document it's inner working as I configure the best interactive shell.
 
-* TODO Completion
+* TODO General
 
-#+begin_src sh :tangle zshrc
+#+begin_src shell :tangle zshrc
 #!/usr/bin/zsh
 
 ### GENERAL
 # Enable colors
 autoload -U colors && colors
+
+# Append history to history file
+setopt appendhistory
+
+# Perform cd to a directory automatically
+setopt autocd
+
+# Beep on error
+setopt beep
+
+# Treat the ‘#’, ‘~’ and ‘^’ characters as part of patterns
+setopt extendedglob
+
+# Print error if there is no match for argument
+setopt nomatch
+
+# Report status of background jobs immediately
+setopt notify
+
+# Parameter expansion, command substitution and arithmetic expansion are performed in prompts.
+setopt PROMPT_SUBST
+
+# auto-completion of command line switches for aliases
+setopt COMPLETE_ALIASES
+#+end_src
+
+* TODO Completion
+
+#+begin_src shell :tangle zshrc
 
 # Do menu-driven completion.
 zstyle ':completion:*' menu select
@@ -34,32 +67,8 @@ export HISTFILE="$XDG_DATA_HOME/history"
 export HISTSIZE=100000
 export SAVEHIST=100000
 
-# Append history to history file
-setopt appendhistory
-
-# Perform cd to a directory automatically
-setopt autocd
-
 # Backward incremental search
 bindkey '^R' history-incremental-search-backward
-
-# Beep on error
-setopt beep
-
-# Treat the ‘#’, ‘~’ and ‘^’ characters as part of patterns
-setopt extendedglob
-
-# Print error if there is no match for argument
-setopt nomatch
-
-# Report status of background jobs immediately
-setopt notify
-
-# Parameter expansion, command substitution and arithmetic expansion are performed in prompts.
-setopt PROMPT_SUBST
-
-# auto-completion of command line switches for aliases
-setopt COMPLETE_ALIASES
 
 # git info
 autoload -Uz vcs_info
@@ -127,11 +136,9 @@ export TMUX_TMPDIR="$XDG_RUNTIME_DIR"
 
 #+end_src
 
-* TODO ...
-
 * TODO Plugins
 
-#+begin_src sh :tangle zshrc
+#+begin_src shell :tangle zshrc
 ## ZINIT
 declare -A ZINIT
 ZINIT[HOME_DIR]="$XDG_CONFIG_HOME/zinit"
@@ -159,6 +166,36 @@ zinit wait light-mode lucid for \
 # Remember my directories dammit!
 export _Z_DATA="$XDG_CACHE_HOME/z"
 
+# FZF, the best finder.
+export FZF_DEFAULT_COMMAND='fd --type f --type l '
+bindkey '^R' fzf-history-widget
+
+# FZF ssh-widget
+_fzf-ssh-widget() {
+  local selected
+  setopt localoptions noglobsubst noposixbuiltins pipefail no_aliases 2> /dev/null
+  selected=( $(cat ~/.ssh/config /etc/ssh/ssh_config | grep -i '^host' | sed 's/\(host \|\*\)//I' | head -n -1 |
+    FZF_DEFAULT_OPTS="--height ${FZF_TMUX_HEIGHT:-40%} $FZF_DEFAULT_OPTS -n2..,.. --tiebreak=index --bind=ctrl-r:toggle-sort,ctrl-z:ignore $FZF_CTRL_S_OPTS --query=${(qqq)LBUFFER} +m" $(__fzfcmd)) )
+  BUFFER="ssh $selected"
+  CURSOR="${#BUFFER}"
+  zle reset-prompt
+}
+zle     -N    _fzf-ssh-widget
+bindkey '^[r' _fzf-ssh-widget
+
+# Hook completion with FZF
+zinit ice wait lucid
+zinit light Aloxaf/fzf-tab
+
+# disable sort when completing `git checkout`
+zstyle ':completion:*:git-checkout:*' sort false
+
+# set descriptions format to enable group support
+zstyle ':completion:*:descriptions' format '[%d]'
+
+# set list-colors to enable filename colorizing
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+
 zinit ice wait lucid
 zinit light agkozak/zsh-z
 
@@ -171,8 +208,13 @@ zinit ice wait lucid
 zinit light zdharma/fast-syntax-highlighting
 
 # Provides the LS_COLORS definitions for GNU ls
-zinit pack lucid wait for ls_colors
+zinit ice wait lucid atclone"dircolors -b LS_COLORS > c.zsh" atpull'%atclone' pick"c.zsh" nocompile'!'
+zinit light trapd00r/LS_COLORS
 
 ## Finally, show off! (If I can)
-[ -n "$(command -v neofetch)" ] && { print "\n"; neofetch; }
+[ -n "$(command -v neofetch)" ] && { neofetch; }
 #+end_src
+
+* TODO Functions
+
+* TODO Keybinds

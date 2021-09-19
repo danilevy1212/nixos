@@ -149,23 +149,13 @@
   };
 
   # Default shell.
-  users.extraUsers.dlevym = { shell = (import ./../pkgs/xonsh).xonsh; };
+  users.extraUsers.dlevym = { shell = pkgs.zsh; };
 
   # Backup shell.
   programs.zsh = { enable = true; };
 
   # Minimal bash config (for root)
   programs.bash.interactiveShellInit = "shopt -s autocd"; # autocd
-
-  # TODO https://github.com/Mic92/envfs for hardcoded /bin/bash
-  # TODO xonsh, keep track of it. Try out the overlay to fix xpip.
-  # TODO https://xon.sh/xonshrc.html?highlight=nixpkgs#use-the-nix-package-manager-with-xonsh
-  # TODO https://github.com/anki-code/xonsh-cheatsheet/blob/main/README.md
-  # TODO Change xpip to be 'python -m pip'
-  programs.xonsh = {
-    enable = true;
-    package = (import ./../pkgs/xonsh).xonsh;
-  };
 
   # Let me lock the screen. TODO Find alternatives.
   programs.slock.enable = true;

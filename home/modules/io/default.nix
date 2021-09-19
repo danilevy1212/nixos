@@ -11,16 +11,14 @@
 
     # Key-Values galore
     redis
-    redis-desktop-manager
+    another-rdm
 
     # REST Client
     postman
   ];
 
   # default file-browser
-  home.sessionVariables = {
-    FILEMANAGER = "spacefm";
-  };
+  home.sessionVariables = { FILEMANAGER = "spacefm"; };
 
   # Connect up to external devices.
   services.udiskie.enable = true;

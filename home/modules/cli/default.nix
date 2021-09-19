@@ -14,26 +14,19 @@ in { config, lib, pkgs, ... }: {
   # Allow fontconfig to discover fonts and configurations installed through home.packages and nix-env
   fonts.fontconfig.enable = true;
 
-  # ZSH, just as good as eshell, not quite as good as xonsh. # TODO If I like xonsh enough, change it by bash.
+  # ZSH, just as good as eshell.
   programs.zsh = {
     enable = true;
-    # enableCompletion = true;
+    enableCompletion = true;
+    completionInit = ""; # NOTE I enable this in .zshrc
     dotDir = ".config/nix-zsh"; # NOTE This is just for easier debugging.
-    # initExtra = builtins.readFile ./zshrc;
+    initExtra = builtins.readFile ./zshrc;
     shellAliases = {
       # HACK
       ssh = "TERM=xterm-256color ssh";
       # colorized ls
       ls = "ls --color=auto";
     };
-  };
-
-
-  # NOTE For more comfy development, comment this block and create a symlink between ./xonsh and ~/.config/xonsh
-  # Xonsh config files
-  xdg.configFile."xonsh" = {
-    source = ./xonsh;
-    target = "xonsh";
   };
 
   # A pretty, modern, terminal.
@@ -77,7 +70,6 @@ in { config, lib, pkgs, ... }: {
             foreground = "#d8dee9";
           };
         };
-        # TODO Copy for XONSH
         normal = {
           black = "#3b4252";
           red = "#bf616a";
@@ -118,7 +110,6 @@ in { config, lib, pkgs, ... }: {
     enableBashIntegration = false;
     enableFishIntegration = false;
     enableZshIntegration = true;
-    defaultCommand = "fd --type f --type l ";
   };
 
   # Nordic Terminal
