@@ -23,10 +23,10 @@ setopt nomatch
 setopt notify
 
 # Parameter expansion, command substitution and arithmetic expansion are performed in prompts.
-setopt PROMPT_SUBST
+setopt promptsubst
 
-# auto-completion of command line switches for aliases
-setopt COMPLETE_ALIASES
+# Do eagerly replace aliases so completion system can user.
+unsetopt completealiases
 
 # Do menu-driven completion.
 zstyle ':completion:*' menu select
@@ -37,9 +37,6 @@ zstyle ':completion::complete:*' gain-privileges 1
 
 # Include hidden files.
 _comp_options+=(globdots)
-
-# Access to zsh completion functions
-autoload -Uz compinit && compinit -d "$XDG_CACHE_HOME/zsh/zcompdump-$ZSH_VERSION"
 
 # Access to bash completion functions
 autoload -Uz bashcompinit && bashcompinit
@@ -116,7 +113,6 @@ fi
 alias tmux=tmux -f "$XDG_CONFIG_HOME"/tmux/tmux.conf
 export TMUX_TMPDIR="$XDG_RUNTIME_DIR"
 
-## ZINIT
 declare -A ZINIT
 ZINIT[HOME_DIR]="$XDG_CONFIG_HOME/zinit"
 
@@ -190,3 +186,7 @@ zinit light trapd00r/LS_COLORS
 
 ## Finally, show off! (If I can)
 [ -n "$(command -v neofetch)" ] && { neofetch; }
+
+## FIXME
+[ -n "$SSH_CONNECTION" ] && unset SSH_ASKPASS
+export GIT_ASKPASS=

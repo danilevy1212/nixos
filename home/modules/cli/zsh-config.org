@@ -36,10 +36,10 @@ setopt nomatch
 setopt notify
 
 # Parameter expansion, command substitution and arithmetic expansion are performed in prompts.
-setopt PROMPT_SUBST
+setopt promptsubst
 
-# auto-completion of command line switches for aliases
-setopt COMPLETE_ALIASES
+# Do eagerly replace aliases so completion system can user.
+unsetopt completealiases
 #+end_src
 
 * TODO Completion
@@ -55,9 +55,6 @@ zstyle ':completion::complete:*' gain-privileges 1
 
 # Include hidden files.
 _comp_options+=(globdots)
-
-# Access to zsh completion functions
-autoload -Uz compinit && compinit -d "$XDG_CACHE_HOME/zsh/zcompdump-$ZSH_VERSION"
 
 # Access to bash completion functions
 autoload -Uz bashcompinit && bashcompinit
@@ -138,11 +135,14 @@ export TMUX_TMPDIR="$XDG_RUNTIME_DIR"
 
 * TODO Plugins
 
+** TODO ZINIT
+
 #+begin_src shell :tangle zshrc
-## ZINIT
 declare -A ZINIT
 ZINIT[HOME_DIR]="$XDG_CONFIG_HOME/zinit"
+#+end_src
 
+#+begin_src shell :tangle zshrc
 if [[ ! -f $XDG_CONFIG_HOME/zinit/bin/zinit.zsh ]]; then
     print -P "%F{33}▓▒░ %F{220}Installing %F{33}DHARMA%F{220} Initiative Plugin Manager (%F{33}zdharma/zinit%F{220})…%f"
     command mkdir -p "$XDG_CONFIG_HOME/zinit" && command chmod g-rwX "$XDG_CONFIG_HOME/zinit"
@@ -213,6 +213,10 @@ zinit light trapd00r/LS_COLORS
 
 ## Finally, show off! (If I can)
 [ -n "$(command -v neofetch)" ] && { neofetch; }
+
+## FIXME
+[ -n "$SSH_CONNECTION" ] && unset SSH_ASKPASS
+export GIT_ASKPASS=
 #+end_src
 
 * TODO Functions
