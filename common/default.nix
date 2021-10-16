@@ -77,6 +77,7 @@
       "networkmanager" # Can use network-manager
       "audio" # Pulse Audio
       "docker" # Docker
+      "lp" # The printer CUPS
     ];
   };
 
@@ -131,6 +132,7 @@
         htop
         openvpn
         docker-compose
+        system-config-printer
       ] ++ (with pkgs.unixtools; [ netstat ifconfig ]) # Basic network
       ++ [ nix-prefetch-git cachix ]; # Nix convinience
   };
@@ -245,8 +247,14 @@
     };
   };
 
-  # Enable CUPS to print documents.
-  services.printing.enable = true;
+  # Enable CUPS to print documents. Stupid printer!
+  services.printing = {
+    enable = true;
+    drivers = with pkgs; [
+      hplip
+      hplipWithPlugin
+    ];
+  };
 
   # Gnome craziness.
   services.dbus.packages = with pkgs; [
@@ -295,6 +303,13 @@
   # !https://github.com/NixOS/nixpkgs/issues/16327
   services.gnome.at-spi2-core.enable = true;
 
+
   # Torrents
-  services.transmission = { enable = true; };
+  services.transmission = {
+    enable = true;
+    user = "dlevym";
+    group = "users";
+    downloadDirPermissions = "775";
+    home = "/home/dlevym/Torrents";
+  };
 }
