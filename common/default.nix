@@ -126,6 +126,7 @@
       [
         wget
         neovim
+        tree
         utillinux
         pciutils
         lxappearance

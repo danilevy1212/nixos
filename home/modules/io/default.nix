@@ -11,7 +11,6 @@
 
     # Key-Values galore
     redis
-    another-rdm
 
     # REST Client
     postman

@@ -22,7 +22,9 @@
     fira-mono
     fira-code
     fira-code-symbols
+    sarasa-gothic
     # FIXME MISSING Quivera
+
     # :editor
     # format
     nodePackages.prettier

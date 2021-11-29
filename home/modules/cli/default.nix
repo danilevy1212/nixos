@@ -5,6 +5,9 @@ in { config, lib, pkgs, ... }: {
     userName = "Daniel Levy Moreno";
     userEmail = "daniellevymoreno@gmail.com";
     extraConfig = {
+      core = {
+        askpass = "";
+      };
       merge = {
         conflictStyle = "diff3";
       };
@@ -18,7 +21,6 @@ in { config, lib, pkgs, ... }: {
   programs.zsh = {
     enable = true;
     enableCompletion = true;
-    completionInit = ""; # NOTE I enable this in .zshrc
     dotDir = ".config/nix-zsh"; # NOTE This is just for easier debugging.
     initExtra = builtins.readFile ./zshrc;
     shellAliases = {
@@ -34,10 +36,10 @@ in { config, lib, pkgs, ... }: {
     enable = true;
     settings = {
       font = {
-        normal = { family = "Victor Mono"; };
-        bold = { family = "Victor Mono"; };
-        italic = { family = "Victor Mono"; };
-        bold-italic = { family = "Victor Mono"; };
+        normal = { family = "Sarasa Mono J"; };
+        bold = { family = "Sarasa Mono J"; };
+        italic = { family = "Sarasa Mono J"; };
+        bold-italic = { family = "Sarasa Mono J"; };
         size = 10.0;
       };
       window = { gtk_theme_variant = "nordic"; };
