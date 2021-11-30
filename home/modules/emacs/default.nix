@@ -1,4 +1,18 @@
-{ config, lib, pkgs, ... }: {
+# TODO Remove when I start using `flakes`
+let
+  nixpkgs = import <nixpkgs> { };
+  tdlib_latest = (nixpkgs.tdlib.overrideAttrs (old: {
+    version = "1.7.9";
+
+    src = nixpkgs.fetchFromGitHub {
+      owner = "tdlib";
+      repo = "td";
+      # https://github.com/tdlib/td/issues/1718
+      rev = "7d41d9eaa58a6e0927806283252dc9e74eda5512";
+      sha256 = "09b7srbfqi4gmg5pdi398pr0pxihw4d3cw85ycky54g862idzqs8";
+    };
+  }));
+in { config, lib, pkgs, ... }: {
   # Doom emacs dependencies
   home.packages = with pkgs; [
     # General Dependencies
@@ -92,6 +106,15 @@
     xdotool
     xorg.xprop
     xorg.xwininfo
+
+    # telega
+    tdlib_latest
+    gnumake
+    gperf
+    cmake
+    ffmpeg
+    libappindicator
+    clang
   ];
 
   # I cannot live without you, my one true love...
@@ -99,10 +122,7 @@
     enable = true;
     package = pkgs.emacsPgtkGcc;
     # For vterm.
-    extraPackages = epkgs: [
-      epkgs.vterm
-      epkgs.oauth2
-    ];
+    extraPackages = epkgs: [ epkgs.vterm epkgs.oauth2 ];
   };
 
   # For :tools direnv
@@ -114,20 +134,17 @@
   # For :tools magit
   programs.git.delta = {
     enable = true;
-    options = {
-      syntax-theme = "Nord";
-    };
+    options = { syntax-theme = "Nord"; };
   };
 
   # Doom directory.
   home.sessionVariables = {
-      DOOMDIR = "$XDG_CONFIG_HOME/doom";
+    DOOMDIR = "$XDG_CONFIG_HOME/doom";
+    TDLIB_PREFIX = "${tdlib_latest.outPath}";
   };
 
   # Add bin/doom to path.
-  home.sessionPath = [
-      "${config.xdg.configHome}/emacs/bin"
-  ];
+  home.sessionPath = [ "${config.xdg.configHome}/emacs/bin" ];
 
   programs.zsh.shellAliases = {
     # kill emacsclient kill server alias
