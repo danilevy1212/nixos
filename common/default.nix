@@ -6,12 +6,6 @@
     ./../cachix.nix
   ];
 
-  # Common NIX_PATH
-  nix.nixPath = [
-    "nixpkgs=/nix/var/nix/profiles/per-user/root/channels/nixos"
-    "/nix/var/nix/profiles/per-user/root/channels"
-  ];
-
   nixpkgs.overlays = [
     (import (builtins.fetchTarball {
       url =
@@ -23,6 +17,11 @@
   time.timeZone = "Europe/Amsterdam";
 
   nix = {
+    # Common NIX_PATH
+    nixPath = [
+      "nixpkgs=/nix/var/nix/profiles/per-user/root/channels/nixos"
+      "/nix/var/nix/profiles/per-user/root/channels"
+    ];
     trustedUsers = [ "root" "dlevym" ];
     gc = { automatic = true; };
     # Protect nix-shell against garbage collection
@@ -40,7 +39,7 @@
     supportedFilesystems = [ "ntfs" ];
 
     # Cutting-edgyness
-    kernelPackages = pkgs.linuxPackages;
+    kernelPackages = pkgs.linuxPackages_latest;
   };
 
   # Select internationalisation properties.

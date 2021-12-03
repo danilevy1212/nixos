@@ -1,18 +1,4 @@
-# TODO Remove when I start using `flakes`
-let
-  nixpkgs = import <nixpkgs> { };
-  tdlib_latest = (nixpkgs.tdlib.overrideAttrs (old: {
-    version = "1.7.9";
-
-    src = nixpkgs.fetchFromGitHub {
-      owner = "tdlib";
-      repo = "td";
-      # https://github.com/tdlib/td/issues/1718
-      rev = "7d41d9eaa58a6e0927806283252dc9e74eda5512";
-      sha256 = "09b7srbfqi4gmg5pdi398pr0pxihw4d3cw85ycky54g862idzqs8";
-    };
-  }));
-in { config, lib, pkgs, ... }: {
+{ config, lib, pkgs, ... }: {
   # Doom emacs dependencies
   home.packages = with pkgs; [
     # General Dependencies
@@ -108,7 +94,7 @@ in { config, lib, pkgs, ... }: {
     xorg.xwininfo
 
     # telega
-    tdlib_latest
+    tdlib
     gnumake
     gperf
     cmake
@@ -140,7 +126,7 @@ in { config, lib, pkgs, ... }: {
   # Doom directory.
   home.sessionVariables = {
     DOOMDIR = "$XDG_CONFIG_HOME/doom";
-    TDLIB_PREFIX = "${tdlib_latest.outPath}";
+    TDLIB_PREFIX = "${pkgs.tdlib.outPath}";
   };
 
   # Add bin/doom to path.
