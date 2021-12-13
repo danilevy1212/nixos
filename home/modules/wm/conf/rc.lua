@@ -424,7 +424,9 @@ local globalkeys =
         "j",
         function(c)
             awful.client.focus.global_bydirection("down")
-            if c then c:lower() end
+            if c then
+                c:lower()
+            end
         end,
         {description = "focus next window up", group = "client"}
     ),
@@ -433,7 +435,9 @@ local globalkeys =
         "k",
         function(c)
             awful.client.focus.global_bydirection("up")
-            if c then c:lower() end
+            if c then
+                c:lower()
+            end
         end,
         {description = "focus next window down", group = "client"}
     ),
@@ -442,7 +446,9 @@ local globalkeys =
         "l",
         function(c)
             awful.client.focus.global_bydirection("right")
-            if c then c:lower() end
+            if c then
+                c:lower()
+            end
         end,
         {description = "focus next window right", group = "client"}
     ),
@@ -451,7 +457,9 @@ local globalkeys =
         "h",
         function(c)
             awful.client.focus.global_bydirection("left")
-            if c then c:lower() end
+            if c then
+                c:lower()
+            end
         end,
         {description = "focus next window left", group = "client"}
     ),
@@ -461,7 +469,9 @@ local globalkeys =
         "h",
         function(c)
             awful.client.swap.bydirection("left")
-            if c then c:raise() end
+            if c then
+                c:raise()
+            end
         end,
         {description = "swap with left client", group = "client"}
     ),
@@ -470,7 +480,9 @@ local globalkeys =
         "l",
         function(c)
             awful.client.swap.bydirection("right")
-            if c then c:raise() end
+            if c then
+                c:raise()
+            end
         end,
         {description = "swap with right client", group = "client"}
     ),
@@ -479,7 +491,9 @@ local globalkeys =
         "j",
         function(c)
             awful.client.swap.bydirection("down")
-            if c then c:raise() end
+            if c then
+                c:raise()
+            end
         end,
         {description = "swap with down client", group = "client"}
     ),
@@ -488,7 +502,9 @@ local globalkeys =
         "k",
         function(c)
             awful.client.swap.bydirection("up")
-            if c then c:raise() end
+            if c then
+                c:raise()
+            end
         end,
         {description = "swap with up client", group = "client"}
     ),
@@ -591,6 +607,15 @@ local globalkeys =
             awful.spawn("pulsemixer --toggle-mute")
         end,
         {description = "Toggle mute", group = "audio"}
+    ),
+    -- Apps
+    awful.key(
+        {modkey, "Shift"},
+        "e",
+        function()
+            awful.spawn("doom everywhere")
+        end,
+        {description = "Edit with emacs", group = "utils"}
     )
 )
 
@@ -766,7 +791,9 @@ for i, l in ipairs({",", ".", "/"}) do
             l,
             function(c)
                 awful.screen.focus(i)
-                if c then c:lower() end
+                if c then
+                    c:lower()
+                end
             end,
             {description = "jump to screen " .. i, group = "screen"}
         ),
