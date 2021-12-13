@@ -185,7 +185,7 @@ zinit ice wait lucid atclone"dircolors -b LS_COLORS > c.zsh" atpull'%atclone' pi
 zinit light trapd00r/LS_COLORS
 
 ## Finally, show off! (If I can)
-[ -n "$(command -v neofetch)" ] && { neofetch; }
+[ "$INSIDE_EMACS" != "vterm" ] && { neofetch; }
 
 ## FIXME
 [ -n "$SSH_CONNECTION" ] && unset SSH_ASKPASS
