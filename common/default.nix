@@ -29,6 +29,8 @@
       keep-outputs = true
       keep-derivations = true
     '';
+    # Protect the RAM
+    buildCores = 4;
   };
 
   # Sorry, Stallman-chan

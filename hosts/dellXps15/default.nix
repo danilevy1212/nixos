@@ -8,7 +8,9 @@
   ];
 
   # Bootstrapping
-  nix.nixPath = [ "nixos-config=/etc/nixos/hosts/dellXps15/default.nix" ];
+  nix = {
+    nixPath = [ "nixos-config=/etc/nixos/hosts/dellXps15/default.nix" ];
+  };
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
