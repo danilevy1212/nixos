@@ -14,7 +14,7 @@
   ];
 
   # Set your time zone.
-  time.timeZone = "Europe/Amsterdam";
+  time.timeZone = "America/Los_Angeles";
 
   nix = {
     # Common NIX_PATH
