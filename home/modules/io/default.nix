@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, unstable, ... }:
 
 {
   home.packages = with pkgs; [
@@ -13,7 +13,7 @@
     redis
 
     # REST Client
-    postman
+    unstable.postman
   ];
 
   # default file-browser

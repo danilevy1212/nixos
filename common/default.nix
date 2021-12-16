@@ -1,17 +1,9 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, unstable, emacs-overlay, ... }:
 
 {
-  imports = [
-    <home-manager/nixos> # Home Manager integration.
-    ./../cachix.nix
-  ];
+  imports = [ ./../cachix.nix ];
 
-  nixpkgs.overlays = [
-    (import (builtins.fetchTarball {
-      url =
-        "https://github.com/nix-community/emacs-overlay/archive/master.tar.gz";
-    }))
-  ];
+  nixpkgs.overlays = [ emacs-overlay ];
 
   # Set your time zone.
   time.timeZone = "America/Los_Angeles";
@@ -24,10 +16,12 @@
     ];
     trustedUsers = [ "root" "dlevym" ];
     gc = { automatic = true; };
+    package = pkgs.nixFlakes;
     # Protect nix-shell against garbage collection
     extraOptions = ''
       keep-outputs = true
       keep-derivations = true
+      experimental-features = nix-command flakes
     '';
     # Protect the RAM
     buildCores = 4;
@@ -88,6 +82,7 @@
       true; # Home manager has access to system level dependencies.
     useUserPackages = true; # Unclutter $HOME.
     users.dlevym = (import ./../home/home.nix);
+    extraSpecialArgs = { inherit unstable; };
   };
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -252,10 +247,7 @@
   # Enable CUPS to print documents. Stupid printer!
   services.printing = {
     enable = true;
-    drivers = with pkgs; [
-      hplip
-      hplipWithPlugin
-    ];
+    drivers = with pkgs; [ hplip hplipWithPlugin ];
   };
 
   # Gnome craziness.
@@ -304,7 +296,6 @@
 
   # !https://github.com/NixOS/nixpkgs/issues/16327
   services.gnome.at-spi2-core.enable = true;
-
 
   # Torrents
   services.transmission = {

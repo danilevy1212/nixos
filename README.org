@@ -31,20 +31,29 @@ git clone git@github.com:danilevy1212/nixos.git /etc/nixos
 
 3. Add a minimal ~default.nix~ that imports ~configuration-hardware.nix~, ~common.nix~ and ~home.nix~.
 
-4. Remove the all current nix-channels and subscribe to =nixos-21.05= and =home-manager= master branch.
+4. Add a your host configuration in ~flake.nix~:
 
-   #+begin_src sh
-nix-channel --remove nixos
-nix-channel --add https://nixos.org/channels/nixos-21.05 nixos
-nix-channel --add https://github.com/nix-community/home-manager/archive/release-21.05.tar.gz home-manager
-nix-channel --update
+   #+begin_src nix
+...
+  nixosConfigurations.<name-of-host> = nixpkgs.lib.nixosSystem {
+    inherit system;
+    modules =
+      [ home-manager.nixosModules.home-manager ./common ./hosts/<name-of-host> ];
+    specialArgs = {
+      emacs-overlay = emacs-overlay.overlay;
+      unstable = (import nixpkgs-unstable {
+        inherit system;
+        config.allowUnfree = true;
+      });
+    };
+  }
+...
    #+end_src
 
 5. Build that =NixOS=. Set the path to the host configuration.
 
    #+begin_src sh
-export NIXOS_CONFIG=/etc/nixos/hosts/<host>/default.nix
-nixos-build switch
+sudo nixos-rebuild switch --flake '/etc/nixos/.#<name-of-host>'
    #+end_src
 
 6. Make =dlevym= the owner of all the files and folders of ~/etc/nixos~.
@@ -53,4 +62,4 @@ nixos-build switch
 sudo chown -R dlevym:users /etc/nixos
    #+end_src
 
-7. Install my [[https://github.com/danilevy1212/xmonad][xmonad]] configuration and my [[https://github.com/danilevy1212/doom][doom]] emacs configuration, for maximum enjoyment!
+7. Install my [[https://github.com/danilevy1212/doom][doom]] emacs configuration, for maximum enjoyment!
