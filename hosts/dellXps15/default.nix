@@ -4,7 +4,8 @@
   imports = [
     ./hardware-configuration.nix # Include the results of the hardware scan.
     ./../../common
-    ./../../pkgs/nvidia-offload
+    ./nvidia-offload
+    ./xrandr-utils
   ];
 
   # Use the systemd-boot EFI boot loader.
@@ -31,26 +32,6 @@
       libvdpau-va-gl
     ];
   };
-
-  environment.systemPackages =
-    with (import ./../../pkgs/xrandr-utils { inherit pkgs; }); [
-      horizontal
-      solo
-    ];
-
-  # Nvidia offload
-  hardware.nvidia.prime = {
-    offload.enable = true;
-
-    # Bus ID of the Intel GPU. You can find it using lspci, either under 3D or VGA
-    intelBusId = "PCI:0:2:0";
-
-    # Bus ID of the NVIDIA GPU. You can find it using lspci, either under 3D or VGA
-    nvidiaBusId = "PCI:1:0:0";
-  };
-
-  # Configure keymap in X11
-  services.xserver = { videoDrivers = [ "nvidia" ]; };
 
   # Enable bluetooth
   hardware.bluetooth.enable = true;

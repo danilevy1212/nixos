@@ -1,4 +1,4 @@
-{ pkgs ? import <nixos> }:
+{ pkgs, ... }:
 
 {
   nvidia-offload = pkgs.writeShellScriptBin "nvidia-offload" ''
