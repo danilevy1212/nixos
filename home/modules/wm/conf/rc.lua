@@ -1,11 +1,10 @@
--- If LuaRocks is installed, make sure that packages installed through it are
--- found (e.g. lgi). If LuaRocks is not installed, do nothing.
-pcall(require, "luarocks.loader")
-
 -- Standard awesome library
 local gears = require("gears")
 local awful = require("awful")
 require("awful.autofocus")
+
+-- Widgets
+local bat_arc = require("awesome-wm-widgets.batteryarc-widget.batteryarc")
 
 -- Widget and layout library
 local wibox = require("wibox")
@@ -297,29 +296,31 @@ awful.screen.connect_for_each_screen(
         -- Create the wibox
         s.mywibox = awful.wibar({position = "top", screen = s})
 
-        -- Create the systray
-        s.mysystray = wibox.widget.systray()
-
         -- Add widgets to the wibox
-        s.mywibox:setup {
-            layout = wibox.layout.align.horizontal,
-            {
-                -- Left widgets
-                layout = wibox.layout.fixed.horizontal,
-                mylauncher,
-                s.mytaglist,
-                s.mypromptbox
-            },
-            s.mytasklist, -- Middle widget
-            {
-                -- Right widgets
-                layout = wibox.layout.fixed.horizontal,
-                mykeyboardlayout,
-                s.mysystray,
-                mytextclock,
-                s.mylayoutbox
-            }
+        local left_widgets = {
+            layout = wibox.layout.fixed.horizontal,
+            mylauncher,
+            s.mytaglist,
+            s.mypromptbox
         }
+        local right_widgets = {
+            -- Right widgets
+            layout = wibox.layout.fixed.horizontal,
+            mykeyboardlayout,
+            bat_arc(),
+            wibox.widget.systray(),
+            mytextclock,
+            s.mylayoutbox
+        }
+
+        local common_widgets = {
+            layout = wibox.layout.align.horizontal,
+            left_widgets,
+            s.mytasklist, -- Middle widget
+            right_widgets,
+        }
+
+        s.mywibox:setup(common_widgets)
     end
 )
 -- }}}
@@ -374,18 +375,11 @@ local globalkeys =
         end,
         {description = "open a terminal", group = "launcher"}
     ),
-    -- FIXME https://awesomewm.org/doc/api/libraries/awful.util.html#restart
     awful.key({modkey, "Control"}, "r", awesome.restart, {description = "reload awesome", group = "awesome"}),
-    awful.key(
-        {modkey, "Control", "Shift"},
-        "r",
-        helpers.nix_rebuild_and_awesome_restart,
-        {description = "rebuild awesome", group = "awesome"}
-    ),
     awful.key({modkey, "Shift"}, "q", awesome.quit, {description = "quit awesome", group = "awesome"}),
     -- TODO Put hjkl keys in their own for loop
     -- TODO Put up down left right int their own for loop
-    -- TODO Find alternative
+    -- TODO Create keybindings to increment/decrement window's size
     -- awful.key(
     --     {modkey},
     --     "l",

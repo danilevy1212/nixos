@@ -1,38 +1,72 @@
-{ config, lib, pkgs, ... }: {
-  home.packages = with pkgs; [
-    # Let there be control over the sound!
-    pulsemixer
-    pavucontrol
-    playerctl
+{ config, lib, pkgs, ... }:
+let
+  awesome-wm-widgets = with pkgs;
+ lua.pkgs.toLuaModule (stdenv.mkDerivation rec {
+    name = "awesome-wm-widgets";
+    pname = name;
+    version = "scm-1";
+    src = fetchGit {
+      name = "awesome-wm-widgets";
+      url = "https://github.com/streetturtle/awesome-wm-widgets";
+      ref = "master";
+      rev = "01a4f428e0361f4222e8d2f14607fb03bbd6d94e";
+    };
+    buildInputs = [ lua ];
 
-    # Control the screens!
-    arandr
-    xorg.xkill
+    installPhase = ''
+      mkdir -p $out/lib/lua/${lua.luaversion}/
+      cp -r . $out/lib/lua/${lua.luaversion}/${name}/
+      printf "package.path = '$out/lib/lua/${lua.luaversion}/?/init.lua;' ..  package.path\nreturn require((...) .. '.init')\n" > $out/lib/lua/${lua.luaversion}/${name}.lua
+    '';  });
+in {
+  home = {
+    packages = with pkgs; [
+      # Let there be control over the sound!
+      pulsemixer
+      pavucontrol
+      playerctl
 
-    # xXxScReeN_SH0TSxXx
-    flameshot
+      # Control the screens!
+      arandr
+      xorg.xkill
 
-    # Drag and Drop convenience
-    dragon-drop
+      # xXxScReeN_SH0TSxXx
+      flameshot
 
-    # Do as sudo, graphically
-    gksu
+      # Drag and Drop convenience
+      dragon-drop
 
-    # Enable awesome-client
-    rlwrap
+      # Do as sudo, graphically
+      gksu
 
-    # For REPL sake
-    lua
-    luarocks-nix
-  ];
+      # Enable awesome-client
+      rlwrap
 
-  home.sessionVariables = {
-    # Default theme.
-    GTK_THEME = "Nordic";
+      # For REPL sake
+      lua
+
+      # battery indicator
+      acpi
+    ];
+
+    sessionVariables = {
+      # Default theme.
+      GTK_THEME = "Nordic";
+    };
+
+    # For more comfy development, link configuration directly.
+    activation = {
+      linkConfWithAwesome = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+        if [ ! -L ${config.xdg.configHome}/awesome ] ; then
+        $DRY_RUN_CMD ln -s $VERBOSE_ARG \
+            ${builtins.toPath ./conf} ${config.xdg.configHome}/awesome;
+        fi
+      '';
+    };
+
+    # Don't manage the keyboard layout.
+    keyboard = null;
   };
-
-  # Don't manage the keyboard layout.
-  home.keyboard = null;
 
   # Create the awesome session.
   xsession = {
@@ -41,14 +75,8 @@
       "${config.home.homeDirectory}/.local/share/xsession/xsession-awesome";
     windowManager.awesome = {
       enable = true;
-      luaModules = with pkgs.luaPackages; [
-        # FIXME? Try if can be loaded.
-        vicious
-        rapidjson
-        http
-        luarocks-nix
-        # TODO lain TRY to clone it and then create nix file from that. https://stackoverflow.com/questions/12253165/lua-install-a-rock-using-luarocks-from-a-locally-installed-rock-or-from-a-zip
-        # NOTE https://github.com/NixOS/nixpkgs/blob/master/pkgs/top-level/lua-packages.nix
+      luaModules = [
+        awesome-wm-widgets
       ];
     };
     pointerCursor = {
@@ -59,18 +87,6 @@
 
   # Link for the LSP
   xdg.dataFile."awesome".source = "${pkgs.awesome}/share/awesome";
-
-  # NOTE For more comfy development, comment this block and create a symlink
-  # between ./conf and ~/.config/awesome
-  # (ln -sL # /etc/nixos/home/modules/wm/conf/ ~/.config/awesome).
-  # When you are done, uncomment this block, remove the link and
-  # `nixos-rebuild switch`
-  home.file = {
-    "awesome" = {
-      source = ./conf;
-      target = "./.config/awesome";
-    };
-  };
 
   # Make me pretty!
   gtk = with pkgs; {
