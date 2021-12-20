@@ -1,5 +1,6 @@
 { config, lib, pkgs, ... }:
 let
+  emacs-dir = "${config.xdg.configHome}/emacs";
   telega_libs = with pkgs;
     symlinkJoin {
       name = "telega_libs";
@@ -152,7 +153,17 @@ in {
   };
 
   # Add bin/doom to path.
-  home.sessionPath = [ "${config.xdg.configHome}/emacs/bin" ];
+  home.sessionPath = [ "${emacs-dir}/bin" ];
+
+  # "auto" install doom-emacs
+  home.activation = {
+    doom-install = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+      if [ ! -d ${emacs-dir} ]
+      then
+         $DRY_RUN_CMD git clone https://github.com/hlissner/doom-emacs ${emacs-dir}
+      fi
+    '';
+  };
 
   programs.zsh.shellAliases = {
     # kill emacsclient kill server alias
