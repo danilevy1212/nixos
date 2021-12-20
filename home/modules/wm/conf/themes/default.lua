@@ -1,4 +1,4 @@
--- TODO
+-- TODO Make it more "nordy"
 local xresources = require "beautiful.xresources"
 local dpi = xresources.apply_dpi
 local gfs = require("gears.filesystem")
@@ -8,7 +8,7 @@ local original_themes_path = gfs.get_themes_dir()
 -- REFERENCE: https://awesomewm.org/doc/api/documentation/06-appearance.md.html
 local theme = {}
 
-theme.font = "Fira Code 10"
+theme.font = "Sarasa UI J 11"
 
 theme.bg_normal = "#222222"
 theme.bg_focus = "#535d6c"
@@ -95,7 +95,7 @@ theme.titlebar_maximized_button_focus_inactive = original_themes_path .. "defaul
 theme.titlebar_maximized_button_normal_active = original_themes_path .. "default/titlebar/maximized_normal_active.png"
 theme.titlebar_maximized_button_focus_active = original_themes_path .. "default/titlebar/maximized_focus_active.png"
 
--- TODO set this with a lua script
+-- TODO Make the wallpaper randomized randomized
 theme.wallpaper = original_themes_path .. "default/background.png"
 
 -- You can use your own layout icons like this:
@@ -116,7 +116,7 @@ theme.layout_cornerne = original_themes_path .. "default/layouts/cornernew.png"
 theme.layout_cornersw = original_themes_path .. "default/layouts/cornersww.png"
 theme.layout_cornerse = original_themes_path .. "default/layouts/cornersew.png"
 
--- TODO My own logo
+-- TODO Use QS logo
 -- Generate Awesome icon:
 -- theme.awesome_icon = theme_assets.awesome_icon(
 --     theme.menu_height, theme.bg_focus, theme.fg_focus

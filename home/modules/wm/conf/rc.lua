@@ -25,9 +25,6 @@ require("awful.hotkeys_popup.keys")
 -- Enable awesome-client
 require("awful.remote")
 
--- My helpers
-local helpers = require("helpers")
-
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
 -- another config (This code will only ever execute for the fallback config)
@@ -102,9 +99,7 @@ local myawesomemenu = {
     },
     {"manual", terminal .. " -e man awesome"},
     {"edit config", editor_cmd .. " " .. awesome.conffile},
-    -- FIXME https://awesomewm.org/doc/api/libraries/awful.util.html#restart
     {"restart", awesome.restart},
-    {"rebuild", helpers.nix_rebuild_and_awesome_restart},
     {
         "quit",
         function()
@@ -317,7 +312,7 @@ awful.screen.connect_for_each_screen(
             layout = wibox.layout.align.horizontal,
             left_widgets,
             s.mytasklist, -- Middle widget
-            right_widgets,
+            right_widgets
         }
 
         s.mywibox:setup(common_widgets)

@@ -57,9 +57,10 @@ in {
     # For more comfy development, link configuration directly.
     activation = {
       linkConfWithAwesome = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-        if [ ! -L ${config.xdg.configHome}/awesome ] ; then
+        if [ ! -L ${config.xdg.configHome}/awesome ]
+        then
         $DRY_RUN_CMD ln -s $VERBOSE_ARG \
-            ${builtins.toPath ./conf} ${config.xdg.configHome}/awesome;
+            /etc/nixos/home/modules/wm/conf ${config.xdg.configHome}/awesome
         fi
       '';
     };
@@ -100,8 +101,8 @@ in {
       package = nordic;
     };
     font = {
-      name = "Noto Sans";
-      package = noto-fonts;
+      name = "Sarasa UI J";
+      package = sarasa-gothic;
     };
   };
 
