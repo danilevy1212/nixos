@@ -1,5 +1,10 @@
 { config, lib, pkgs, ... }:
 let
+  telega_libs = with pkgs;
+    symlinkJoin {
+      name = "telega_libs";
+      paths = [ tdlib libappindicator ];
+    };
   quivira = with pkgs;
     stdenv.mkDerivation {
       pname = "Quivera";
@@ -111,13 +116,13 @@ in {
     xorg.xwininfo
 
     # telega
-    tdlib
     gnumake
+    pkg-config
     gperf
     cmake
-    ffmpeg
-    libappindicator
+    ffmpeg-full
     clang
+    libnotify
   ];
 
   # I cannot live without you, my one true love...
@@ -143,7 +148,7 @@ in {
   # Doom directory.
   home.sessionVariables = {
     DOOMDIR = "$XDG_CONFIG_HOME/doom";
-    TDLIB_PREFIX = "${pkgs.tdlib.outPath}";
+    TDLIB_PREFIX = "${telega_libs.outPath}";
   };
 
   # Add bin/doom to path.
