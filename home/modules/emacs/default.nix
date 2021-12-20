@@ -1,4 +1,24 @@
-{ config, lib, pkgs, ... }: {
+{ config, lib, pkgs, ... }:
+let
+  quivira = with pkgs;
+    stdenv.mkDerivation {
+      pname = "Quivera";
+      version = "0.0.1";
+      src = fetchurl {
+        url = "http://www.quivira-font.com/files/Quivira.ttf";
+        sha256 = "0z2vh58g9x7gji31mwg1gz5gs1r9rf4s9wyiw92dc7xyvibai6dv";
+      };
+      sourceRoot = "./";
+      unpackCmd = ''
+        ttfName=$(basename $(stripHash $curSrc))
+        cp $curSrc ./$ttfName
+      '';
+      installPhase = ''
+        mkdir -p $out/share/fonts/truetype
+        cp -a *.ttf $out/share/fonts/truetype/
+      '';
+    };
+in {
   # Doom emacs dependencies
   home.packages = with pkgs; [
     # General Dependencies
@@ -10,20 +30,17 @@
 
     # Fonts
     emacs-all-the-icons-fonts
-    hack-font
+
+    ## Emacs
+    sarasa-gothic
     dejavu_fonts
     symbola
     noto-fonts
-    noto-fonts-cjk # FIXME alternative https://github.com/hakatashi/RictyDiminished-with-FiraCode
     noto-fonts-emoji
-    victor-mono # For terminal?
+    quivira
 
-    # For emacs
-    fira-mono
-    fira-code
-    fira-code-symbols
-    sarasa-gothic
-    # FIXME MISSING Quivera
+    ## Terminal
+    victor-mono
 
     # :editor
     # format
