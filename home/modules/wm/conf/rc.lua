@@ -83,8 +83,7 @@ local modkey = "Mod4"
 awful.layout.layouts = {
     awful.layout.suit.tile,
     awful.layout.suit.tile.bottom,
-    awful.layout.suit.spiral.dwindle,
-    awful.layout.suit.magnifier
+    awful.layout.suit.max,
 }
 -- }}}
 
@@ -354,12 +353,17 @@ local globalkeys =
         {modkey},
         "Tab",
         function()
-            awful.client.focus.history.previous()
-            if client.focus then
-                client.focus:raise()
-            end
+            awful.client.next(1):raise()
         end,
-        {description = "go back", group = "client"}
+        {description = "next client tab (max)", group = "client"}
+    ),
+    awful.key(
+        {modkey, "Shift"},
+        "Tab",
+        function()
+            awful.client.next(-1):raise()
+        end,
+        {description = "previous client tab (max)", group = "client"}
     ),
     -- Standard program
     awful.key(
