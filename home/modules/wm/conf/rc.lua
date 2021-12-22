@@ -608,7 +608,23 @@ local globalkeys =
         function()
             awful.spawn("doom everywhere")
         end,
-        {description = "Edit with emacs", group = "utils"}
+        {description = "edit with emacs", group = "utils"}
+    ),
+    awful.key(
+        {modkey},
+        "e",
+        function()
+            awful.spawn("emacs")
+        end,
+        {description = "the one true editor", group = "utils"}
+    ),
+    awful.key(
+        {modkey},
+        "b",
+        function()
+            awful.spawn("brave")
+        end,
+        {description = "the one browser", group = "utils"}
     )
 )
 
