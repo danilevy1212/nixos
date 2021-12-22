@@ -1,23 +1,24 @@
 { config, lib, pkgs, ... }:
 let
   awesome-wm-widgets = with pkgs;
- lua.pkgs.toLuaModule (stdenv.mkDerivation rec {
-    name = "awesome-wm-widgets";
-    pname = name;
-    version = "scm-1";
-    src = fetchGit {
+    lua.pkgs.toLuaModule (stdenv.mkDerivation rec {
       name = "awesome-wm-widgets";
-      url = "https://github.com/streetturtle/awesome-wm-widgets";
-      ref = "master";
-      rev = "01a4f428e0361f4222e8d2f14607fb03bbd6d94e";
-    };
-    buildInputs = [ lua ];
+      pname = name;
+      version = "scm-1";
+      src = fetchGit {
+        name = "awesome-wm-widgets";
+        url = "https://github.com/streetturtle/awesome-wm-widgets";
+        ref = "master";
+        rev = "01a4f428e0361f4222e8d2f14607fb03bbd6d94e";
+      };
+      buildInputs = [ lua ];
 
-    installPhase = ''
-      mkdir -p $out/lib/lua/${lua.luaversion}/
-      cp -r . $out/lib/lua/${lua.luaversion}/${name}/
-      printf "package.path = '$out/lib/lua/${lua.luaversion}/?/init.lua;' ..  package.path\nreturn require((...) .. '.init')\n" > $out/lib/lua/${lua.luaversion}/${name}.lua
-    '';  });
+      installPhase = ''
+        mkdir -p $out/lib/lua/${lua.luaversion}/
+        cp -r . $out/lib/lua/${lua.luaversion}/${name}/
+        printf "package.path = '$out/lib/lua/${lua.luaversion}/?/init.lua;' ..  package.path\nreturn require((...) .. '.init')\n" > $out/lib/lua/${lua.luaversion}/${name}.lua
+      '';
+    });
 in {
   home = {
     packages = with pkgs; [
@@ -76,9 +77,7 @@ in {
       "${config.home.homeDirectory}/.local/share/xsession/xsession-awesome";
     windowManager.awesome = {
       enable = true;
-      luaModules = [
-        awesome-wm-widgets
-      ];
+      luaModules = [ awesome-wm-widgets ];
     };
     pointerCursor = {
       name = "Numix-Cursor";
@@ -102,6 +101,7 @@ in {
     };
     font = {
       name = "Sarasa UI J";
+      size = 10;
       package = sarasa-gothic;
     };
   };

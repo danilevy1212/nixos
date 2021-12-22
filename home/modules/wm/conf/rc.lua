@@ -1,29 +1,29 @@
 -- Standard awesome library
-local gears = require("gears")
-local awful = require("awful")
-require("awful.autofocus")
+local gears = require "gears"
+local awful = require "awful"
+local beautiful = require "beautiful"
+require "awful.autofocus"
 
 -- Widgets
-local bat_arc = require("awesome-wm-widgets.batteryarc-widget.batteryarc")
+local bat_arc = require "awesome-wm-widgets.batteryarc-widget.batteryarc"
 
 -- Widget and layout library
-local wibox = require("wibox")
+local wibox = require "wibox"
 
--- Theme handling library
-local beautiful = require("beautiful")
-local theme = require("themes.default")
+-- Load theme
+require "themes.default"
 
 -- Notification library
-local naughty = require("naughty")
-local menubar = require("menubar")
-local hotkeys_popup = require("awful.hotkeys_popup")
+local naughty = require "naughty"
+local menubar = require "menubar"
+local hotkeys_popup = require "awful.hotkeys_popup"
 
 -- Enable hotkeys help widget for VIM and other apps
 -- when client with a matching name is opened:
-require("awful.hotkeys_popup.keys")
+require "awful.hotkeys_popup.keys"
 
 -- Enable awesome-client
-require("awful.remote")
+require "awful.remote"
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -65,7 +65,6 @@ end
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
-beautiful.init(theme)
 
 -- This is used later as the default terminal and editor to run.
 local terminal = "alacritty"
@@ -83,7 +82,7 @@ local modkey = "Mod4"
 awful.layout.layouts = {
     awful.layout.suit.tile,
     awful.layout.suit.tile.bottom,
-    awful.layout.suit.max,
+    awful.layout.suit.max
 }
 -- }}}
 
@@ -336,7 +335,6 @@ root.buttons(
 -- }}}
 
 -- {{{ Key bindings
--- TODO "e" emacs, "E" doom everywhere
 local globalkeys =
     gears.table.join(
     awful.key({modkey}, "s", hotkeys_popup.show_help, {description = "show help", group = "awesome"}),
