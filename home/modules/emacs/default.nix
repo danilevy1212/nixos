@@ -24,6 +24,28 @@ let
         cp -a *.ttf $out/share/fonts/truetype/
       '';
     };
+  tgs2png = with pkgs;
+    stdenv.mkDerivation rec {
+      pname = "tgs2png";
+      version = "0.0.1";
+      src = fetchgit {
+        name = pname;
+        url = "https://github.com/zevlg/tgs2png";
+        rev = "69e3605d7f78d80b1225f9043e420b68c214dfe1";
+        sha256 = "sha256-ET/GO+pVq6FcRKr1Nds3UUe1AosSJ+m8ngJ+0erTfxE=";
+      };
+      buildInputs = [ rlottie libpng cmake pkg-config ];
+      configurePhase = ''
+        cmake .
+      '';
+      buildPhase = ''
+        make
+      '';
+      installPhase = ''
+        mkdir -p $out/bin
+        mv tgs2png $out/bin
+      '';
+    };
 in {
   # Doom emacs dependencies
   home.packages = with pkgs; [
@@ -124,6 +146,7 @@ in {
     ffmpeg-full
     clang
     libnotify
+    tgs2png
   ];
 
   # I cannot live without you, my one true love...
