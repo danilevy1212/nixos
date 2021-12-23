@@ -40,11 +40,9 @@ in {
       # Do as sudo, graphically
       gksu
 
-      # Enable awesome-client
-      rlwrap
-
       # For REPL sake
       lua
+      rlwrap
 
       # battery indicator
       acpi
