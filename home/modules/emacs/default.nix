@@ -1,11 +1,6 @@
 { config, lib, pkgs, unstable, ... }:
 let
   emacs-dir = "${config.xdg.configHome}/emacs";
-  telega_libs = with pkgs;
-    symlinkJoin {
-      name = "telega_libs";
-      paths = [ unstable.tdlib libappindicator ];
-    };
   quivira = with pkgs;
     stdenv.mkDerivation {
       pname = "Quivera";
@@ -139,6 +134,7 @@ in {
     xorg.xwininfo
 
     # telega
+    unstable.tdlib
     gnumake
     pkg-config
     gperf
@@ -172,7 +168,7 @@ in {
   # Doom directory.
   home.sessionVariables = {
     DOOMDIR = "$XDG_CONFIG_HOME/doom";
-    TDLIB_PREFIX = "${telega_libs.outPath}";
+    TDLIB_PREFIX = "${unstable.tdlib.outPath}";
   };
 
   # Add bin/doom to path.
