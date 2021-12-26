@@ -63,3 +63,26 @@ sudo chown -R dlevym:users /etc/nixos
    #+end_src
 
 7. Install my [[https://github.com/danilevy1212/doom][doom]] emacs configuration, for maximum enjoyment!
+
+* Updating flake dependencies
+
+To update all inputs:
+
+#+begin_src shell
+sudo nix flake update
+#+end_src
+
+To update a specific input:
+
+#+begin_src shell
+sudo nix flake lock --update-input <input-name>
+#+end_src
+
+* Reference
+
+- [[https://nixos.wiki/wiki/Flakes][Nix Flakes wiki]]
+- [[https://nixos.org/manual/nix/unstable/command-ref/new-cli/nix3-flake.html][Nix Flake command]]
+- [[https://nixos.org/manual/nix/stable/][NixOS stable manual]]
+- [[https://nixos.org/manual/nix/unstable][NixOS unstable manual]]
+- [[https://nixos.org/manual/nixpkgs/stable/][nixpkgs stable manual]]
+- [[https://nixos.org/manual/nixpkgs/unstable/][nixpkgs unstable manual]]
