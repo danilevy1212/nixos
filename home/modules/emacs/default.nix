@@ -1,10 +1,10 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, unstable, ... }:
 let
   emacs-dir = "${config.xdg.configHome}/emacs";
   telega_libs = with pkgs;
     symlinkJoin {
       name = "telega_libs";
-      paths = [ tdlib libappindicator ];
+      paths = [ unstable.tdlib libappindicator ];
     };
   quivira = with pkgs;
     stdenv.mkDerivation {
