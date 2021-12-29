@@ -41,6 +41,15 @@ let
         mv tgs2png $out/bin
       '';
     };
+  tdlib_latest = unstable.tdlib.overrideAttrs (_: {
+    version = "1.7.12";
+    src = pkgs.fetchFromGitHub {
+      owner = "tdlib";
+      repo = "td";
+      rev = "29e8df51136dfd3545b17b925f10dea0262b4ee6";
+      sha256 = "04367r8cmwa5407hc1acbbdlcsf4cvfnlhq3bks2sf2z6b70y1w7";
+    };
+  });
 in {
   # Doom emacs dependencies
   home.packages = with pkgs; [
@@ -134,7 +143,7 @@ in {
     xorg.xwininfo
 
     # telega
-    unstable.tdlib
+    tdlib_latest
     gnumake
     pkg-config
     gperf
@@ -168,7 +177,7 @@ in {
   # Doom directory.
   home.sessionVariables = {
     DOOMDIR = "$XDG_CONFIG_HOME/doom";
-    TDLIB_PREFIX = "${unstable.tdlib.outPath}";
+    TDLIB_PREFIX = "${tdlib_latest.outPath}";
   };
 
   # Add bin/doom to path.
