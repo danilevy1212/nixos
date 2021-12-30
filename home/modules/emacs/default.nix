@@ -42,12 +42,12 @@ let
       '';
     };
   tdlib_latest = unstable.tdlib.overrideAttrs (_: {
-    version = "1.7.12";
+    version = "1.8.0";
     src = pkgs.fetchFromGitHub {
       owner = "tdlib";
       repo = "td";
-      rev = "29e8df51136dfd3545b17b925f10dea0262b4ee6";
-      sha256 = "04367r8cmwa5407hc1acbbdlcsf4cvfnlhq3bks2sf2z6b70y1w7";
+      rev = "c0385078316fa7992afd14078bd1f78be69a4268";
+      sha256 = "12367xrcq2118y6q8r9zgkab4lhvmzkph72r59kmnf5vp2jyaldp";
     };
   });
 in {
