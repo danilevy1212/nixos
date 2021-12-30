@@ -64,6 +64,10 @@ sudo chown -R dlevym:users /etc/nixos
 
 7. Install my [[https://github.com/danilevy1212/doom][doom]] emacs configuration, for maximum enjoyment!
 
+   #+begin_src sh
+doom env && doom tangle && doom install
+   #+end_src
+
 * Updating flake dependencies
 
 To update all inputs:
