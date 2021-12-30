@@ -12,6 +12,6 @@ beautiful.init(gears.filesystem.get_themes_dir() .. "gtk/theme.lua")
 -- )
 beautiful.awesome_icon = nil
 beautiful.font = "Sarasa UI J 10"
+beautiful.notification_icon_size = 150
 
--- TODO: Randomized wallpaper
-local default_wallpaper = beautiful.wallpaper
+-- local default_wallpaper = -- TODO: Randomized wallpaper
