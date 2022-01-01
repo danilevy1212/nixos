@@ -46,8 +46,8 @@ let
     src = pkgs.fetchFromGitHub {
       owner = "tdlib";
       repo = "td";
-      rev = "c0385078316fa7992afd14078bd1f78be69a4268";
-      sha256 = "12367xrcq2118y6q8r9zgkab4lhvmzkph72r59kmnf5vp2jyaldp";
+      rev = "14637caa64c2c992c1cde7c92cadb43a83d4435e";
+      sha256 = "0lq5zc1c8b79z11grwvjqfk744n3kwhisb7hf6y4a7yvdiqxla8l";
     };
   });
 in {
