@@ -1,11 +1,12 @@
-let modules = [
+let
+  modules = [
     # XDG Base Dir.
     "xdg"
 
     # I cannot live without you, my one true love...
     "emacs"
 
-    # Xmonad, the functional WM.
+    # Window Management.
     "wm"
 
     # The functional lisp.
@@ -25,14 +26,13 @@ let modules = [
 
     # My Shell configuration.
     "cli"
-    ];
-    moduleImports = map (x: ./. + builtins.toPath "/modules/${x}") modules;
+  ];
+  moduleImports = map (x: ./. + builtins.toPath "/modules/${x}") modules;
 in { self, config, pkgs, ... }: {
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 
-  # Home Manager needs a bit of information about you and the
-  # paths it should manage.
+  # Home Manager needs a bit of information about you and the paths it should manage.
   home.username = "dlevym";
   home.homeDirectory = "/home/dlevym";
 
