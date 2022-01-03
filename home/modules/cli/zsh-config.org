@@ -62,7 +62,6 @@ _comp_options+=(globdots)
 autoload -Uz bashcompinit && bashcompinit
 
 # Setup history and history file
-export HISTFILE="$XDG_DATA_HOME/history"
 export HISTSIZE=100000
 export SAVEHIST=100000
 
@@ -161,7 +160,7 @@ export _Z_DATA="$XDG_CACHE_HOME/z"
 
 # FZF, the best finder.
 export FZF_DEFAULT_COMMAND='fd --type f --type l '
-bindkey '^R' fzf-history-widget
+# bindkey '^R' fzf-history-widget
 
 # FZF ssh-widget
 _fzf-ssh-widget() {
@@ -203,6 +202,13 @@ zinit light zdharma-continuum/fast-syntax-highlighting
 # Provides the LS_COLORS definitions for GNU ls
 zinit ice wait lucid atclone"dircolors -b LS_COLORS > c.zsh" atpull'%atclone' pick"c.zsh" nocompile'!'
 zinit light trapd00r/LS_COLORS
+
+# McFly
+zinit ice lucid wait"0a" from"gh-r" as"program" atload'eval "$(mcfly init zsh)"'
+zinit light cantino/mcfly
+
+# Enable fuzzy sorting
+export MCFLY_FUZZY=2
 
 ## Finally, show off! (If I can)
 [ "$INSIDE_EMACS" != "vterm" ] && { neofetch; }

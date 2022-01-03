@@ -121,19 +121,25 @@ in { config, lib, pkgs, ... }: {
     sha256 = "1bhlhlk5axiqpm6l2qaij0cz4a53i9hcfsvc3hw9ayn75034xr93";
   } + "/src/nord");
 
+  # HISTFILE
+  home.sessionVariables = {
+    HISTFILE = "${config.xdg.dataHome}/history";
+  };
+
   # Networking utilities
   home.packages = with pkgs; [
     # System
     neofetch
     file
     rsync
+    tldr
 
     # Terminal Font
     victor-mono
 
     # TODO Create a welcome script with all of this.
 
-    # Fun
+    ## Fun
     cowsay
     lolcat
     cmatrix
