@@ -3,6 +3,8 @@
 - References:
   + [[https://zsh.sourceforge.io/Guide/zshguide.html][Friendly user guide]]
   + [[https://linux.die.net/man/1/zshall][Man page]]
+  + [[https://github.com/zdharma-continuum/zinit][zinit repo]]
+  + [[https://zdharma-continuum.github.io/zinit/wiki/][zinit wiki]]
 
 * Motivation
 
@@ -138,30 +140,21 @@ export TMUX_TMPDIR="$XDG_RUNTIME_DIR"
 ** TODO ZINIT
 
 #+begin_src shell :tangle zshrc
-declare -A ZINIT
-ZINIT[HOME_DIR]="$XDG_CONFIG_HOME/zinit"
+ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 #+end_src
 
 #+begin_src shell :tangle zshrc
-if [[ ! -f $XDG_CONFIG_HOME/zinit/bin/zinit.zsh ]]; then
-    print -P "%F{33}▓▒░ %F{220}Installing %F{33}DHARMA%F{220} Initiative Plugin Manager (%F{33}zdharma/zinit%F{220})…%f"
-    command mkdir -p "$XDG_CONFIG_HOME/zinit" && command chmod g-rwX "$XDG_CONFIG_HOME/zinit"
-    command git clone https://github.com/zdharma/zinit "$XDG_CONFIG_HOME/zinit/bin" && \
-        print -P "%F{33}▓▒░ %F{34}Installation successful.%f%b" || \
-        print -P "%F{160}▓▒░ The clone has failed.%f%b"
+if [[ ! -f $ZINIT_HOME/zinit.zsh ]]; then
+    print -P "%F{33}▓▒░ %F{220}Installing %F{33}DHARMA%F{220} Initiative Plugin Manager (%F{33}zdharma-continuum/zinit%F{220})…%f"
+    mkdir -p "$(dirname $ZINIT_HOME)"
+    git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"  && \
+	    print -P "%F{33}▓▒░ %F{34}Installation successful.%f%b" || \
+	    print -P "%F{160}▓▒░ The clone has failed.%f%b"
 fi
 
-source "$XDG_CONFIG_HOME/zinit/bin/zinit.zsh"
+source "${ZINIT_HOME}/zinit.zsh"
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
-
-# Load a few important annexes.
-# (this is currently required for annexes)
-zinit wait light-mode lucid for \
-    zinit-zsh/z-a-rust \
-    zinit-zsh/z-a-as-monitor \
-    zinit-zsh/z-a-patch-dl \
-    zinit-zsh/z-a-bin-gem-node
 
 # Remember my directories dammit!
 export _Z_DATA="$XDG_CACHE_HOME/z"
@@ -205,7 +198,7 @@ zinit light zsh-users/zsh-autosuggestions
 
 # Syntax highlighting
 zinit ice wait lucid
-zinit light zdharma/fast-syntax-highlighting
+zinit light zdharma-continuum/fast-syntax-highlighting
 
 # Provides the LS_COLORS definitions for GNU ls
 zinit ice wait lucid atclone"dircolors -b LS_COLORS > c.zsh" atpull'%atclone' pick"c.zsh" nocompile'!'
