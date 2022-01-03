@@ -152,6 +152,9 @@ in {
     clang
     libnotify
     tgs2png
+
+    # dtache
+    dtach
   ];
 
   # I cannot live without you, my one true love...
