@@ -129,6 +129,7 @@
         htop
         openvpn
         docker-compose
+        gitFull
         system-config-printer
       ] ++ (with pkgs.unixtools; [ netstat ifconfig ]) # Basic network
       ++ [ nix-prefetch-git cachix ]; # Nix convinience
