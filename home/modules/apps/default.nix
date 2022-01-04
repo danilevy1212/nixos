@@ -7,6 +7,7 @@
     # Social closeness
     ferdi
     tdesktop
+    slack
 
     # Browser for the...
     brave
