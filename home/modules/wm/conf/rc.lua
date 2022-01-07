@@ -612,7 +612,7 @@ local globalkeys =
         {modkey},
         "e",
         function()
-            awful.spawn("emacs")
+            awful.spawn("emacsclient -c -a 'emacs'")
         end,
         {description = "the one true editor", group = "utils"}
     ),
