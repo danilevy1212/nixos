@@ -110,9 +110,6 @@
 
       # EDITOR TODO Change to `emacs` when theme problems are solved.
       EDITOR = "nvim";
-
-      # Mongo Memory Server HACK
-      MONGOMS_SYSTEM_BINARY = "${pkgs.mongodb}/bin/mongod";
     };
     # Just as good.
     shellAliases = { vim = "nvim"; };
@@ -260,12 +257,6 @@
 
   # Key-Values and pears?
   services.redis.enable = true;
-
-  # Documents, DOCUMENTS, DOCUMENTS!
-  services.mongodb = {
-    enable = true;
-    # package = pkgs.mongodb-4_0;
-  };
 
   # Don't bother me for passwords.
   security.polkit.enable = true;
