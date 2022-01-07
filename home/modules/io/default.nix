@@ -8,6 +8,7 @@
     # DB Client
     mongodb-tools
     mongodb-compass
+    dbeaver
 
     # Key-Values galore
     redis
