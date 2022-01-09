@@ -107,9 +107,6 @@
       QT_IM_MODULE = "ibus";
       XMODIFIERS = "@im=ibus";
       XMODIFIER = "@im=ibus";
-
-      # EDITOR TODO Change to `emacs` when theme problems are solved.
-      EDITOR = "nvim";
     };
     # Just as good.
     shellAliases = { vim = "nvim"; };

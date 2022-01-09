@@ -106,14 +106,33 @@ autoload edit-command-line
 zle -N edit-command-line
 bindkey '^e' edit-command-line
 
-### Plugins (manual)
+# FZF, the best finder.
+export FZF_DEFAULT_COMMAND='fd --type f --type l '
 
-## VTERM
-# The main goal of these additional functions is to enable the shell to send information to vterm via properly escaped sequences.
+# FZF ssh-widget
+_fzf-ssh-widget() {
+  local selected
+  setopt localoptions noglobsubst noposixbuiltins pipefail no_aliases 2> /dev/null
+  selected=( $(cat ~/.ssh/config /etc/ssh/ssh_config | grep -i '^host' | sed 's/\(host \|\*\)//I' | head -n -1 |
+    FZF_DEFAULT_OPTS="--height ${FZF_TMUX_HEIGHT:-40%} $FZF_DEFAULT_OPTS -n2..,.. --tiebreak=index --bind=ctrl-r:toggle-sort,ctrl-z:ignore $FZF_CTRL_S_OPTS --query=${(qqq)LBUFFER} +m" $(__fzfcmd)) )
+  BUFFER="ssh $selected"
+  CURSOR="${#BUFFER}"
+  zle reset-prompt
+}
+zle     -N    _fzf-ssh-widget
+bindkey '^[r' _fzf-ssh-widget
+#+end_src
+
+* TODO Plugins
+
+** emacs-libvterm integration
+
+The shell-side configuration starts with the function ~vterm_printf~.
+
+#+begin_src shell :tangle zshrc
 function vterm_printf(){
-    if [ -n "$TMUX" ]; then
+    if [ -n "$TMUX" ] && ([ "${TERM%%-*}" = "tmux" ] || [ "${TERM%%-*}" = "screen" ] ); then
         # Tell tmux to pass the escape sequences through
-        # (Source: http://permalink.gmane.org/gmane.comp.terminal-emulators.tmux.user/1324)
         printf "\ePtmux;\e\e]%s\007\e\\" "$1"
     elif [ "${TERM%%-*}" = "screen" ]; then
         # GNU screen (screen, screen-256color, screen-256color-bce)
@@ -122,19 +141,51 @@ function vterm_printf(){
         printf "\e]%s\e\\" "$1"
     fi
 }
+#+end_src
 
-# Proper clear
+Which makes commands like ~find_file~ work within =emacs=.
+
+#+begin_src shell :tangle zshrc
+find_file() {
+    vterm_cmd find-file "$(realpath "${@:-.}")"
+}
+#+end_src
+
+Completely clear the buffer. With this, everything that is not on screen is erased.
+
+#+begin_src shell :tangle zshrc
 if [[ "$INSIDE_EMACS" = 'vterm' ]]; then
     alias clear='vterm_printf "51;Evterm-clear-scrollback";tput clear'
 fi
-
-## TMUX XDG Integrations
-alias tmux=tmux -f "$XDG_CONFIG_HOME"/tmux/tmux.conf
-export TMUX_TMPDIR="$XDG_RUNTIME_DIR"
-
 #+end_src
 
-* TODO Plugins
+Set tittle for vterm buffer.
+
+#+begin_src shell :tangle zshrc
+if [[ "$INSIDE_EMACS" = 'vterm' ]]; then
+    TITLE=$(pwd)
+fi
+#+end_src
+
+With vterm_cmd you can execute Emacs commands directly from the shell. To enable new commands, you have to customize Emacs's variable ~vterm-eval-cmds~.
+
+#+begin_src shell :tangle zshrc
+vterm_cmd() {
+    local vterm_elisp
+    vterm_elisp=""
+    while [ $# -gt 0 ]; do
+        vterm_elisp="$vterm_elisp""$(printf '"%s" ' "$(printf "%s" "$1" | sed -e 's|\\|\\\\|g' -e 's|"|\\"|g')")"
+        shift
+    done
+    vterm_printf "51;E$vterm_elisp"
+}
+#+end_src
+
+Don't flex if we are inside emacs.
+
+#+begin_src shell :tangle zshrc
+[ "$INSIDE_EMACS" != "vterm" ] && { neofetch; }
+#+end_src
 
 ** TODO ZINIT
 
@@ -154,27 +205,103 @@ fi
 source "${ZINIT_HOME}/zinit.zsh"
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
+#+end_src
 
-# Remember my directories dammit!
-export _Z_DATA="$XDG_CACHE_HOME/z"
+*** emacs integration
 
-# FZF, the best finder.
-export FZF_DEFAULT_COMMAND='fd --type f --type l '
-# bindkey '^R' fzf-history-widget
+#+begin_quote
+This plugin utilizes the Emacs daemon capability, allowing the user to quickly open frames, whether they are opened in a terminal via a ssh connection, or X frames opened on the same host.
+#+end_quote
 
-# FZF ssh-widget
-_fzf-ssh-widget() {
-  local selected
-  setopt localoptions noglobsubst noposixbuiltins pipefail no_aliases 2> /dev/null
-  selected=( $(cat ~/.ssh/config /etc/ssh/ssh_config | grep -i '^host' | sed 's/\(host \|\*\)//I' | head -n -1 |
-    FZF_DEFAULT_OPTS="--height ${FZF_TMUX_HEIGHT:-40%} $FZF_DEFAULT_OPTS -n2..,.. --tiebreak=index --bind=ctrl-r:toggle-sort,ctrl-z:ignore $FZF_CTRL_S_OPTS --query=${(qqq)LBUFFER} +m" $(__fzfcmd)) )
-  BUFFER="ssh $selected"
-  CURSOR="${#BUFFER}"
-  zle reset-prompt
-}
-zle     -N    _fzf-ssh-widget
-bindkey '^[r' _fzf-ssh-widget
+#+begin_src shell :tangle zshrc
+zinit ice wait lucid pick"emacsclient.sh" as"program"
+zinit light Flinner/zsh-emacs
+#+end_src
 
+#+begin_quote
+The plugin uses a custom launcher (which we'll call here $EMACS_LAUNCHER) that is just a wrapper around emacsclient.
+#+end_quote
+
+Aliases that we define.
+
+#+begin_src shell :tangle zshrc
+if command -v  emacsclient  &>/dev/null ; then
+    export EMACS_PLUGIN_LAUNCHER=emacsclient.sh
+
+    # set EDITOR
+    export EDITOR="$EMACS_PLUGIN_LAUNCHER"
+
+    alias emacs="$EMACS_PLUGIN_LAUNCHER --no-wait"
+    alias e=emacs
+    # open terminal emacsclient
+
+    alias te="$EMACS_PLUGIN_LAUNCHER -nw"
+
+    # same than M-x eval but from outside Emacs.
+    alias eeval="$EMACS_PLUGIN_LAUNCHER --eval"
+    # create a new X frame
+    alias eframe='emacsclient --alternate-editor "" --create-frame'
+
+    function magit(){
+        if [ -d "$1" ]; then
+            cd $1
+        fi
+        "$EMACS_PLUGIN_LAUNCHER" --eval "(magit)" --no-wait
+    }
+
+    function tmagit(){
+        if [ -d "$1" ]; then
+            cd $1
+        fi
+        "$EMACS_PLUGIN_LAUNCHER" --eval "(magit)" -nw
+    }
+
+    function mframe(){
+        if [ -d "$1" ]; then
+            cd $1
+        fi
+        emacsclient --alternate-editor "" --create-frame --eval "(magit)" --no-wait
+    }
+    # Write to standard output the path to the file
+    # opened in the current buffer.
+    function efile {
+        local cmd="(buffer-file-name (window-buffer))"
+        "$EMACS_PLUGIN_LAUNCHER" --eval "$cmd" | tr -d \"
+    }
+
+    # Write to standard output the directory of the file
+    # opened in the the current buffer
+    function ecd {
+        local cmd="(let ((buf-name (buffer-file-name (window-buffer))))
+                     (if buf-name (file-name-directory buf-name)))"
+
+        local dir="$($EMACS_PLUGIN_LAUNCHER --eval $cmd | tr -d \")"
+        if [ -n "$dir" ] ;then
+            echo "$dir"
+        else
+            echo "can not deduce current buffer filename." >/dev/stderr
+            return 1
+        fi
+    }
+fi
+#+end_src
+
+| =Alias=  | =Command=                                                                   | =Description=                                                    |
+|--------+---------------------------------------------------------------------------+----------------------------------------------------------------|
+| emacs  | ~$EMACS_LAUNCHER --no-wait~                                                 | Opens a temporary emacsclient frame                            |
+| e      | ~emacs~                                                                     | Same as emacs alias                                            |
+| te     | ~$EMACS_LAUNCHER -nw~                                                       | Open terminal emacsclient                                      |
+| eeval  | ~$EMACS_LAUNCHER --eval~                                                    | Same as M-x eval but from outside Emacs                        |
+| magit  | ~$EMACS_LAUNCHER --eval (magit)~                                            | Open emacsclient frame with magit, accepts directory argument  |
+| tmagit | ~$EMACS_LAUNCHER -nw --eval (magit)~                                        | Same as magit but opens in terminal                            |
+| mframe | ~emacsclient --alternate-editor "" --create-frame --eval (magit) --no-wait~ | Create new X frame with magit, accepts directory argument      |
+| eframe | ~emacsclient --alternate-editor "" --create-frame~                          | Create new X frame                                             |
+| efile  | -                                                                         | Print the path to the file open in the current buffer          |
+| ecd    | -                                                                         | Print the directory of the file open in the the current buffer |
+
+*** TODO other
+
+#+begin_src shell :tangle zshrc
 # Hook completion with FZF
 zinit ice wait lucid
 zinit light Aloxaf/fzf-tab
@@ -188,8 +315,12 @@ zstyle ':completion:*:descriptions' format '[%d]'
 # set list-colors to enable filename colorizing
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 
+# Remember my directories dammit!
 zinit ice wait lucid
 zinit light agkozak/zsh-z
+
+#  XDG Compliance
+export _Z_DATA="$XDG_CACHE_HOME/z"
 
 # Show me those delicious suggestions!
 zinit ice wait lucid atload'_zsh_autosuggest_start'
@@ -209,15 +340,4 @@ zinit light cantino/mcfly
 
 # Enable fuzzy sorting
 export MCFLY_FUZZY=2
-
-## Finally, show off! (If I can)
-[ "$INSIDE_EMACS" != "vterm" ] && { neofetch; }
-
-## FIXME
-[ -n "$SSH_CONNECTION" ] && unset SSH_ASKPASS
-export GIT_ASKPASS=
 #+end_src
-
-* TODO Functions
-
-* TODO Keybinds

@@ -86,49 +86,6 @@ autoload edit-command-line
 zle -N edit-command-line
 bindkey '^e' edit-command-line
 
-### Plugins (manual)
-
-## VTERM
-# The main goal of these additional functions is to enable the shell to send information to vterm via properly escaped sequences.
-function vterm_printf(){
-    if [ -n "$TMUX" ]; then
-        # Tell tmux to pass the escape sequences through
-        # (Source: http://permalink.gmane.org/gmane.comp.terminal-emulators.tmux.user/1324)
-        printf "\ePtmux;\e\e]%s\007\e\\" "$1"
-    elif [ "${TERM%%-*}" = "screen" ]; then
-        # GNU screen (screen, screen-256color, screen-256color-bce)
-        printf "\eP\e]%s\007\e\\" "$1"
-    else
-        printf "\e]%s\e\\" "$1"
-    fi
-}
-
-# Proper clear
-if [[ "$INSIDE_EMACS" = 'vterm' ]]; then
-    alias clear='vterm_printf "51;Evterm-clear-scrollback";tput clear'
-fi
-
-## TMUX XDG Integrations
-alias tmux=tmux -f "$XDG_CONFIG_HOME"/tmux/tmux.conf
-export TMUX_TMPDIR="$XDG_RUNTIME_DIR"
-
-ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
-
-if [[ ! -f $ZINIT_HOME/zinit.zsh ]]; then
-    print -P "%F{33}▓▒░ %F{220}Installing %F{33}DHARMA%F{220} Initiative Plugin Manager (%F{33}zdharma-continuum/zinit%F{220})…%f"
-    mkdir -p "$(dirname $ZINIT_HOME)"
-    git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"  && \
-	    print -P "%F{33}▓▒░ %F{34}Installation successful.%f%b" || \
-	    print -P "%F{160}▓▒░ The clone has failed.%f%b"
-fi
-
-source "${ZINIT_HOME}/zinit.zsh"
-autoload -Uz _zinit
-(( ${+_comps} )) && _comps[zinit]=_zinit
-
-# Remember my directories dammit!
-export _Z_DATA="$XDG_CACHE_HOME/z"
-
 # FZF, the best finder.
 export FZF_DEFAULT_COMMAND='fd --type f --type l '
 
@@ -145,6 +102,119 @@ _fzf-ssh-widget() {
 zle     -N    _fzf-ssh-widget
 bindkey '^[r' _fzf-ssh-widget
 
+function vterm_printf(){
+    if [ -n "$TMUX" ] && ([ "${TERM%%-*}" = "tmux" ] || [ "${TERM%%-*}" = "screen" ] ); then
+        # Tell tmux to pass the escape sequences through
+        printf "\ePtmux;\e\e]%s\007\e\\" "$1"
+    elif [ "${TERM%%-*}" = "screen" ]; then
+        # GNU screen (screen, screen-256color, screen-256color-bce)
+        printf "\eP\e]%s\007\e\\" "$1"
+    else
+        printf "\e]%s\e\\" "$1"
+    fi
+}
+
+find_file() {
+    vterm_cmd find-file "$(realpath "${@:-.}")"
+}
+
+if [[ "$INSIDE_EMACS" = 'vterm' ]]; then
+    alias clear='vterm_printf "51;Evterm-clear-scrollback";tput clear'
+fi
+
+if [[ "$INSIDE_EMACS" = 'vterm' ]]; then
+    TITLE=$(pwd)
+fi
+
+vterm_cmd() {
+    local vterm_elisp
+    vterm_elisp=""
+    while [ $# -gt 0 ]; do
+        vterm_elisp="$vterm_elisp""$(printf '"%s" ' "$(printf "%s" "$1" | sed -e 's|\\|\\\\|g' -e 's|"|\\"|g')")"
+        shift
+    done
+    vterm_printf "51;E$vterm_elisp"
+}
+
+[ "$INSIDE_EMACS" != "vterm" ] && { neofetch; }
+
+ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
+
+if [[ ! -f $ZINIT_HOME/zinit.zsh ]]; then
+    print -P "%F{33}▓▒░ %F{220}Installing %F{33}DHARMA%F{220} Initiative Plugin Manager (%F{33}zdharma-continuum/zinit%F{220})…%f"
+    mkdir -p "$(dirname $ZINIT_HOME)"
+    git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"  && \
+	    print -P "%F{33}▓▒░ %F{34}Installation successful.%f%b" || \
+	    print -P "%F{160}▓▒░ The clone has failed.%f%b"
+fi
+
+source "${ZINIT_HOME}/zinit.zsh"
+autoload -Uz _zinit
+(( ${+_comps} )) && _comps[zinit]=_zinit
+
+zinit ice wait lucid pick"emacsclient.sh" as"program"
+zinit light Flinner/zsh-emacs
+
+if command -v  emacsclient  &>/dev/null ; then
+    export EMACS_PLUGIN_LAUNCHER=emacsclient.sh
+
+    # set EDITOR
+    export EDITOR="$EMACS_PLUGIN_LAUNCHER"
+
+    alias emacs="$EMACS_PLUGIN_LAUNCHER --no-wait"
+    alias e=emacs
+    # open terminal emacsclient
+
+    alias te="$EMACS_PLUGIN_LAUNCHER -nw"
+
+    # same than M-x eval but from outside Emacs.
+    alias eeval="$EMACS_PLUGIN_LAUNCHER --eval"
+    # create a new X frame
+    alias eframe='emacsclient --alternate-editor "" --create-frame'
+
+    function magit(){
+        if [ -d "$1" ]; then
+            cd $1
+        fi
+        "$EMACS_PLUGIN_LAUNCHER" --eval "(magit)" --no-wait
+    }
+
+    function tmagit(){
+        if [ -d "$1" ]; then
+            cd $1
+        fi
+        "$EMACS_PLUGIN_LAUNCHER" --eval "(magit)" -nw
+    }
+
+    function mframe(){
+        if [ -d "$1" ]; then
+            cd $1
+        fi
+        emacsclient --alternate-editor "" --create-frame --eval "(magit)" --no-wait
+    }
+    # Write to standard output the path to the file
+    # opened in the current buffer.
+    function efile {
+        local cmd="(buffer-file-name (window-buffer))"
+        "$EMACS_PLUGIN_LAUNCHER" --eval "$cmd" | tr -d \"
+    }
+
+    # Write to standard output the directory of the file
+    # opened in the the current buffer
+    function ecd {
+        local cmd="(let ((buf-name (buffer-file-name (window-buffer))))
+                     (if buf-name (file-name-directory buf-name)))"
+
+        local dir="$($EMACS_PLUGIN_LAUNCHER --eval $cmd | tr -d \")"
+        if [ -n "$dir" ] ;then
+            echo "$dir"
+        else
+            echo "can not deduce current buffer filename." >/dev/stderr
+            return 1
+        fi
+    }
+fi
+
 # Hook completion with FZF
 zinit ice wait lucid
 zinit light Aloxaf/fzf-tab
@@ -158,8 +228,12 @@ zstyle ':completion:*:descriptions' format '[%d]'
 # set list-colors to enable filename colorizing
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 
+# Remember my directories dammit!
 zinit ice wait lucid
 zinit light agkozak/zsh-z
+
+#  XDG Compliance
+export _Z_DATA="$XDG_CACHE_HOME/z"
 
 # Show me those delicious suggestions!
 zinit ice wait lucid atload'_zsh_autosuggest_start'
@@ -179,10 +253,3 @@ zinit light cantino/mcfly
 
 # Enable fuzzy sorting
 export MCFLY_FUZZY=2
-
-## Finally, show off! (If I can)
-[ "$INSIDE_EMACS" != "vterm" ] && { neofetch; }
-
-## FIXME
-[ -n "$SSH_CONNECTION" ] && unset SSH_ASKPASS
-export GIT_ASKPASS=
