@@ -9,7 +9,6 @@
     awscli
     kubectl
     krew
-    telepresence2
     lens
     kubernetes-helm-wrapped
     rclone
