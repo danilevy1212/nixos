@@ -59,6 +59,11 @@
     enable = true;
     support32Bit = true;
     package = pkgs.pulseaudioFull; # PulseAudio with bluetooth support
+    extraModules = [ pkgs.pulseaudio-modules-bt ];
+    # Auto switching audio on connect.
+    extraConfig = "
+      load-module module-switch-on-connect
+    ";
   };
 
   # Explicit PulseAudio support in applications
