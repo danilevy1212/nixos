@@ -25,6 +25,8 @@
     '';
     # Protect the RAM
     buildCores = 4;
+    # Protect disk space
+    autoOptimiseStore = true;
   };
 
   # Sorry, Stallman-chan
