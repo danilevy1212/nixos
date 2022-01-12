@@ -23,8 +23,6 @@
       keep-derivations = true
       experimental-features = nix-command flakes
     '';
-    # Protect the RAM
-    buildCores = 4;
     # Protect disk space
     autoOptimiseStore = true;
   };

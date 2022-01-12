@@ -19,6 +19,9 @@
     interfaces = { wlp59s0.useDHCP = true; };
   };
 
+  # Protect the RAM
+  nix.buildCores = 4;
+
   # Video Playing acceleration
   nixpkgs.config.packageOverrides = pkgs: {
     vaapiIntel = pkgs.vaapiIntel.override { enableHybridCodec = true; };
