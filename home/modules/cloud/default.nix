@@ -19,12 +19,11 @@
   home.sessionVariables = {
     AWS_SHARED_CREDENTIALS_FILE = "$XDG_CONFIG_HOME/aws/credentials";
     AWS_CONFIG_FILE = "$XDG_CONFIG_HOME/aws/config";
+    AWS_PROFILE = "bambu-dev";
   };
 
   # Global packages readily usable.
-  home.sessionPath = [
-    "$HOME/.krew/bin"
-  ];
+  home.sessionPath = [ "$HOME/.krew/bin" ];
 
   # Add an alias for kubectl
   programs.zsh.shellAliases = { k = "kubectl"; };
