@@ -9,9 +9,6 @@ let
     # Window Management.
     "wm"
 
-    # The functional lisp.
-    "clj"
-
     # It's all there dude, in the ☁.
     "cloud"
 
