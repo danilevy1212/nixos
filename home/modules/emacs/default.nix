@@ -170,6 +170,7 @@ in {
     enable = true;
     nix-direnv.enable = true;
   };
+  services.lorri.enable = true;
 
   # For :tools magit
   programs.git.delta = {
