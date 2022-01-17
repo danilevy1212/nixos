@@ -79,6 +79,15 @@ in {
     nodePackages.prettier
 
     # :lang
+    # go
+    gopls
+    gocode
+    gore
+    golangci-lint
+    gotools
+    gotests
+    gomodifytags
+
     # nix
     nixfmt
 
