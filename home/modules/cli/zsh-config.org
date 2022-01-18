@@ -10,6 +10,22 @@
 
 As great as ~zsh~ is, it's documentation is dense and hard to follow. With this file I hope to document it's inner working as I configure the best interactive shell.
 
+Some great keybindings by default:
+
+| Keys   | Effect                     |
+|--------+----------------------------|
+| =Ctrl+a= | Go to beginning of line    |
+| =Ctrt+e= | Go to end of line          |
+| =Alt+b=  | Go backwards one word      |
+| =Ctrl+b= | Go backwards one character |
+| =Alt+f=  | Go forwards one word       |
+| =Ctrl+/= | Undo                       |
+| =Alt+t=  | Transpose words            |
+| =Ctrl+d= | Delete character forward   |
+| =Alt+d=  | Delete word forwards       |
+| =Ctrl+h= | Delete character backwards |
+| =Ctrl+w= | Delete word backwards      |
+
 * TODO General
 
 #+begin_src shell :tangle zshrc
@@ -101,15 +117,15 @@ function man() {
 # Customize prompt
 PS1="%B%{$fg[red]%}[%{$fg[yellow]%}%n%{$fg[green]%}@%{$fg[blue]%}%M%{$fg[red]%}]%{$reset_color%} %~ "
 
-# Edit line in vim with ctrl-e:
+# Edit line in vim with alt-e:
 autoload edit-command-line
 zle -N edit-command-line
-bindkey '^e' edit-command-line
+bindkey '^[e' edit-command-line
 
 # FZF, the best finder.
 export FZF_DEFAULT_COMMAND='fd --type f --type l '
 
-# FZF ssh-widget
+# FZF ssh-widget with alt-r
 _fzf-ssh-widget() {
   local selected
   setopt localoptions noglobsubst noposixbuiltins pipefail no_aliases 2> /dev/null
