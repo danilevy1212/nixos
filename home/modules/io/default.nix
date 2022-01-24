@@ -8,7 +8,7 @@
     # DB Client
     mongodb-tools
     mongodb-compass
-    dbeaver
+    unstable.dbeaver
 
     # Key-Values galore
     redis
