@@ -250,7 +250,7 @@
 
   # Gnome craziness.
   services.dbus.packages = with pkgs; [
-    gnome3.dconf
+    dconf
     gnome3.adwaita-icon-theme
     gnome2.GConf
   ];
