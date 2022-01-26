@@ -10,9 +10,6 @@
     mongodb-compass
     unstable.dbeaver
 
-    # Key-Values galore
-    redis
-
     # REST Client
     unstable.postman
   ];

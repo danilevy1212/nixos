@@ -255,9 +255,6 @@
     gnome2.GConf
   ];
 
-  # Key-Values and pears?
-  services.redis.enable = true;
-
   # Don't bother me for passwords.
   security.polkit.enable = true;
 
