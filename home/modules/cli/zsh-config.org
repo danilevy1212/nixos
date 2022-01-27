@@ -223,6 +223,16 @@ autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 #+end_src
 
+Add annexes.
+
+#+begin_src shell :tangle zshrc
+zinit wait lucid light-mode for \
+    zdharma-continuum/zinit-annex-readurl \
+    zdharma-continuum/zinit-annex-bin-gem-node \
+    zdharma-continuum/zinit-annex-patch-dl \
+    zdharma-continuum/zinit-annex-rust
+#+end_src
+
 *** emacs integration
 
 #+begin_quote

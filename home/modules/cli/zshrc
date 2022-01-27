@@ -152,6 +152,12 @@ source "${ZINIT_HOME}/zinit.zsh"
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 
+zinit wait lucid light-mode for \
+    zdharma-continuum/zinit-annex-readurl \
+    zdharma-continuum/zinit-annex-bin-gem-node \
+    zdharma-continuum/zinit-annex-patch-dl \
+    zdharma-continuum/zinit-annex-rust
+
 zinit ice wait lucid pick"emacsclient.sh" as"program"
 zinit light Flinner/zsh-emacs
 
