@@ -359,6 +359,16 @@ Keep home directory tidy
 _FASD_DATA="$XDG_CACHE_HOME/fasd"
 #+end_src
 
+*** zsh-autopair
+
+#+begin_quote
+A simple plugin that auto-closes, deletes and skips over matching delimiters in zsh intelligently. Hopefully.
+#+end_quote
+
+#+begin_src shell :tangle zshrc
+zinit ice wait lucid
+zinit light hlissner/zsh-autopair
+#+end_src
 
 *** TODO other
 
