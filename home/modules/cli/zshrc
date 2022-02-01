@@ -221,6 +221,14 @@ if command -v  emacsclient  &>/dev/null ; then
     }
 fi
 
+zinit ice wait lucid
+zinit snippet OMZP::fasd
+
+_FASD_DATA="$XDG_CACHE_HOME/fasd"
+
+zinit ice wait lucid
+zinit light hlissner/zsh-autopair
+
 # Hook completion with FZF
 zinit ice wait lucid
 zinit light Aloxaf/fzf-tab
@@ -233,13 +241,6 @@ zstyle ':completion:*:descriptions' format '[%d]'
 
 # set list-colors to enable filename colorizing
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
-
-# Remember my directories dammit!
-zinit ice wait lucid
-zinit light agkozak/zsh-z
-
-#  XDG Compliance
-export _Z_DATA="$XDG_CACHE_HOME/z"
 
 # Show me those delicious suggestions!
 zinit ice wait lucid atload'_zsh_autosuggest_start'

@@ -129,6 +129,7 @@ in { config, lib, pkgs, ... }: {
     file
     rsync
     tldr
+    fasd
 
     # Terminal Font
     victor-mono

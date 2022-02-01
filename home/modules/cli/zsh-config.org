@@ -141,7 +141,7 @@ bindkey '^[r' _fzf-ssh-widget
 
 * TODO Plugins
 
-** emacs-libvterm integration
+** emacs-libvterm
 
 The shell-side configuration starts with the function ~vterm_printf~.
 
@@ -233,7 +233,7 @@ zinit wait lucid light-mode for \
     zdharma-continuum/zinit-annex-rust
 #+end_src
 
-*** emacs integration
+*** emacs
 
 #+begin_quote
 This plugin utilizes the Emacs daemon capability, allowing the user to quickly open frames, whether they are opened in a terminal via a ssh connection, or X frames opened on the same host.
@@ -325,6 +325,41 @@ fi
 | efile  | -                                                                         | Print the path to the file open in the current buffer          |
 | ecd    | -                                                                         | Print the directory of the file open in the the current buffer |
 
+*** fasd
+
+#+begin_quote
+Fasd offers quick access to files and directories for POSIX shells. It is inspired by tools like autojump, z and v. Fasd keeps track of files and directories you have accessed, so that you can quickly reference them in the command line.
+#+end_quote
+
+Load the ~oh-my-zsh~ plugin for ~fasd~.
+
+#+begin_src shell :tangle zshrc
+zinit ice wait lucid
+zinit snippet OMZP::fasd
+#+end_src
+
+This package comes with the following aliases:
+
+| alias  | command       | target                                     |
+|--------+---------------+--------------------------------------------|
+| =a=      | ~fasd -a~       | any                                        |
+| =s=      | ~fasd -si~      | show / search / select                     |
+| =d=      | ~fasd -d~       | directory                                  |
+| =f=      | ~fasd -f~       | file                                       |
+| =sd=     | ~fasd -sid~     | interactive file selection                 |
+| =sf=     | ~fasd -sif~     | interactive directory selection            |
+| =z=      | ~fasd_cd -d~    | cd, same functionality as autojump         |
+| =zz= / =j= | ~fasd_cd -d -i~ | cd with interactive selection              |
+| =v=      | ~f -e $EDITOR~  | open file in editor                        |
+| =o=      | ~a -e xdg-open~ | open any with default program for mimetype |
+
+Keep home directory tidy
+
+#+begin_src shell :tangle zshrc
+_FASD_DATA="$XDG_CACHE_HOME/fasd"
+#+end_src
+
+
 *** TODO other
 
 #+begin_src shell :tangle zshrc
@@ -340,13 +375,6 @@ zstyle ':completion:*:descriptions' format '[%d]'
 
 # set list-colors to enable filename colorizing
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
-
-# Remember my directories dammit!
-zinit ice wait lucid
-zinit light agkozak/zsh-z
-
-#  XDG Compliance
-export _Z_DATA="$XDG_CACHE_HOME/z"
 
 # Show me those delicious suggestions!
 zinit ice wait lucid atload'_zsh_autosuggest_start'
