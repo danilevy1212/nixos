@@ -5,12 +5,8 @@ in { config, lib, pkgs, ... }: {
     userName = "Daniel Levy Moreno";
     userEmail = "daniellevymoreno@gmail.com";
     extraConfig = {
-      core = {
-        askpass = "";
-      };
-      merge = {
-        conflictStyle = "diff3";
-      };
+      core = { askpass = ""; };
+      merge = { conflictStyle = "diff3"; };
     };
   };
 
@@ -42,8 +38,10 @@ in { config, lib, pkgs, ... }: {
         bold-italic = { family = "Sarasa Mono J"; };
         size = 10.0;
       };
-      window = { gtk_theme_variant = "nordic"; };
-      background_opacity = 0.9;
+      window = {
+        gtk_theme_variant = "nordic";
+        opacity = 0.9;
+      };
       colors = {
         primary = {
           background = "#2e3440";
@@ -122,9 +120,7 @@ in { config, lib, pkgs, ... }: {
   } + "/src/nord");
 
   # HISTFILE
-  home.sessionVariables = {
-    HISTFILE = "${config.xdg.dataHome}/history";
-  };
+  home.sessionVariables = { HISTFILE = "${config.xdg.dataHome}/history"; };
 
   # Networking utilities
   home.packages = with pkgs; [
