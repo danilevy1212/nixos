@@ -28,7 +28,7 @@
   # Make brave default browser
   xdg.mimeApps = {
     enable = true;
-    associations.added = {
+    defaultApplications = {
       "x-scheme-handler/http" = [ "brave-browser.desktop" ];
       "x-scheme-handler/https" = [ "brave-browser.desktop" ];
     };
