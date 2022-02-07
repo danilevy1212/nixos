@@ -152,15 +152,10 @@ in {
     xorg.xwininfo
 
     # telega
-    tdlib_latest
-    gnumake
-    pkg-config
-    gperf
-    cmake
     ffmpeg-full
-    clang
     libnotify
     tgs2png
+    libwebp
 
     # dtache
     dtach
@@ -203,6 +198,9 @@ in {
       then
          $DRY_RUN_CMD git clone https://github.com/hlissner/doom-emacs ${emacs-dir}
       fi
+    '';
+    telega-server-pull = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+       $DRY_RUN_CMD docker pull zevlg/telega-server:latest
     '';
   };
 
