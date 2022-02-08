@@ -6,7 +6,7 @@
   nixpkgs.overlays = [ emacs-overlay ];
 
   # Set your time zone.
-  time.timeZone = "America/Los_Angeles";
+  time.timeZone = "America/New_York";
 
   nix = {
     # Common NIX_PATH
