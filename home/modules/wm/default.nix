@@ -37,9 +37,6 @@ in {
       # Drag and Drop convenience
       dragon-drop
 
-      # Do as sudo, graphically
-      gksu
-
       # For REPL sake
       lua
       rlwrap
