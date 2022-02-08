@@ -11,6 +11,7 @@
     krew
     lens
     kubernetes-helm-wrapped
+    telepresence
     rclone
     keepassxc
     transmission-qt
