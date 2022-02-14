@@ -264,7 +264,7 @@
       domain = "*";
       type = "soft";
       item = "nofile";
-      value = "4096";
+      value = "8192";
     }
     {
       domain = "*";
