@@ -129,7 +129,7 @@
         gitFull
         system-config-printer
       ] ++ (with pkgs.unixtools; [ netstat ifconfig ]) # Basic network
-      ++ [ nix-prefetch-git cachix ]; # Nix convinience
+      ++ [ nix-prefetch-git cachix nix-tree ]; # Nix convinience
   };
 
   networking = {
