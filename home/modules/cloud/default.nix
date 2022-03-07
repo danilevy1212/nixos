@@ -14,7 +14,7 @@
     telepresence
     rclone
     keepassxc
-    transmission-qt
+    qbittorrent
   ];
 
   home.sessionVariables = {
