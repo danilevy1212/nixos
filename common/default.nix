@@ -133,7 +133,7 @@
   };
 
   networking = {
-    networkmanager.packages = [ pkgs.networkmanager_openvpn ];
+    networkmanager.packages = [ pkgs.networkmanager-openvpn ];
     # Port's for work stuff.
     firewall = {
       enable = true;
