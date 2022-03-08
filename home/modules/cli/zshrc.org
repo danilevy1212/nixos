@@ -1,5 +1,9 @@
 #+TITLE: ZSH Configuration
 
+# Local Variables:
+# org-babel-default-header-args:shell-mode: '((":tangle" . "zshrc"))
+# End:
+
 - References:
   + [[https://zsh.sourceforge.io/Guide/zshguide.html][Friendly user guide]]
   + [[https://linux.die.net/man/1/zshall][Man page]]
@@ -28,7 +32,7 @@ Some great keybindings by default:
 
 * TODO General
 
-#+begin_src shell :tangle zshrc
+#+begin_src shell
 #!/usr/bin/zsh
 
 ### GENERAL
@@ -62,7 +66,7 @@ unsetopt completealiases
 
 * TODO Completion
 
-#+begin_src shell :tangle zshrc
+#+begin_src shell
 
 # Do menu-driven completion.
 zstyle ':completion:*' menu select
@@ -145,7 +149,7 @@ bindkey '^[r' _fzf-ssh-widget
 
 The shell-side configuration starts with the function ~vterm_printf~.
 
-#+begin_src shell :tangle zshrc
+#+begin_src shell
 function vterm_printf(){
     if [ -n "$TMUX" ] && ([ "${TERM%%-*}" = "tmux" ] || [ "${TERM%%-*}" = "screen" ] ); then
         # Tell tmux to pass the escape sequences through
@@ -161,7 +165,7 @@ function vterm_printf(){
 
 Which makes commands like ~find_file~ work within =emacs=.
 
-#+begin_src shell :tangle zshrc
+#+begin_src shell
 find_file() {
     vterm_cmd find-file "$(realpath "${@:-.}")"
 }
@@ -169,7 +173,7 @@ find_file() {
 
 Completely clear the buffer. With this, everything that is not on screen is erased.
 
-#+begin_src shell :tangle zshrc
+#+begin_src shell
 if [[ "$INSIDE_EMACS" = 'vterm' ]]; then
     alias clear='vterm_printf "51;Evterm-clear-scrollback";tput clear'
 fi
@@ -177,7 +181,7 @@ fi
 
 Set tittle for vterm buffer.
 
-#+begin_src shell :tangle zshrc
+#+begin_src shell
 if [[ "$INSIDE_EMACS" = 'vterm' ]]; then
     TITLE=$(pwd)
 fi
@@ -185,7 +189,7 @@ fi
 
 With vterm_cmd you can execute Emacs commands directly from the shell. To enable new commands, you have to customize Emacs's variable ~vterm-eval-cmds~.
 
-#+begin_src shell :tangle zshrc
+#+begin_src shell
 vterm_cmd() {
     local vterm_elisp
     vterm_elisp=""
@@ -199,17 +203,17 @@ vterm_cmd() {
 
 Don't flex if we are inside emacs.
 
-#+begin_src shell :tangle zshrc
+#+begin_src shell
 [ "$INSIDE_EMACS" != "vterm" ] && { neofetch; }
 #+end_src
 
 ** TODO ZINIT
 
-#+begin_src shell :tangle zshrc
+#+begin_src shell
 ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 #+end_src
 
-#+begin_src shell :tangle zshrc
+#+begin_src shell
 if [[ ! -f $ZINIT_HOME/zinit.zsh ]]; then
     print -P "%F{33}▓▒░ %F{220}Installing %F{33}DHARMA%F{220} Initiative Plugin Manager (%F{33}zdharma-continuum/zinit%F{220})…%f"
     mkdir -p "$(dirname $ZINIT_HOME)"
@@ -225,7 +229,7 @@ autoload -Uz _zinit
 
 Add annexes.
 
-#+begin_src shell :tangle zshrc
+#+begin_src shell
 zinit wait lucid light-mode for \
     zdharma-continuum/zinit-annex-readurl \
     zdharma-continuum/zinit-annex-bin-gem-node \
@@ -239,7 +243,7 @@ zinit wait lucid light-mode for \
 This plugin utilizes the Emacs daemon capability, allowing the user to quickly open frames, whether they are opened in a terminal via a ssh connection, or X frames opened on the same host.
 #+end_quote
 
-#+begin_src shell :tangle zshrc
+#+begin_src shell
 zinit ice wait lucid pick"emacsclient.sh" as"program"
 zinit light Flinner/zsh-emacs
 #+end_src
@@ -250,7 +254,7 @@ The plugin uses a custom launcher (which we'll call here $EMACS_LAUNCHER) that i
 
 Aliases that we define.
 
-#+begin_src shell :tangle zshrc
+#+begin_src shell
 if command -v  emacsclient  &>/dev/null ; then
     export EMACS_PLUGIN_LAUNCHER=emacsclient.sh
 
@@ -333,7 +337,7 @@ Fasd offers quick access to files and directories for POSIX shells. It is inspir
 
 Load the ~oh-my-zsh~ plugin for ~fasd~.
 
-#+begin_src shell :tangle zshrc
+#+begin_src shell
 zinit ice wait lucid
 zinit snippet OMZP::fasd
 #+end_src
@@ -355,7 +359,7 @@ This package comes with the following aliases:
 
 Keep home directory tidy
 
-#+begin_src shell :tangle zshrc
+#+begin_src shell
 _FASD_DATA="$XDG_CACHE_HOME/fasd"
 #+end_src
 
@@ -365,14 +369,43 @@ _FASD_DATA="$XDG_CACHE_HOME/fasd"
 A simple plugin that auto-closes, deletes and skips over matching delimiters in zsh intelligently. Hopefully.
 #+end_quote
 
-#+begin_src shell :tangle zshrc
+#+begin_src shell
 zinit ice wait lucid
 zinit light hlissner/zsh-autopair
 #+end_src
 
+*** zsh-nvm
+
+#+begin_quote
+nvm is an awesome tool but it can be kind of a pain to install and keep up to date. This zsh plugin allows you to quickly setup nvm once, save it in your dotfiles, then never worry about it again.
+#+end_quote
+
+#+begin_src shell
+zinit ice wait lucid
+zinit light lukechilds/zsh-nvm
+#+end_src
+
+XDG compliant directory
+
+#+begin_src shell
+export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+#+end_src
+
+Set autocompletion
+
+#+begin_src shell
+export NVM_COMPLETION=true
+#+end_src
+
+Lazy loading
+
+#+begin_src shell
+export NVM_LAZY_LOAD=true
+#+end_src
+
 *** TODO other
 
-#+begin_src shell :tangle zshrc
+#+begin_src shell
 # Hook completion with FZF
 zinit ice wait lucid
 zinit light Aloxaf/fzf-tab

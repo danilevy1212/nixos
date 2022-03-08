@@ -173,6 +173,7 @@ in {
   programs.direnv = {
     enable = true;
     nix-direnv.enable = true;
+    stdlib = (builtins.readFile ./readlib.sh);
   };
   services.lorri.enable = true;
 
@@ -200,7 +201,7 @@ in {
       fi
     '';
     telega-server-pull = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-       $DRY_RUN_CMD docker pull zevlg/telega-server:latest
+      $DRY_RUN_CMD docker pull zevlg/telega-server:latest
     '';
   };
 

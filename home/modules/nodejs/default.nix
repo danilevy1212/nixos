@@ -1,5 +1,5 @@
 { config, lib, pkgs, environment, ... }: {
-  home.packages = with pkgs; [ nodejs yarn fnm ];
+  home.packages = with pkgs; [ nodejs yarn ];
 
   # Move NPM Configuration from $HOME.
   home = {
