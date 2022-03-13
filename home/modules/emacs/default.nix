@@ -41,20 +41,13 @@ let
         mv tgs2png $out/bin
       '';
     };
-  tdlib_latest = unstable.tdlib.overrideAttrs (_: {
-    version = "1.8.0";
-    src = pkgs.fetchFromGitHub {
-      owner = "tdlib";
-      repo = "td";
-      rev = "fa8feefed70d64271945e9d5fd010b957d93c8cd";
-      sha256 = "0zhrsbjikbbna5i5xd9pq29fqkfhg0gpag77sx92r4d433qnbd2p";
-    };
-  });
 in {
   # Doom emacs dependencies
   home.packages = with pkgs; [
     # General Dependencies
     fd
+    coreutils
+    clang
     (ripgrep.override { withPCRE2 = true; })
     gnutls # for TLS connectivity
     zstd # for undo-fu-session/undo-tree compression
@@ -93,6 +86,7 @@ in {
 
     # sh
     shellcheck
+    shfmt
 
     # json
     jq
@@ -186,7 +180,6 @@ in {
   # Doom directory.
   home.sessionVariables = {
     DOOMDIR = "$XDG_CONFIG_HOME/doom";
-    TDLIB_PREFIX = "${tdlib_latest.outPath}";
   };
 
   # Add bin/doom to path.
