@@ -90,3 +90,4 @@ sudo nix flake lock --update-input <input-name>
 - [[https://nixos.org/manual/nix/unstable][NixOS unstable manual]]
 - [[https://nixos.org/manual/nixpkgs/stable/][nixpkgs stable manual]]
 - [[https://nixos.org/manual/nixpkgs/unstable/][nixpkgs unstable manual]]
+- [[https://github.com/nix-community/awesome-nix][Awesome Nix resources]]
