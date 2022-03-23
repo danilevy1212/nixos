@@ -5,11 +5,10 @@
 { config, pkgs, ... }:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      ./../../common
-    ];
+  imports = [ # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+    ./../../common
+  ];
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
@@ -25,7 +24,12 @@
   networking.interfaces.wlo1.useDHCP = true;
 
   # Enable bluetooth
-  hardware.bluetooth.enable = true;
+  hardware.bluetooth = {
+    enable = true;
+    settings = {
+      General = { Enable = "Source,Sink,Media,Socket"; };
+    };
+  };
 
   # Enable blueman.
   services.blueman.enable = true;
@@ -36,4 +40,3 @@
   # Notify battery status
   services.upower.enable = true;
 }
-
