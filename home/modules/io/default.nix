@@ -8,7 +8,7 @@
     # DB Client
     mongodb-tools
     mongodb-compass
-    unstable.dbeaver
+    dbeaver
 
     # REST Client
     unstable.postman
