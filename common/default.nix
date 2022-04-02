@@ -284,5 +284,5 @@
   services.gnome.gnome-keyring.enable = true;
 
   # !https://github.com/NixOS/nixpkgs/issues/16327
-  services.gnome.at-spi2-core.enable = true;
+  environment.variables.NO_AT_BRIDGE = "1";
 }
