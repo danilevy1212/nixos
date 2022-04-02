@@ -193,9 +193,6 @@ in {
          $DRY_RUN_CMD git clone https://github.com/hlissner/doom-emacs ${emacs-dir}
       fi
     '';
-    telega-server-pull = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-      $DRY_RUN_CMD docker pull zevlg/telega-server:latest
-    '';
   };
 
   programs.zsh.shellAliases = {
