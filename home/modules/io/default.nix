@@ -6,8 +6,6 @@
     spaceFM
 
     # DB Client
-    mongodb-tools
-    mongodb-compass
     dbeaver
 
     # REST Client
