@@ -35,7 +35,7 @@ in {
       flameshot
 
       # Drag and Drop convenience
-      dragon-drop
+      xdragon
 
       # For REPL sake
       lua

@@ -135,7 +135,7 @@
   };
 
   networking = {
-    networkmanager.packages = [ pkgs.networkmanager-openvpn ];
+    networkmanager.plugins = [ pkgs.networkmanager-openvpn ];
     # Port's for work stuff.
     firewall = {
       enable = true;
@@ -269,10 +269,6 @@
       value = "8192";
     }
   ];
-
-  # Make daily automatic upgrades.
-  system.autoUpgrade.enable = true;
-
   # Remenber me, for longer.
   security.sudo.extraConfig = "Defaults        timestamp_timeout=300";
 
