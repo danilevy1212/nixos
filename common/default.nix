@@ -79,7 +79,6 @@
       "networkmanager" # Can use network-manager
       "audio" # Pulse Audio
       "docker" # Docker
-      "lp" # The printer CUPS
     ];
   };
 
@@ -131,7 +130,6 @@
         openvpn
         docker-compose
         gitFull
-        system-config-printer
       ] ++ (with pkgs.unixtools; [ netstat ifconfig ]) # Basic network
       ++ [ nix-prefetch-git cachix nix-tree ]; # Nix convinience
   };
@@ -244,12 +242,6 @@
         };
       };
     };
-  };
-
-  # Enable CUPS to print documents. Stupid printer!
-  services.printing = {
-    enable = true;
-    drivers = with pkgs; [ hplip hplipWithPlugin ];
   };
 
   # Gnome craziness.
