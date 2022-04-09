@@ -158,7 +158,7 @@ in {
   # I cannot live without you, my one true love...
   programs.emacs = {
     enable = true;
-    package = pkgs.emacsGcc;
+    package = pkgs.emacsPgtkGcc;
     # For vterm.
     extraPackages = epkgs: [ epkgs.vterm epkgs.oauth2 ];
   };
