@@ -1,8 +1,10 @@
 { config, lib, pkgs, ... }: {
   home.packages = with pkgs; [
-    # TODO Look into mopidy instead
     # Proprietary musicality
     spotify
+
+    # Non-proprietary musicality
+    (import ./nuclear.nix pkgs)
 
     # Social closeness
     ferdi
