@@ -23,6 +23,9 @@ let
 
     # My Shell configuration.
     "cli"
+
+    # Rust
+    "rust"
   ];
   moduleImports = map (x: ./. + builtins.toPath "/modules/${x}") modules;
 in { self, config, pkgs, ... }: {
