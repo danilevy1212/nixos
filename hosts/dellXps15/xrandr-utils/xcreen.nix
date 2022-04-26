@@ -1,4 +1,5 @@
-{ pkgs,... }: with pkgs; {
+{pkgs, ...}:
+with pkgs; {
   horizontal = writeScriptBin "xcreen-horizontal-xps15" ''
     #!${stdenv.shell}
 

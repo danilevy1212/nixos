@@ -28,17 +28,23 @@ let
     "rust"
   ];
   moduleImports = map (x: ./. + builtins.toPath "/modules/${x}") modules;
-in { self, config, pkgs, ... }: {
-  # Let Home Manager install and manage itself.
-  programs.home-manager.enable = true;
+in
+  {
+    self,
+    config,
+    pkgs,
+    ...
+  }: {
+    # Let Home Manager install and manage itself.
+    programs.home-manager.enable = true;
 
-  # Home Manager needs a bit of information about you and the paths it should manage.
-  home.username = "dlevym";
-  home.homeDirectory = "/home/dlevym";
+    # Home Manager needs a bit of information about you and the paths it should manage.
+    home.username = "dlevym";
+    home.homeDirectory = "/home/dlevym";
 
-  # Be quiet, will you?
-  news.display = "silent";
+    # Be quiet, will you?
+    news.display = "silent";
 
-  # Modularize! Never compromise! 😎
-  imports = moduleImports;
-}
+    # Modularize! Never compromise! 😎
+    imports = moduleImports;
+  }

@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }: {
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
   home.packages = with pkgs; [
     # Proprietary musicality
     spotify
@@ -22,14 +27,14 @@
   ];
 
   # default browser
-  home.sessionVariables = { BROWSER = "brave"; };
+  home.sessionVariables = {BROWSER = "brave";};
 
   # Make brave default browser
   xdg.mimeApps = {
     enable = true;
     defaultApplications = {
-      "x-scheme-handler/http" = [ "brave-browser.desktop" ];
-      "x-scheme-handler/https" = [ "brave-browser.desktop" ];
+      "x-scheme-handler/http" = ["brave-browser.desktop"];
+      "x-scheme-handler/https" = ["brave-browser.desktop"];
     };
   };
 }

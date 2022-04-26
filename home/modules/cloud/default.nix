@@ -1,4 +1,9 @@
-{ config, lib, pkgs, nixos ? import <nixos>, ... }: {
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
   # TODO I shall replace you with rclone and gdrive soon!
   services.dropbox = {
     enable = true;
@@ -24,8 +29,8 @@
   };
 
   # Global packages readily usable.
-  home.sessionPath = [ "$HOME/.krew/bin" ];
+  home.sessionPath = ["$HOME/.krew/bin"];
 
   # Add an alias for kubectl
-  programs.zsh.shellAliases = { k = "kubectl"; };
+  programs.zsh.shellAliases = {k = "kubectl";};
 }

@@ -1,6 +1,9 @@
-{ config, pkgs, options, ... }:
-
 {
+  config,
+  pkgs,
+  options,
+  ...
+}: {
   imports = [
     ./hardware-configuration.nix # Include the results of the hardware scan.
     ./../../common
@@ -16,7 +19,7 @@
   # replicates the default behavior.
   networking = {
     hostName = "nixosXps15"; # Define your hostname.
-    interfaces = { wlp59s0.useDHCP = true; };
+    interfaces = {wlp59s0.useDHCP = true;};
   };
 
   # Protect the RAM
@@ -24,7 +27,7 @@
 
   # Video Playing acceleration
   nixpkgs.config.packageOverrides = pkgs: {
-    vaapiIntel = pkgs.vaapiIntel.override { enableHybridCodec = true; };
+    vaapiIntel = pkgs.vaapiIntel.override {enableHybridCodec = true;};
   };
   hardware.opengl = {
     enable = true;

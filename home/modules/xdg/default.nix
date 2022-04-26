@@ -1,5 +1,5 @@
-{ config, ... }: {
-  xdg = { enable = true; };
+{config, ...}: {
+  xdg = {enable = true;};
 
   # Make local executables visible
   home.sessionPath = [

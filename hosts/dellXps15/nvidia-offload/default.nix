@@ -1,9 +1,6 @@
-{ pkgs, ... }:
-
-{
+{pkgs, ...}: {
   # Nvidia offload
-  environment.systemPackages =
-    [ (import ./nvidia-offload.nix { inherit pkgs; }).nvidia-offload ];
+  environment.systemPackages = [(import ./nvidia-offload.nix {inherit pkgs;}).nvidia-offload];
 
   hardware.nvidia.prime = {
     offload.enable = true;
@@ -16,5 +13,5 @@
   };
 
   # Configure keymap in X11
-  services.xserver = { videoDrivers = [ "nvidia" ]; };
+  services.xserver = {videoDrivers = ["nvidia"];};
 }

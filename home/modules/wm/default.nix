@@ -1,5 +1,9 @@
-{ config, lib, pkgs, ... }:
-let
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
   awesome-wm-widgets = with pkgs;
     lua.pkgs.toLuaModule (stdenv.mkDerivation rec {
       name = "awesome-wm-widgets";
@@ -11,7 +15,7 @@ let
         ref = "master";
         rev = "01a4f428e0361f4222e8d2f14607fb03bbd6d94e";
       };
-      buildInputs = [ lua ];
+      buildInputs = [lua];
 
       installPhase = ''
         mkdir -p $out/lib/lua/${lua.luaversion}/
@@ -52,7 +56,7 @@ in {
 
     # For more comfy development, link configuration directly.
     activation = {
-      linkConfWithAwesome = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+      linkConfWithAwesome = lib.hm.dag.entryAfter ["writeBoundary"] ''
         if [ ! -L ${config.xdg.configHome}/awesome ]
         then
         $DRY_RUN_CMD ln -s $VERBOSE_ARG \
@@ -68,11 +72,10 @@ in {
   # Create the awesome session.
   xsession = {
     enable = true;
-    scriptPath =
-      "${config.home.homeDirectory}/.local/share/xsession/xsession-awesome";
+    scriptPath = "${config.home.homeDirectory}/.local/share/xsession/xsession-awesome";
     windowManager.awesome = {
       enable = true;
-      luaModules = [ awesome-wm-widgets ];
+      luaModules = [awesome-wm-widgets];
     };
     pointerCursor = {
       name = "Numix-Cursor";

@@ -1,6 +1,10 @@
-{ config, lib, pkgs, unstable, ... }:
-
 {
+  config,
+  lib,
+  pkgs,
+  unstable,
+  ...
+}: {
   home.packages = with pkgs; [
     # File management.
     spaceFM
@@ -13,7 +17,7 @@
   ];
 
   # default file-browser
-  home.sessionVariables = { FILEMANAGER = "spacefm"; };
+  home.sessionVariables = {FILEMANAGER = "spacefm";};
 
   # Connect up to external devices.
   services.udiskie.enable = true;

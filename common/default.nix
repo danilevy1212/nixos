@@ -1,9 +1,14 @@
-{ config, lib, pkgs, unstable, emacs-overlay, ... }:
-
 {
-  imports = [ ./../cachix.nix ];
+  config,
+  lib,
+  pkgs,
+  unstable,
+  emacs-overlay,
+  ...
+}: {
+  imports = [./../cachix.nix];
 
-  nixpkgs.overlays = [ emacs-overlay ];
+  nixpkgs.overlays = [emacs-overlay];
 
   # Set your time zone.
   time.timeZone = "America/New_York";
@@ -14,8 +19,8 @@
       "nixpkgs=/nix/var/nix/profiles/per-user/root/channels/nixos"
       "/nix/var/nix/profiles/per-user/root/channels"
     ];
-    trustedUsers = [ "root" "dlevym" ];
-    gc = { automatic = true; };
+    trustedUsers = ["root" "dlevym"];
+    gc = {automatic = true;};
     package = pkgs.nixFlakes;
     # Protect nix-shell against garbage collection
     extraOptions = ''
@@ -32,7 +37,7 @@
 
   boot = {
     # NixOS uses NTFS-3G for NTFS support.
-    supportedFilesystems = [ "ntfs" ];
+    supportedFilesystems = ["ntfs"];
 
     # Cutting-edgyness
     kernelPackages = pkgs.linuxPackages_latest;
@@ -42,12 +47,12 @@
   i18n = {
     defaultLocale = "ja_JP.UTF-8";
     extraLocaleSettings = {
-      LC_CTYPE="en_US.UTF-8";
-      LC_COLLATE="en_US.UTF-8";
+      LC_CTYPE = "en_US.UTF-8";
+      LC_COLLATE = "en_US.UTF-8";
     };
     inputMethod = {
       enabled = "ibus";
-      ibus.engines = with pkgs.ibus-engines; [ mozc ];
+      ibus.engines = with pkgs.ibus-engines; [mozc];
     };
   };
 
@@ -58,12 +63,12 @@
   };
 
   # Enable sound.
-  sound = { enable = true; };
+  sound = {enable = true;};
   hardware.pulseaudio = {
     enable = true;
     support32Bit = true;
     package = pkgs.pulseaudioFull; # PulseAudio with bluetooth support
-    extraModules = [ pkgs.pulseaudio-modules-bt ];
+    extraModules = [pkgs.pulseaudio-modules-bt];
     # Auto switching audio on connect.
     extraConfig = "load-module module-switch-on-connect";
   };
@@ -87,8 +92,8 @@
     useGlobalPkgs =
       true; # Home manager has access to system level dependencies.
     useUserPackages = true; # Unclutter $HOME.
-    users.dlevym = (import ./../home/home.nix);
-    extraSpecialArgs = { inherit unstable; };
+    users.dlevym = import ./../home/home.nix;
+    extraSpecialArgs = {inherit unstable;};
   };
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -115,7 +120,7 @@
       XMODIFIER = "@im=ibus";
     };
     # Just as good.
-    shellAliases = { vim = "nvim"; };
+    shellAliases = {vim = "nvim";};
     # List packages installed in system profile. To search, run:
     # $ nix search ...
     systemPackages = with pkgs;
@@ -130,28 +135,28 @@
         openvpn
         docker-compose
         gitFull
-      ] ++ (with pkgs.unixtools; [ netstat ifconfig ]) # Basic network
-      ++ [ nix-prefetch-git cachix nix-tree ]; # Nix convinience
+      ]
+      ++ (with pkgs.unixtools; [netstat ifconfig]) # Basic network
+      ++ [nix-prefetch-git cachix nix-tree]; # Nix convinience
   };
 
   networking = {
-    networkmanager.plugins = [ pkgs.networkmanager-openvpn ];
+    networkmanager.plugins = [pkgs.networkmanager-openvpn];
     # Port's for work stuff.
     firewall = {
       enable = true;
-      allowedTCPPorts = [ 9007 ];
     };
     # Give me those sweet interwebs
-    networkmanager = { enable = true; };
+    networkmanager = {enable = true;};
     # No stupid DNS shennanigans
     resolvconf.dnsExtensionMechanism = false;
   };
 
   # Default shell.
-  users.extraUsers.dlevym = { shell = pkgs.zsh; };
+  users.extraUsers.dlevym = {shell = pkgs.zsh;};
 
   # Backup shell.
-  programs.zsh = { enable = true; };
+  programs.zsh = {enable = true;};
 
   # Minimal bash config (for root)
   programs.bash.interactiveShellInit = "shopt -s autocd"; # autocd
@@ -176,13 +181,13 @@
     enable = true;
     bindings = [
       {
-        keys = [ 224 ];
-        events = [ "key" ];
+        keys = [224];
+        events = ["key"];
         command = "/run/current-system/sw/bin/light -U 5";
       }
       {
-        keys = [ 225 ];
-        events = [ "key" ];
+        keys = [225];
+        events = ["key"];
         command = "/run/current-system/sw/bin/light -A 5";
       }
     ];
@@ -209,19 +214,21 @@
     exportConfiguration = true;
     libinput = {
       enable = true; # Enable touchpad support
-      touchpad = { disableWhileTyping = true; };
+      touchpad = {disableWhileTyping = true;};
     };
     desktopManager = {
-      session = [{
-        name = "home-manager+awesomewm";
-        start = ''
-          # TODO Make ibus-daemon a systemctl --user service
-          # NOTE Careful! IBUS will overwrite your layout unless you enable "Use system keyboard layout" option in Preferences -> Advanced
-          /run/current-system/sw/bin/ibus-daemon -d -x
+      session = [
+        {
+          name = "home-manager+awesomewm";
+          start = ''
+            # TODO Make ibus-daemon a systemctl --user service
+            # NOTE Careful! IBUS will overwrite your layout unless you enable "Use system keyboard layout" option in Preferences -> Advanced
+            /run/current-system/sw/bin/ibus-daemon -d -x
 
-          exec $HOME/.local/share/xsession/xsession-awesome
-        '';
-      }];
+            exec $HOME/.local/share/xsession/xsession-awesome
+          '';
+        }
+      ];
     };
     displayManager = {
       lightdm.greeters = {

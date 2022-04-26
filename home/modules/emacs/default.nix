@@ -1,5 +1,10 @@
-{ config, lib, pkgs, unstable, ... }:
-let
+{
+  config,
+  lib,
+  pkgs,
+  unstable,
+  ...
+}: let
   emacs-dir = "${config.xdg.configHome}/emacs";
   quivira = with pkgs;
     stdenv.mkDerivation {
@@ -29,7 +34,7 @@ let
         rev = "69e3605d7f78d80b1225f9043e420b68c214dfe1";
         sha256 = "sha256-ET/GO+pVq6FcRKr1Nds3UUe1AosSJ+m8ngJ+0erTfxE=";
       };
-      buildInputs = [ rlottie libpng cmake pkg-config ];
+      buildInputs = [rlottie libpng cmake pkg-config];
       configurePhase = ''
         cmake .
       '';
@@ -48,7 +53,7 @@ in {
     fd
     coreutils
     clang
-    (ripgrep.override { withPCRE2 = true; })
+    (ripgrep.override {withPCRE2 = true;})
     gnutls # for TLS connectivity
     zstd # for undo-fu-session/undo-tree compression
     pinentry_emacs # in-emacs gnupg prompts
@@ -82,6 +87,7 @@ in {
     gomodifytags
 
     # nix
+    alejandra
     nixfmt
 
     # sh
@@ -117,7 +123,7 @@ in {
 
     # :checkers
     languagetool
-    (aspellWithDicts (d: with d; [ es en en-computers en-science ]))
+    (aspellWithDicts (d: with d; [es en en-computers en-science]))
 
     # :emacs
     # dired
@@ -160,21 +166,21 @@ in {
     enable = true;
     package = pkgs.emacsPgtkGcc;
     # For vterm.
-    extraPackages = epkgs: [ epkgs.vterm epkgs.oauth2 ];
+    extraPackages = epkgs: [epkgs.vterm epkgs.oauth2];
   };
 
   # For :tools direnv
   programs.direnv = {
     enable = true;
     nix-direnv.enable = true;
-    stdlib = (builtins.readFile ./readlib.sh);
+    stdlib = builtins.readFile ./readlib.sh;
   };
   services.lorri.enable = true;
 
   # For :tools magit
   programs.git.delta = {
     enable = true;
-    options = { syntax-theme = "Nord"; };
+    options = {syntax-theme = "Nord";};
   };
 
   # Doom directory.
@@ -183,11 +189,11 @@ in {
   };
 
   # Add bin/doom to path.
-  home.sessionPath = [ "${emacs-dir}/bin" ];
+  home.sessionPath = ["${emacs-dir}/bin"];
 
   # "auto" install doom-emacs
   home.activation = {
-    doom-install = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    doom-install = lib.hm.dag.entryAfter ["writeBoundary"] ''
       if [ ! -d ${emacs-dir} ]
       then
          $DRY_RUN_CMD git clone https://github.com/hlissner/doom-emacs ${emacs-dir}
