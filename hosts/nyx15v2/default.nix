@@ -4,6 +4,7 @@
 {
   config,
   pkgs,
+  lib,
   ...
 }: {
   imports = [
@@ -32,6 +33,19 @@
       General = {Enable = "Source,Sink,Media,Socket";};
     };
   };
+
+  environment.systemPackages = lib.mkIf (config.services.xserver.enable) [
+    (pkgs.writeShellScriptBin "x-dual" ''
+      ${pkgs.xorg.xrandr}/bin/xrandr --output eDP --primary --mode 1920x1080 --pos 1920x0 --rotate normal \
+            --output DisplayPort-0 --mode 1920x1080 --pos 0x0 --rotate normal \
+            --output DisplayPort-1 --off
+    '')
+    (pkgs.writeShellScriptBin "x-solo" ''
+      ${pkgs.xorg.xrandr}/bin/xrandr --output eDP --primary --mode 1920x1080 --pos 1920x0 --rotate normal \
+            --output DisplayPort-0 --off \
+            --output DisplayPort-1 --off
+    '')
+  ];
 
   # Enable blueman.
   services.blueman.enable = true;
