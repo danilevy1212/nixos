@@ -103,9 +103,10 @@ in {
     # python
     pyright
     black
-    # python38Packages.nose
-    python38Packages.pyflakes
-    python38Packages.isort
+    python39Packages.nose
+    python39Packages.pyflakes
+    python39Packages.isort
+    python39Packages.ipython
 
     # latex
     texlive.combined.scheme-full
