@@ -77,10 +77,11 @@ in {
       enable = true;
       luaModules = [awesome-wm-widgets];
     };
-    pointerCursor = {
-      name = "Numix-Cursor";
-      package = pkgs.numix-cursor-theme;
-    };
+  };
+
+  home.pointerCursor = {
+    name = "Numix-Cursor";
+    package = pkgs.numix-cursor-theme;
   };
 
   # Link for the LSP
