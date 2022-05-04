@@ -266,15 +266,16 @@
       domain = "*";
       type = "soft";
       item = "nofile";
-      value = "4096";
+      value = "65535";
     }
     {
       domain = "*";
       type = "hard";
       item = "nofile";
-      value = "8192";
+      value = "65535";
     }
   ];
+
   # Remenber me, for longer.
   security.sudo.extraConfig = "Defaults        timestamp_timeout=300";
 
