@@ -34,6 +34,13 @@
     };
   };
 
+  hardware.pulseaudio = lib.mkIf config.hardware.pulseaudio.enable {
+    # PulseAudio with bluetooth support
+    package = pkgs.pulseaudioFull;
+    # Auto switching audio on connect.
+    extraConfig = "load-module module-switch-on-connect";
+  };
+
   environment.systemPackages = lib.mkIf (config.services.xserver.enable) [
     (pkgs.writeShellScriptBin "x-dual" ''
       ${pkgs.xorg.xrandr}/bin/xrandr --output eDP --primary --mode 1920x1080 --pos 1920x0 --rotate normal \

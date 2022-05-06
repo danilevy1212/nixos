@@ -22,6 +22,13 @@
     interfaces = {wlp59s0.useDHCP = true;};
   };
 
+  # PulseAudio with bluetooth support
+  hardware.pulseaudio = lib.mkIf config.hardware.pulseaudio.enable {
+    package = pkgs.pulseaudioFull;
+    # Auto switching audio on connect.
+    extraConfig = "load-module module-switch-on-connect";
+  };
+
   # Protect the RAM
   nix.buildCores = 4;
 
