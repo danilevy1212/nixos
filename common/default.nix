@@ -45,11 +45,7 @@
 
   # Select internationalisation properties.
   i18n = {
-    defaultLocale = "ja_JP.UTF-8";
-    extraLocaleSettings = {
-      LC_CTYPE = "en_US.UTF-8";
-      LC_COLLATE = "en_US.UTF-8";
-    };
+    defaultLocale = "en_US.UTF-8";
     inputMethod = {
       enabled = "ibus";
       ibus.engines = with pkgs.ibus-engines; [mozc];
