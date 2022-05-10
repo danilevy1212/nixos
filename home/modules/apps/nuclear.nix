@@ -4,12 +4,12 @@
   ...
 }: let
   pname = "nuclear";
-  version = "f5ec0d";
+  version = "eac584";
   name = "${pname}-${version}";
 
   src = fetchurl {
     url = "https://github.com/nukeop/nuclear/releases/download/${version}/${name}.AppImage";
-    sha256 = "0x8348di2hx2dc01plk55wrcnkyll1ak6hnlj3n537k8ymhfpswy";
+    sha256 = "16jvp41c1ajb0smiq2zban9d49vdcgc6ik3xnqfa7msig06ias4p";
   };
 
   appimageContents = appimageTools.extract {inherit name src;};
