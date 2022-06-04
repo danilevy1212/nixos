@@ -97,9 +97,6 @@ in {
     # json
     jq
 
-    # lua
-    sumneko-lua-language-server
-
     # python
     pyright
     black
