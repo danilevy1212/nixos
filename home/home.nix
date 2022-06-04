@@ -26,6 +26,9 @@ let
 
     # Rust
     "rust"
+
+    # Golang
+    "golang"
   ];
   moduleImports = map (x: ./. + builtins.toPath "/modules/${x}") modules;
 in
