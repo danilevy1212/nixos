@@ -127,6 +127,7 @@
         openvpn
         docker-compose
         gitFull
+        firefox
       ]
       ++ (with pkgs.unixtools; [netstat ifconfig]) # Basic network
       ++ [nix-prefetch-git cachix nix-tree]; # Nix convinience
