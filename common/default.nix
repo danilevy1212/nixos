@@ -59,14 +59,15 @@
   };
 
   # Enable sound.
-  sound = {enable = true;};
-  hardware.pulseaudio = {
+  security.rtkit.enable = true;
+  services.pipewire = {
     enable = true;
-    support32Bit = true;
+    alsa = {
+      enable = true;
+      support32Bit = true;
+    };
+    pulse.enable = true;
   };
-
-  # Explicit PulseAudio support in applications
-  nixpkgs.config.pulseaudio = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.dlevym = {

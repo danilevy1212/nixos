@@ -29,16 +29,33 @@
   # Enable bluetooth
   hardware.bluetooth = {
     enable = true;
-    settings = {
-      General = {Enable = "Source,Sink,Media,Socket";};
-    };
+    hsphfpd.enable = true;
   };
 
-  hardware.pulseaudio = lib.mkIf config.hardware.pulseaudio.enable {
-    # PulseAudio with bluetooth support
-    package = pkgs.pulseaudioFull;
-    # Auto switching audio on connect.
-    extraConfig = "load-module module-switch-on-connect";
+  # High quality BT calls
+  services.pipewire = {
+    media-session.config.bluez-monitor.rules = [
+      {
+        # Matches all cards
+        matches = [{"device.name" = "~bluez_card.*";}];
+        actions = {
+          "update-props" = {
+            "bluez5.auto-connect" = ["hfp_hf" "hsp_hs" "a2dp_sink"];
+          };
+        };
+      }
+      {
+        matches = [
+          # Matches all sources
+          {"node.name" = "~bluez_input.*";}
+          # Matches all outputs
+          {"node.name" = "~bluez_output.*";}
+        ];
+        actions = {
+          "node.pause-on-idle" = false;
+        };
+      }
+    ];
   };
 
   environment.systemPackages = lib.mkIf (config.services.xserver.enable) [
