@@ -12,7 +12,6 @@
     (import ./nuclear.nix pkgs)
 
     # Social closeness
-    ferdi
     tdesktop
     slack
 
