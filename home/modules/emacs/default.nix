@@ -184,6 +184,7 @@ in {
   # Doom directory.
   home.sessionVariables = {
     DOOMDIR = "$XDG_CONFIG_HOME/doom";
+    LSP_USE_PLIST = "1";
   };
 
   # Add bin/doom to path.

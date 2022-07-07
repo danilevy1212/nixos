@@ -44,6 +44,7 @@ in
     # Home Manager needs a bit of information about you and the paths it should manage.
     home.username = "dlevym";
     home.homeDirectory = "/home/dlevym";
+    home.stateVersion = "22.11";
 
     # Be quiet, will you?
     news.display = "silent";

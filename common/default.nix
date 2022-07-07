@@ -8,6 +8,8 @@
 }: {
   imports = [./../cachix.nix];
 
+  system.stateVersion = "22.11";
+
   nixpkgs.overlays = [emacs-overlay];
 
   # Set your time zone.
@@ -19,7 +21,11 @@
       "nixpkgs=/nix/var/nix/profiles/per-user/root/channels/nixos"
       "/nix/var/nix/profiles/per-user/root/channels"
     ];
-    trustedUsers = ["root" "dlevym"];
+    settings = {
+      trusted-users = ["root" "dlevym"];
+      # Protect disk space
+      auto-optimise-store = true;
+    };
     gc = {automatic = true;};
     package = pkgs.nixFlakes;
     # Protect nix-shell against garbage collection
@@ -28,8 +34,6 @@
       keep-derivations = true
       experimental-features = nix-command flakes
     '';
-    # Protect disk space
-    autoOptimiseStore = true;
   };
 
   # Sorry, Stallman-chan
