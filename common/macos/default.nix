@@ -1,0 +1,102 @@
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
+  home-manager.users.dlevy = import ./../../home/home.nix;
+  users.users.dlevy.home = "/Users/dlevy";
+
+  # List packages installed in system profile.
+  environment = {
+    systemPackages = with pkgs; [
+      iterm2
+      maven
+      docker
+    ];
+    # Add homebrew to PATH
+    systemPath = [
+      "/opt/homebrew/bin"
+    ];
+    variables = {
+      LIQUIBASE_HOME = "/opt/homebrew/opt/liquibase/libexec";
+    };
+  };
+
+  fonts = {
+    fontDir.enable = true;
+    fonts = with pkgs; [
+      # emacs/fonts module
+      # Fonts
+      emacs-all-the-icons-fonts
+      ## Emacs
+      sarasa-gothic
+      dejavu_fonts
+      symbola
+      noto-fonts
+      (import ./../../home/modules/emacs/quivera.nix {inherit pkgs;})
+      # Terminal
+      victor-mono
+    ];
+  };
+
+  # Brew packages
+  homebrew = {
+    enable = true;
+    brewPrefix = "/opt/homebrew/bin/";
+    cleanup = "zap";
+    brews = [
+      # emacs/golang module
+      "golangci-lint"
+      "pyenv"
+      "jenv"
+      "liquibase"
+      "poppler"
+      "automake"
+    ];
+    casks = [
+      "macpass"
+      "brave-browser"
+      "slack"
+      "spotify"
+      "docker"
+      "postman"
+      "lastpass"
+      "medis"
+      "dropbox"
+    ];
+  };
+
+  # Use a custom configuration.nix location.
+  # $ darwin-rebuild switch -I darwin-config=$HOME/.config/nixos/host/autoMac/default.nix
+  environment.darwinConfig = "$HOME/.config/nixos/host/autoMac/default.nix";
+
+  nixpkgs = {
+    config = {
+      allowUnfree = true;
+      allowUnsupportedSystem = true;
+    };
+  };
+
+  # Create /etc/bashrc that loads the nix-darwin environment.
+  programs.zsh.enable = true; # default shell on catalina
+
+  # Used for backwards compatibility, please read the changelog before changing.
+  # $ darwin-rebuild changelog
+  system = {
+    stateVersion = 4;
+    keyboard = {
+      enableKeyMapping = true;
+      remapCapsLockToControl = true;
+    };
+  };
+
+  services.lorri.enable = true;
+
+  services.postgresql = {
+    enable = true;
+    package = pkgs.postgresql;
+  };
+
+  services.redis.enable = true;
+}

@@ -7,27 +7,26 @@
 }: {
   home.packages = with pkgs; [
     # File management.
-    spaceFM
+    (lib.mkIf stdenv.isLinux spaceFM)
 
     # DB Client
     dbeaver
 
     # REST Client
-    unstable.postman
+    (lib.mkIf pkgs.stdenv.isLinux unstable.postman)
   ];
 
   # default file-browser
-  home.sessionVariables = {FILEMANAGER = "spacefm";};
+  home.sessionVariables = lib.mkIf pkgs.stdenv.isLinux {FILEMANAGER = "spacefm";};
 
-  # Connect up to external devices.
-  services.udiskie.enable = true;
+  # Reuse an already-established connection when creating a new SSH session
+  programs.ssh.extraConfig = ''
+    ControlMaster auto
+    ControlPath ~/.ssh/socket_%r@%h-%p
+    ControlPersist 600
+  '';
 
-  # I 💙 bluetooth.
-  services.blueman-applet.enable = true;
-
-  # Bluetooth remote control
-  services.mpris-proxy.enable = true;
-
-  # I ❤ Internet
-  services.network-manager-applet.enable = true;
+  imports = [
+    ./linux-services.nix
+  ];
 }
