@@ -111,11 +111,11 @@ in {
     enable = true;
     backend = "glx";
     vSync = true;
-    activeOpacity = "1.0";
-    inactiveOpacity = "0.9";
+    activeOpacity = 1.0;
+    inactiveOpacity = 0.9;
     fade = true;
     fadeDelta = 5;
     shadow = true;
-    shadowOpacity = "0.75";
+    shadowOpacity = 0.75;
   };
 })

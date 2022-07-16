@@ -53,7 +53,7 @@ in {
         symbola
         noto-fonts
         noto-fonts-emoji
-        quivira
+        quivera
         ## Terminal
         victor-mono
       ]

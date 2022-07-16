@@ -15,6 +15,7 @@ lib.mkIf pkgs.stdenv.isLinux {
     # Social closeness
     tdesktop
     slack
+    teams
 
     # Browser for the...
     brave
@@ -27,6 +28,9 @@ lib.mkIf pkgs.stdenv.isLinux {
 
     # I only use this to download Linux ISO images I super promise
     qbittorrent
+
+    # video encoder
+    handbrake
   ];
 
   # Make brave default browser

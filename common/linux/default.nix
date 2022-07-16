@@ -24,6 +24,8 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users = {
     dlevym = {
+      # Default shell.
+      shell = pkgs.zsh;
       isNormalUser = true;
       extraGroups = [
         # Docker
@@ -33,8 +35,6 @@
         "audio" # Pulse Audio
       ];
     };
-    # Default shell.
-    extraUsers.dlevym = {shell = pkgs.zsh;};
   };
 
   boot = {
@@ -194,7 +194,7 @@
     enableSSHSupport = true;
   };
 
-  home.users.dlevym = import ./../../home/home.nix;
+  home-manager.users.dlevym = import ./../../home/home.nix;
 
   ## List services that you want to enable:
   # Docker
