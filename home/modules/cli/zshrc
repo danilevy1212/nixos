@@ -118,11 +118,11 @@ find_file() {
     vterm_cmd find-file "$(realpath "${@:-.}")"
 }
 
-if [[ "$INSIDE_EMACS" = 'vterm' ]]; then
+if [ -z "${INSIDE_EMACS+x}" ]; then
     alias clear='vterm_printf "51;Evterm-clear-scrollback";tput clear'
 fi
 
-if [[ "$INSIDE_EMACS" = 'vterm' ]]; then
+if [ -z "${INSIDE_EMACS+x}" ]; then
     TITLE=$(pwd)
 fi
 
@@ -136,7 +136,7 @@ vterm_cmd() {
     vterm_printf "51;E$vterm_elisp"
 }
 
-[ "$INSIDE_EMACS" != "vterm" ] && { neofetch; }
+[ -z "${INSIDE_EMACS+x}" ] && { neofetch; }
 
 ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 

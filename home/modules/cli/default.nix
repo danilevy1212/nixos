@@ -24,7 +24,8 @@ in
     programs.zsh = {
       enable = true;
       enableCompletion = true;
-      dotDir = ".config/nix-zsh"; # NOTE This is just for easier debugging.
+      # NOTE This is just for easier debugging.
+      dotDir = ".config/zsh";
       initExtra = builtins.readFile ./zshrc;
       shellAliases = {
         # HACK

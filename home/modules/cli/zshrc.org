@@ -174,7 +174,7 @@ find_file() {
 Completely clear the buffer. With this, everything that is not on screen is erased.
 
 #+begin_src shell
-if [[ "$INSIDE_EMACS" = 'vterm' ]]; then
+if [ -z "${INSIDE_EMACS+x}" ] ; then
     alias clear='vterm_printf "51;Evterm-clear-scrollback";tput clear'
 fi
 #+end_src
@@ -182,7 +182,7 @@ fi
 Set tittle for vterm buffer.
 
 #+begin_src shell
-if [[ "$INSIDE_EMACS" = 'vterm' ]]; then
+if [ -z "${INSIDE_EMACS+x}" ]; then
     TITLE=$(pwd)
 fi
 #+end_src
@@ -204,7 +204,7 @@ vterm_cmd() {
 Don't flex if we are inside emacs.
 
 #+begin_src shell
-[ "$INSIDE_EMACS" != "vterm" ] && { neofetch; }
+[ -z "${INSIDE_EMACS+x}" ] && { neofetch; }
 #+end_src
 
 ** TODO ZINIT
