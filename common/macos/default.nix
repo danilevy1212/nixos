@@ -50,6 +50,7 @@
       "golangci-lint"
       "pyenv"
       "jenv"
+      "maven"
       "liquibase"
     ];
     casks = [
