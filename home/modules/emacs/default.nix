@@ -36,7 +36,7 @@ in {
       # General Dependencies
       fd
       coreutils
-      clang
+      (lib.mkIf stdenv.isLinux clang)
       (ripgrep.override {withPCRE2 = true;})
       gnutls # for TLS connectivity
       zstd # for undo-fu-session/undo-tree compression
@@ -119,7 +119,7 @@ in {
 
       # :emacs
       # dired
-      imagemagick
+      (lib.mkIf stdenv.isLinux imagemagick)
 
       # :tools
       # lookup
@@ -160,12 +160,13 @@ in {
     ];
 
   # I cannot live without you, my one true love...
-  programs.emacs = with pkgs; {
-    enable = true;
-    package = emacsNativeComp;
-    # For vterm.
-    extraPackages = epkgs: with epkgs; [vterm oauth2];
-  };
+  programs.emacs = with pkgs;
+    lib.mkIf stdenv.isLinux {
+      enable = true;
+      package = emacsNativeComp;
+      # For vterm.
+      extraPackages = epkgs: with epkgs; [vterm oauth2];
+    };
 
   # For :tools direnv
   programs.direnv = {

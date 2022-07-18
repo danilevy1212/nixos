@@ -51,8 +51,6 @@
       "pyenv"
       "jenv"
       "liquibase"
-      "poppler"
-      "automake"
     ];
     casks = [
       "macpass"
@@ -65,6 +63,9 @@
       "medis"
       "dropbox"
     ];
+    extraConfig = ''
+    brew "emacs-plus@28", args: ["with-imagemagick", "with-native-comp", "with-modern-doom3-icon"]
+    '';
   };
 
   # Use a custom configuration.nix location.
