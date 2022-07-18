@@ -52,6 +52,8 @@
       "jenv"
       "maven"
       "liquibase"
+      "sass/sass/sass"
+      "watchman"
     ];
     casks = [
       "macpass"
@@ -63,6 +65,12 @@
       "lastpass"
       "medis"
       "dropbox"
+      "intellij-idea"
+      "adoptopenjdk8"
+    ];
+    taps = [
+      "d12frosted/emacs-plus"
+      "AdoptOpenJDK/openjdk"
     ];
     extraConfig = ''
     brew "emacs-plus@28", args: ["with-imagemagick", "with-native-comp", "with-modern-doom3-icon"]

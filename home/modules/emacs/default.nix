@@ -172,7 +172,6 @@ in {
   programs.direnv = {
     enable = true;
     nix-direnv.enable = true;
-    stdlib = builtins.readFile ./readlib.sh;
   };
   services.lorri = lib.mkIf pkgs.stdenv.isLinux {enable = true;};
 
