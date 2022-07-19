@@ -103,10 +103,17 @@
 
   services.lorri.enable = true;
 
-  services.postgresql = {
-    enable = true;
-    package = pkgs.postgresql;
-  };
+  # services.postgresql = {
+  #   enable = true;
+  #   package = pkgs.postgresql;
+  #   dataDir = "${config.users.users.dlevy.home}/.cache/postgresql";
+  # };
 
-  services.redis.enable = true;
+  services.redis = {
+    enable = true;
+    dataDir = "${config.users.users.dlevy.home}/.cache/redis";
+    extraConfig = ''
+      stop-writes-on-bgsave-error no
+    '';
+  };
 }
