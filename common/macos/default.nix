@@ -54,6 +54,7 @@
       "liquibase"
       "sass/sass/sass"
       "watchman"
+      "neofetch"
     ];
     casks = [
       "brave-browser"

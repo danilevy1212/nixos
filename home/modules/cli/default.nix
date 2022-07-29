@@ -133,7 +133,7 @@ in
     # Networking utilities
     home.packages = with pkgs; [
       # System
-      neofetch
+      (lib.mkIf stdenv.isLinux neofetch)
       file
       rsync
       tldr

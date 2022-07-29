@@ -6,7 +6,7 @@
 }: {
   system.stateVersion = "22.11";
 
-  environment.systemPackages = with pkgs; [firefox lxappearance];
+  environment.systemPackages = with pkgs; [firefox lxappearance pciutils];
 
   nix = {
     # Common NIX_PATH

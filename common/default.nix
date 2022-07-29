@@ -70,7 +70,6 @@
         wget
         tree
         htop
-        pciutils
         docker-compose
         utillinux
         openvpn
