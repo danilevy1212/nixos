@@ -56,7 +56,6 @@
       "watchman"
     ];
     casks = [
-      "macpass"
       "brave-browser"
       "slack"
       "spotify"
@@ -67,6 +66,8 @@
       "dropbox"
       "intellij-idea"
       "adoptopenjdk8"
+      "keepassxc"
+      "zoom"
     ];
     taps = [
       "d12frosted/emacs-plus"
