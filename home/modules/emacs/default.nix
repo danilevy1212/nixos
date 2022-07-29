@@ -135,6 +135,7 @@ in {
       python3
       pipenv
       poetry
+      rnix-lsp
     ]
     ++ (
       if stdenv.isLinux
