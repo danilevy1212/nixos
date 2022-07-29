@@ -1,4 +1,7 @@
-{pkgs, nodejs}:
+{
+  pkgs,
+  nodejs,
+}:
 pkgs.stdenv.mkDerivation {
   pname = "corepack-wrappers";
   inherit (nodejs) version;
