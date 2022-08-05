@@ -55,6 +55,7 @@
       "sass/sass/sass"
       "watchman"
       "neofetch"
+      "php"
     ];
     casks = [
       "brave-browser"
