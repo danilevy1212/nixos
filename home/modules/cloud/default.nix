@@ -12,7 +12,7 @@
   # For MacOS, we just link the Dropbox folder to Cloud
   home.activation = lib.mkIf pkgs.stdenv.isDarwin {
     linkDropboxWithCloud = lib.hm.dag.entryAfter ["writeBoundary"] ''
-      if [ ! -L ${config.home.homeDirectory}/Dropbox ]
+      if [ ! -L ${config.home.homeDirectory}/Cloud ] && [ -d ${config.home.homeDirectory}/Dropbox ]
       then
       $DRY_RUN_CMD ln -s $VERBOSE_ARG \
           ${config.home.homeDirectory}/Dropbox ${config.home.homeDirectory}/Cloud
