@@ -205,4 +205,7 @@
 
   # Bother me, less.
   services.gnome.gnome-keyring.enable = true;
+
+  # FIXME: https://github.com/nix-community/home-manager/issues/3153
+  services.udisks2.enable = true;
 }
