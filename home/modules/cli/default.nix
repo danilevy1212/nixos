@@ -153,6 +153,7 @@ in
       ddate
       toilet
       figlet
+      cloc
 
       # Fake identities
       rig
