@@ -68,6 +68,7 @@
       "medis"
       "dropbox"
       "intellij-idea"
+      "datagrip"
       "adoptopenjdk8"
       "keepassxc"
       "zoom"
