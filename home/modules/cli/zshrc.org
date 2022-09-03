@@ -133,7 +133,7 @@ export FZF_DEFAULT_COMMAND='fd --type f --type l '
 _fzf-ssh-widget() {
   local selected
   setopt localoptions noglobsubst noposixbuiltins pipefail no_aliases 2> /dev/null
-  selected=( $(cat ~/.ssh/config /etc/ssh/ssh_config | grep -i '^host' | sed 's/\(host \|\*\)//I' | head -n -1 |
+  selected=( $(cat ~/.ssh/config /etc/ssh/ssh_config | grep -i '^host' | sed 's/host //I' | head -n -1 |
     FZF_DEFAULT_OPTS="--height ${FZF_TMUX_HEIGHT:-40%} $FZF_DEFAULT_OPTS -n2..,.. --tiebreak=index --bind=ctrl-r:toggle-sort,ctrl-z:ignore $FZF_CTRL_S_OPTS --query=${(qqq)LBUFFER} +m" $(__fzfcmd)) )
   BUFFER="ssh $selected"
   CURSOR="${#BUFFER}"
@@ -174,7 +174,7 @@ find_file() {
 Completely clear the buffer. With this, everything that is not on screen is erased.
 
 #+begin_src shell
-if [[ "$INSIDE_EMACS" = 'vterm' ]]; then
+if [ -z "${INSIDE_EMACS+x}" ] ; then
     alias clear='vterm_printf "51;Evterm-clear-scrollback";tput clear'
 fi
 #+end_src
@@ -182,7 +182,7 @@ fi
 Set tittle for vterm buffer.
 
 #+begin_src shell
-if [[ "$INSIDE_EMACS" = 'vterm' ]]; then
+if [ -z "${INSIDE_EMACS+x}" ]; then
     TITLE=$(pwd)
 fi
 #+end_src
@@ -204,7 +204,7 @@ vterm_cmd() {
 Don't flex if we are inside emacs.
 
 #+begin_src shell
-[ "$INSIDE_EMACS" != "vterm" ] && { neofetch; }
+[ -z "${INSIDE_EMACS+x}" ] && { neofetch; }
 #+end_src
 
 ** TODO ZINIT

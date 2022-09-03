@@ -1,4 +1,10 @@
-let
+{
+  self,
+  config,
+  pkgs,
+  lib,
+  ...
+}: let
   modules = [
     # XDG Base Dir.
     "xdg"
@@ -6,49 +12,52 @@ let
     # I cannot live without you, my one true love...
     "emacs"
 
-    # Window Management.
-    "wm"
-
-    # It's all there dude, in the ☁.
-    "cloud"
+    # My Shell configuration.
+    "cli"
 
     # Abandon hope, all that come here.
     "nodejs"
 
-    # Normie Apps so I can pretend I am not a nerd.
-    "apps"
+    # It's all there dude, in the ☁.
+    "cloud"
 
     # What's going on out there?
     "io"
-
-    # My Shell configuration.
-    "cli"
 
     # Rust
     "rust"
 
     # Golang
     "golang"
+
+    # Window Management.
+    "wm"
+
+    # Normie Apps so I can pretend I am not a nerd.
+    "apps"
   ];
   moduleImports = map (x: ./. + builtins.toPath "/modules/${x}") modules;
-in
-  {
-    self,
-    config,
-    pkgs,
-    ...
-  }: {
-    # Let Home Manager install and manage itself.
-    programs.home-manager.enable = true;
+  username =
+    if pkgs.stdenv.isDarwin
+    then "dlevy"
+    else "dlevym";
+in {
+  # Let Home Manager install and manage itself.
+  programs.home-manager.enable = true;
 
-    # Home Manager needs a bit of information about you and the paths it should manage.
-    home.username = "dlevym";
-    home.homeDirectory = "/home/dlevym";
-    home.stateVersion = "22.11";
+  # Home Manager needs a bit of information about you and the paths it should manage.
+  home = {
+    inherit username;
+    homeDirectory =
+      if pkgs.stdenv.isLinux
+      then "/home/dlevym"
+      else "/Users/dlevy";
+    stateVersion = "22.11";
+  };
 
-    # Be quiet, will you?
-    news.display = "silent";
+  # Be quiet, will you?
+  news.display = "silent";
 
-    # Modularize! Never compromise! 😎
-    imports = moduleImports;
-  }
+  # Modularize! Never compromise! 😎
+  imports = moduleImports;
+}

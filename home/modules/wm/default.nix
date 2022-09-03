@@ -3,7 +3,8 @@
   lib,
   pkgs,
   ...
-}: let
+}:
+lib.mkIf pkgs.stdenv.isLinux (let
   awesome-wm-widgets = with pkgs;
     lua.pkgs.toLuaModule (stdenv.mkDerivation rec {
       name = "awesome-wm-widgets";
@@ -110,12 +111,11 @@ in {
     enable = true;
     backend = "glx";
     vSync = true;
-    activeOpacity = "1.0";
-    inactiveOpacity = "0.9";
+    activeOpacity = 1.0;
+    inactiveOpacity = 0.9;
     fade = true;
     fadeDelta = 5;
     shadow = true;
-    shadowOpacity = "0.75";
-    blur = true;
+    shadowOpacity = 0.75;
   };
-}
+})

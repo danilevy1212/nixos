@@ -6,24 +6,7 @@
   ...
 }: let
   emacs-dir = "${config.xdg.configHome}/emacs";
-  quivira = with pkgs;
-    stdenv.mkDerivation {
-      pname = "Quivera";
-      version = "0.0.1";
-      src = fetchurl {
-        url = "http://www.quivira-font.com/files/Quivira.ttf";
-        sha256 = "0z2vh58g9x7gji31mwg1gz5gs1r9rf4s9wyiw92dc7xyvibai6dv";
-      };
-      sourceRoot = "./";
-      unpackCmd = ''
-        ttfName=$(basename $(stripHash $curSrc))
-        cp $curSrc ./$ttfName
-      '';
-      installPhase = ''
-        mkdir -p $out/share/fonts/truetype
-        cp -a *.ttf $out/share/fonts/truetype/
-      '';
-    };
+  quivera = import ./quivera.nix {inherit pkgs;};
   tgs2png = with pkgs;
     stdenv.mkDerivation rec {
       pname = "tgs2png";
@@ -48,132 +31,150 @@
     };
 in {
   # Doom emacs dependencies
-  home.packages = with pkgs; [
-    # General Dependencies
-    fd
-    coreutils
-    clang
-    (ripgrep.override {withPCRE2 = true;})
-    gnutls # for TLS connectivity
-    zstd # for undo-fu-session/undo-tree compression
-    pinentry_emacs # in-emacs gnupg prompts
+  home.packages = with pkgs;
+    [
+      # General Dependencies
+      fd
+      coreutils
+      (lib.mkIf stdenv.isLinux clang)
+      (ripgrep.override {withPCRE2 = true;})
+      gnutls # for TLS connectivity
+      zstd # for undo-fu-session/undo-tree compression
+      pinentry_emacs # in-emacs gnupg prompts
+    ]
+    ++ (
+      if stdenv.isLinux
+      then [
+        # Fonts
+        emacs-all-the-icons-fonts
+        ## Emacs
+        sarasa-gothic
+        dejavu_fonts
+        symbola
+        noto-fonts
+        noto-fonts-emoji
+        quivera
+        ## Terminal
+        victor-mono
+      ]
+      else []
+    )
+    ++ [
+      # :editor
+      # format
+      nodePackages.prettier
 
-    # Fonts
-    emacs-all-the-icons-fonts
+      # :lang
+      # go
+      gopls
+      gocode
+      gore
+      (lib.mkIf stdenv.isLinux golangci-lint)
+      gotools
+      gotests
+      gomodifytags
 
-    ## Emacs
-    sarasa-gothic
-    dejavu_fonts
-    symbola
-    noto-fonts
-    noto-fonts-emoji
-    quivira
+      # nix
+      alejandra
+      nixfmt
 
-    ## Terminal
-    victor-mono
+      # sh
+      shellcheck
+      shfmt
 
-    # :editor
-    # format
-    nodePackages.prettier
+      # json
+      jq
 
-    # :lang
-    # go
-    gopls
-    gocode
-    gore
-    golangci-lint
-    gotools
-    gotests
-    gomodifytags
+      # python
+      pyright
+      black
+      python39Packages.nose
+      python39Packages.pyflakes
+      python39Packages.isort
+      python39Packages.ipython
+    ]
+    ++ (
+      if stdenv.isLinux
+      then [
+        # latex
+        texlive.combined.scheme-full
+        texlab
+      ]
+      else []
+    )
+    ++ [
+      # markdown
+      pandoc
 
-    # nix
-    alejandra
-    nixfmt
+      # :term
+      # eshell
+      fish
 
-    # sh
-    shellcheck
-    shfmt
+      # :os
+      (lib.mkIf stdenv.isLinux xclip)
 
-    # json
-    jq
+      # :checkers
+      languagetool
+      (aspellWithDicts (d: with d; [es en en-computers en-science]))
 
-    # python
-    pyright
-    black
-    python39Packages.nose
-    python39Packages.pyflakes
-    python39Packages.isort
-    python39Packages.ipython
+      # :emacs
+      # dired
+      (lib.mkIf stdenv.isLinux imagemagick)
 
-    # latex
-    texlive.combined.scheme-full
-    texlab
+      # :tools
+      # lookup
+      sqlite
+      wordnet
 
-    # markdown
-    pandoc
+      # editorconfig
+      editorconfig-core-c
 
-    # :term
-    # eshell
-    fish
+      # lsp
+      unzip
+      zip
+      python3
+      pipenv
+      poetry
+      rnix-lsp
+    ]
+    ++ (
+      if stdenv.isLinux
+      then [
+        # :app
+        # everywhere
+        xclip
+        xdotool
+        xorg.xprop
+        xorg.xwininfo
+      ]
+      else []
+    )
+    ++ [
+      # telega
+      ffmpeg-full
+      libnotify
+      tgs2png
+      libwebp
 
-    # :os
-    xclip
-
-    # :checkers
-    languagetool
-    (aspellWithDicts (d: with d; [es en en-computers en-science]))
-
-    # :emacs
-    # dired
-    imagemagick
-
-    # :tools
-    # lookup
-    sqlite
-    wordnet
-
-    # editorconfig
-    editorconfig-core-c
-
-    # lsp
-    unzip
-    zip
-    python3
-    pipenv
-    poetry
-
-    # :app
-    # everywhere
-    xclip
-    xdotool
-    xorg.xprop
-    xorg.xwininfo
-
-    # telega
-    ffmpeg-full
-    libnotify
-    tgs2png
-    libwebp
-
-    # dtache
-    dtach
-  ];
+      # detache
+      dtach
+    ];
 
   # I cannot live without you, my one true love...
-  programs.emacs = {
-    enable = true;
-    package = pkgs.emacsNativeComp;
-    # For vterm.
-    extraPackages = epkgs: [epkgs.vterm epkgs.oauth2];
-  };
+  programs.emacs = with pkgs;
+    lib.mkIf stdenv.isLinux {
+      enable = true;
+      package = emacsNativeComp;
+      # For vterm.
+      extraPackages = epkgs: with epkgs; [vterm oauth2];
+    };
 
   # For :tools direnv
   programs.direnv = {
     enable = true;
     nix-direnv.enable = true;
-    stdlib = builtins.readFile ./readlib.sh;
   };
-  services.lorri.enable = true;
+  services.lorri = lib.mkIf pkgs.stdenv.isLinux {enable = true;};
 
   # For :tools magit
   programs.git.delta = {

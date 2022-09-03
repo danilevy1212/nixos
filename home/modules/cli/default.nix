@@ -24,7 +24,8 @@ in
     programs.zsh = {
       enable = true;
       enableCompletion = true;
-      dotDir = ".config/nix-zsh"; # NOTE This is just for easier debugging.
+      # NOTE This is just for easier debugging.
+      dotDir = ".config/zsh";
       initExtra = builtins.readFile ./zshrc;
       shellAliases = {
         # HACK
@@ -35,7 +36,7 @@ in
     };
 
     # A pretty, modern, terminal.
-    programs.alacritty = {
+    programs.alacritty = lib.mkIf pkgs.stdenv.isLinux {
       enable = true;
       settings = {
         font = {
@@ -120,11 +121,11 @@ in
     };
 
     # Nordic Terminal
-    xresources.extraConfig = builtins.readFile (pkgs.fetchzip {
+    xresources.extraConfig = lib.mkIf pkgs.stdenv.isLinux (builtins.readFile (pkgs.fetchzip {
         url = "https://github.com/arcticicestudio/nord-xresources/archive/v0.1.0.tar.gz";
         sha256 = "1bhlhlk5axiqpm6l2qaij0cz4a53i9hcfsvc3hw9ayn75034xr93";
       }
-      + "/src/nord");
+      + "/src/nord"));
 
     # HISTFILE
     home.sessionVariables = {HISTFILE = "${config.xdg.dataHome}/history";};
@@ -132,14 +133,14 @@ in
     # Networking utilities
     home.packages = with pkgs; [
       # System
-      neofetch
+      (lib.mkIf stdenv.isLinux neofetch)
       file
       rsync
       tldr
       fasd
 
       # Terminal Font
-      victor-mono
+      (lib.mkIf stdenv.isLinux victor-mono)
 
       # TODO Create a welcome script with all of this.
 
@@ -151,13 +152,13 @@ in
       sl
       ddate
       toilet
-      espeak
       figlet
+      cloc
 
       # Fake identities
       rig
 
       # Text To Speach
-      espeak
+      (lib.mkIf stdenv.isLinux espeak)
     ];
   }
