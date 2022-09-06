@@ -57,6 +57,8 @@
       "neofetch"
       "php"
       "composer"
+      "blueutil"
+      "pngpaste" # For telega
     ];
     casks = [
       "brave-browser"
