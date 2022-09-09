@@ -44,7 +44,6 @@
   homebrew = {
     enable = true;
     brewPrefix = "/opt/homebrew/bin/";
-    cleanup = "zap";
     brews = [
       # emacs/golang module
       "golangci-lint"
@@ -81,6 +80,9 @@
     extraConfig = ''
       brew "emacs-plus@28", args: ["with-imagemagick", "with-native-comp", "with-modern-doom3-icon"]
     '';
+    onActivation = {
+      cleanup = "zap";
+    };
   };
 
   # Use a custom configuration.nix location.
