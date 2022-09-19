@@ -4,10 +4,13 @@
   pkgs,
   ...
 }: {
-  home.packages = with pkgs; [
-    # video player
-    mpv-with-scripts
-  ];
+  # Video Player
+  programs.mpv = {
+    enable = true;
+    config = {
+      sub-auto = "all";
+    };
+  };
 
   # default browser
   home.sessionVariables = {BROWSER = "brave";};

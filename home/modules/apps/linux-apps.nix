@@ -32,13 +32,4 @@ lib.mkIf pkgs.stdenv.isLinux {
     # video encoder
     handbrake
   ];
-
-  # Make brave default browser
-  xdg.mimeApps = {
-    enable = true;
-    defaultApplications = {
-      "x-scheme-handler/http" = ["brave-browser.desktop"];
-      "x-scheme-handler/https" = ["brave-browser.desktop"];
-    };
-  };
 }
