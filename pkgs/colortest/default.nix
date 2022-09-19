@@ -1,15 +1,12 @@
-{ pkgs, }:
-
-let
+{pkgs}: let
   pname = "colortest";
 in
-pkgs.stdenv.mkDerivation {
-  name = pname;
-  src = ./.;
+  pkgs.stdenv.mkDerivation {
+    name = pname;
+    src = ./.;
 
-  installPhase =
-    ''
+    installPhase = ''
       mkdir -p $out/bin
       mv ./colortest.sh $out/bin/colortest
     '';
-}
+  }
