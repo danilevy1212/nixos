@@ -45,8 +45,7 @@
     enable = true;
     brewPrefix = "/opt/homebrew/bin/";
     brews = [
-      # emacs/golang module
-      "golangci-lint"
+      "golangci-lint" # emacs/golang module
       "pyenv"
       "jenv"
       "maven"
