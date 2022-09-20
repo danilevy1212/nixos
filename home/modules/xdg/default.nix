@@ -1,12 +1,12 @@
-{config, ...}: {
+{ config, lib, pkgs, ... }: {
   xdg = {
     enable = true;
-    mimeApps = {
+    mimeApps = lib.mkIf pkgs.stdenv.isLinux {
       enable = true;
       defaultApplications = {
         # Make brave default browser
-        "x-scheme-handler/http" = ["brave-browser.desktop"];
-        "x-scheme-handler/https" = ["brave-browser.desktop"];
+        "x-scheme-handler/http" = [ "brave-browser.desktop" ];
+        "x-scheme-handler/https" = [ "brave-browser.desktop" ];
       };
     };
   };
