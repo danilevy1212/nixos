@@ -7,6 +7,7 @@
         # Make brave default browser
         "x-scheme-handler/http" = [ "brave-browser.desktop" ];
         "x-scheme-handler/https" = [ "brave-browser.desktop" ];
+        "video/x-matroska" = [ "mpv.desktop" ];
       };
     };
   };
