@@ -76,7 +76,7 @@
       "AdoptOpenJDK/openjdk"
     ];
     extraConfig = ''
-      brew "emacs-plus@28", args: ["with-imagemagick", "with-native-comp", "with-modern-doom3-icon"]
+      brew "emacs-plus", args: ["with-imagemagick", "with-native-comp", "with-modern-doom3-icon"]
     '';
     onActivation = {
       cleanup = "zap";
