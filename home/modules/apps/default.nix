@@ -7,7 +7,7 @@
   programs.mpv = {
     enable = true;
     config = {
-      sub-auto = "all";
+      sub-auto = "exact";
       save-position-on-quit = true;
     };
   };
