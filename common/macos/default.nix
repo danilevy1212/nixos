@@ -69,6 +69,7 @@
       "jetbrains-toolbox"
       "adoptopenjdk8"
       "keepassxc"
+      "1password"
       "zoom"
     ];
     taps = [
