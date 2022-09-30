@@ -118,6 +118,24 @@
     };
   };
 
+  # NOTE: Raise max files per process https://gist.github.com/skylock/0117ec637d468f91260927b43b816eda
+  launchd = {
+    daemons = {
+      "limit.maxfiles-extended" = {
+        serviceConfig = {
+          ProgramArguments = ["launchctl" "limit" "maxfiles" "64000" "524288"];
+          RunAtLoad = true;
+        };
+      };
+      "limit.maxproc-extended" = {
+        serviceConfig = {
+          ProgramArguments = ["launchctl" "limit" "maxproc" "2048" "2048"];
+          RunAtLoad = true;
+        };
+      };
+    };
+  };
+
   services.lorri.enable = true;
 
   # services.postgresql = {
