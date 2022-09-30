@@ -13,7 +13,7 @@
 
   nix = {
     gc = {automatic = true;};
-    package = pkgs.nixFlakes;
+    package = pkgs.nixVersions.stable;
     # Protect nix-shell against garbage collection
     extraOptions = ''
       keep-outputs = true
@@ -71,7 +71,7 @@
         tree
         htop
         docker-compose
-        utillinux
+        inetutils
         openvpn
         (import ./../pkgs/colortest {inherit pkgs;})
       ]

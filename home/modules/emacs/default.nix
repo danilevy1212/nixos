@@ -40,7 +40,7 @@ in {
       (ripgrep.override {withPCRE2 = true;})
       gnutls # for TLS connectivity
       zstd # for undo-fu-session/undo-tree compression
-      pinentry_emacs # in-emacs gnupg prompts
+      pinentry-emacs # in-emacs gnupg prompts
     ]
     ++ (
       if stdenv.isLinux
