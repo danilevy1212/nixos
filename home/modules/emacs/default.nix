@@ -133,8 +133,6 @@ in {
       unzip
       zip
       python3
-      pipenv
-      poetry
       rnix-lsp
     ]
     ++ (
