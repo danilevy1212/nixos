@@ -84,14 +84,6 @@ in {
 
       # json
       jq
-
-      # python
-      pyright
-      black
-      python39Packages.nose
-      python39Packages.pyflakes
-      python39Packages.isort
-      python39Packages.ipython
     ]
     ++ (
       if stdenv.isLinux
