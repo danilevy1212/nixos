@@ -47,7 +47,7 @@ in
           size = 10.0;
         };
         window = {
-          gtk_theme_variant = "nordic";
+          decorations_theme_variant = "nordic";
           opacity = 0.9;
         };
         colors = {
@@ -73,7 +73,7 @@ in
               foreground = "CellBackground";
               background = "#88c0d0";
             };
-            bar = {
+            footer_bar = {
               background = "#434c5e";
               foreground = "#d8dee9";
             };
