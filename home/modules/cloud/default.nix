@@ -4,20 +4,13 @@
   pkgs,
   ...
 }: {
-  # TODO I shall replace you with rclone and gdrive soon!
-  services.dropbox = lib.mkIf pkgs.stdenv.isLinux {
+  # File sharing, p2p style
+  services.syncthing = lib.mkIf pkgs.stdenv.isLinux {
     enable = true;
-    path = "${config.home.homeDirectory}/Cloud";
-  };
-  # For MacOS, we just link the Dropbox folder to Cloud
-  home.activation = lib.mkIf pkgs.stdenv.isDarwin {
-    linkDropboxWithCloud = lib.hm.dag.entryAfter ["writeBoundary"] ''
-      if [ ! -L ${config.home.homeDirectory}/Cloud ] && [ -d ${config.home.homeDirectory}/Dropbox ]
-      then
-      $DRY_RUN_CMD ln -s $VERBOSE_ARG \
-          ${config.home.homeDirectory}/Dropbox ${config.home.homeDirectory}/Cloud
-      fi
-    '';
+    tray = {
+      enable = true;
+      command = "syncthingtray --wait";
+    };
   };
 
   # Work stuff

@@ -56,6 +56,7 @@
       "composer"
       "blueutil"
       "pngpaste" # For telega
+      "syncthing"
     ];
     casks = [
       "brave-browser"
@@ -65,7 +66,6 @@
       "postman"
       "lastpass"
       "medis"
-      "dropbox"
       "jetbrains-toolbox"
       "adoptopenjdk8"
       "keepassxc"
