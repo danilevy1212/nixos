@@ -3,3 +3,4 @@
 *.log
 result
 tmp/
+.stignore
