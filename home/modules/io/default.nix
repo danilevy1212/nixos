@@ -14,6 +14,9 @@
 
     # REST Client
     (lib.mkIf pkgs.stdenv.isLinux unstable.postman)
+
+    # Youtube Archiver
+    yt-dlp
   ];
 
   # default file-browser
