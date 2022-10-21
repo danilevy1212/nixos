@@ -31,5 +31,8 @@ lib.mkIf pkgs.stdenv.isLinux {
 
     # video encoder
     handbrake
+
+    # mpv + jellyfin, streaming heaven
+    jellyfin-mpv-shim
   ];
 }
