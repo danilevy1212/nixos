@@ -58,6 +58,7 @@
       "pngpaste" # For telega
       "syncthing"
       "gnupg"
+      "coreutils"
     ];
     casks = [
       "brave-browser"
