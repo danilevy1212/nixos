@@ -73,11 +73,11 @@
       "zoom"
     ];
     taps = [
-      "d12frosted/emacs-plus"
       "AdoptOpenJDK/openjdk"
+      "railwaycat/emacsmacport"
     ];
     extraConfig = ''
-      brew "emacs-plus", args: ["with-imagemagick", "with-native-comp", "with-modern-doom3-icon"]
+      brew "emacs-mac", args: ["with-imagemagick","with-native-compilation","with-modern-icon","with-xwidgets","with-librsvg"]
     '';
     onActivation = {
       cleanup = "zap";
