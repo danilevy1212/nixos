@@ -1,7 +1,8 @@
-{ config
-, lib
-, pkgs
-, ...
+{
+  config,
+  lib,
+  pkgs,
+  ...
 }: {
   home-manager.users.dlevy = import ./../../home/home.nix;
   users.users.dlevy.home = "/Users/dlevy";
@@ -33,7 +34,7 @@
       dejavu_fonts
       symbola
       noto-fonts
-      (import ./../../home/modules/emacs/quivera.nix { inherit pkgs; })
+      (import ./../../home/modules/emacs/quivera.nix {inherit pkgs;})
       # Terminal
       victor-mono
     ];

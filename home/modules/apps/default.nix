@@ -1,7 +1,8 @@
-{ config
-, lib
-, pkgs
-, ...
+{
+  config,
+  lib,
+  pkgs,
+  ...
 }: {
   # Video Player
   programs.mpv = {
@@ -13,7 +14,7 @@
   };
 
   # default browser
-  home.sessionVariables = { BROWSER = "brave"; };
+  home.sessionVariables = {BROWSER = "brave";};
 
   imports = [
     ./linux-apps.nix
