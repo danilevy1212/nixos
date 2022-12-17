@@ -34,15 +34,6 @@
   services.pipewire = {
     media-session.config.bluez-monitor.rules = [
       {
-        # Matches all cards
-        matches = [{"device.name" = "~bluez_card.*";}];
-        actions = {
-          "update-props" = {
-            "bluez5.auto-connect" = ["hfp_hf" "hsp_hs" "a2dp_sink"];
-          };
-        };
-      }
-      {
         matches = [
           # Matches all sources
           {"node.name" = "~bluez_input.*";}
