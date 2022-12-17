@@ -28,10 +28,7 @@
   networking.interfaces.wlo1.useDHCP = true;
 
   # Enable bluetooth
-  hardware.bluetooth = {
-    enable = true;
-    hsphfpd.enable = true;
-  };
+  hardware.bluetooth.enable = true;
 
   # High quality BT calls
   services.pipewire = {
