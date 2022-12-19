@@ -74,6 +74,7 @@
       "keepassxc"
       "1password"
       "zoom"
+      "neovide"
     ];
     taps = [
       "AdoptOpenJDK/openjdk"

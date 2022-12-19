@@ -12,6 +12,9 @@
     # I cannot live without you, my one true love...
     "emacs"
 
+    # My guilty pleasure
+    "neovim"
+
     # My Shell configuration.
     "cli"
 
