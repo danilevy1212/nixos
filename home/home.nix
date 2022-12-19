@@ -55,7 +55,7 @@ in {
       if pkgs.stdenv.isLinux
       then "/home/dlevym"
       else "/Users/dlevy";
-    stateVersion = "22.11";
+    stateVersion = "23.05";
   };
 
   # Be quiet, will you?
