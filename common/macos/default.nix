@@ -78,10 +78,10 @@
     ];
     taps = [
       "AdoptOpenJDK/openjdk"
-      "railwaycat/emacsmacport"
+      "d12frosted/homebrew-emacs-plus"
     ];
     extraConfig = ''
-      brew "emacs-mac", args: ["with-imagemagick","with-native-compilation","with-modern-icon","with-xwidgets","with-librsvg"]
+      brew "emacs-plus@29", args: ["with-imagemagick","with-native-comp","with-modern-icon","with-xwidgets","with-poll","with-no-frame-refocus"]
     '';
     onActivation = {
       cleanup = "zap";
