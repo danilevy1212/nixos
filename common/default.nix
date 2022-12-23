@@ -73,6 +73,7 @@
         docker-compose
         inetutils
         openvpn
+        lsof
         (import ./../pkgs/colortest {inherit pkgs;})
       ]
       ++ (with pkgs.unixtools; [netstat ifconfig]) # Basic network
