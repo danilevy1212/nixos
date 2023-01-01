@@ -14,5 +14,8 @@
 
     # For nix
     alejandra
+
+    # For telescope fzf
+    (lib.mkIf pkgs.stdenv.isLinux gnumake)
   ];
 }
