@@ -76,7 +76,6 @@ in {
 
       # nix
       alejandra
-      nixfmt
 
       # sh
       shellcheck
