@@ -136,7 +136,10 @@ vterm_cmd() {
     vterm_printf "51;E$vterm_elisp"
 }
 
-[ -z "${INSIDE_EMACS+x}" ] && { neofetch; }
+if [ -z "${INSIDE_EMACS+x}" ] && [ -z "${NVIM+x}" ]
+then
+    neofetch
+fi
 
 ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 

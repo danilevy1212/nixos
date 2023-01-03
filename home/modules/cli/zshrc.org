@@ -201,10 +201,13 @@ vterm_cmd() {
 }
 #+end_src
 
-Don't flex if we are inside emacs.
+Don't flex if we are inside emacs or neovim.
 
 #+begin_src shell
-[ -z "${INSIDE_EMACS+x}" ] && { neofetch; }
+if [ -z "${INSIDE_EMACS+x}" ] && [ -z "${NVIM+x}" ]
+then
+    neofetch
+fi
 #+end_src
 
 ** TODO ZINIT

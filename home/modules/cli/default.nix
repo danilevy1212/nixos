@@ -14,6 +14,7 @@ in
       extraConfig = {
         core = {askpass = "";};
         merge = {conflictStyle = "diff3";};
+        push = {autoSetupRemote = true;};
       };
     };
 
