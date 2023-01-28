@@ -17,17 +17,6 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
-  # NOTE Not needed from 6.2 onwards
-  # See https://wiki.archlinux.org/title/Dell_Inspiron_16_Plus_(7620) Audio
-  boot.kernelPatches = [
-    {
-      name = "Audio Fix";
-      patch = builtins.fetchurl {
-        url = "https://github.com/tiwai/sound/commit/2912cdda734d9136615ed05636d9fcbca2a7a3c5.patch";
-        sha256 = "149fk26ac3hksljrz0xg7hycskfh2jlfmb3z5pkyra1krn8py6q5";
-      };
-    }
-  ];
 
   # Unique name for the host
   networking.hostName = "nixosInspirion";

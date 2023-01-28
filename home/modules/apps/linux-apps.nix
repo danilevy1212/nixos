@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  unstable,
   ...
 }:
 lib.mkIf pkgs.stdenv.isLinux {
@@ -21,16 +22,13 @@ lib.mkIf pkgs.stdenv.isLinux {
     brave
 
     # Editing documents, normie style
-    libreoffice
+    unstable.libreoffice
 
     # Keep my passwords safe
     keepassxc
 
     # I only use this to download Linux ISO images I super promise
     qbittorrent
-
-    # video encoder
-    handbrake
 
     # mpv + jellyfin, streaming heaven
     jellyfin-mpv-shim

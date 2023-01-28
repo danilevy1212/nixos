@@ -36,13 +36,12 @@
   # The global useDHCP flag is deprecated, therefore explicitly set to false here.
   # Per-interface useDHCP will be mandatory in the future, so this generated config
   # replicates the default behaviour.
-  networking.useDHCP = false;
-  networking.interfaces.enp2s0.useDHCP = true;
-  networking.interfaces.wlo1.useDHCP = true;
+  networking.useDHCP = lib.mkDefault true;
 
   # Enable bluetooth
   hardware.bluetooth.enable = true;
 
+  # Screen control
   environment.systemPackages = lib.mkIf (config.services.xserver.enable) [
     (pkgs.writeShellScriptBin "x-dual" ''
       ${pkgs.xorg.xrandr}/bin/xrandr --output eDP --primary --mode 1920x1080 --pos 1920x0 --rotate normal \
