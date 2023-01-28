@@ -15,6 +15,9 @@
     # For nix
     alejandra
 
+    # For tree-sitter
+    zig
+
     # For telescope fzf
     (lib.mkIf pkgs.stdenv.isLinux gnumake)
   ];

@@ -46,6 +46,14 @@
         ];
         inherit specialArgs;
       };
+      inspirion = nixpkgs.lib.nixosSystem {
+        inherit system;
+        modules = [
+          home-manager.nixosModules.home-manager
+          ./hosts/inspirion
+        ];
+        inherit specialArgs;
+      };
     };
     darwinConfigurations = {
       autoMac = darwin.lib.darwinSystem {

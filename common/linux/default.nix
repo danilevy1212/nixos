@@ -6,7 +6,11 @@
 }: {
   system.stateVersion = "23.05";
 
-  environment.systemPackages = with pkgs; [firefox lxappearance pciutils];
+  environment.systemPackages = with pkgs; [
+    firefox
+    lxappearance
+    pciutils
+  ];
 
   nix = {
     # Common NIX_PATH
@@ -45,26 +49,15 @@
     kernelPackages = pkgs.linuxPackages_latest;
   };
 
-  # Select internationalisation properties.
-  i18n = {
-    defaultLocale = "ja_JP.UTF-8";
-    extraLocaleSettings = {
-      LC_CTYPE = "en_US.UTF-8";
-      LC_COLLATE = "en_US.UTF-8";
-    };
-    inputMethod = {
-      enabled = "ibus";
-      ibus.engines = with pkgs.ibus-engines; [mozc];
-    };
-  };
-
   # Less eye-sore console font.
   console = {
     font = "Lat2-Terminus16";
     useXkbConfig = true;
   };
 
-  # Enable sound.
+  # Enable sound with pipewire.
+  sound.enable = true;
+  hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
@@ -73,10 +66,27 @@
       support32Bit = true;
     };
     pulse.enable = true;
+    # High quality BT calls
+    media-session.config.bluez-monitor.rules = [
+      {
+        matches = [
+          # Matches all sources
+          {"node.name" = "~bluez_input.*";}
+          # Matches all outputs
+          {"node.name" = "~bluez_output.*";}
+        ];
+        actions = {
+          "node.pause-on-idle" = false;
+        };
+      }
+    ];
   };
 
   networking = {
-    networkmanager.plugins = [pkgs.networkmanager-openvpn];
+    networkmanager.plugins = with pkgs; [
+      networkmanager-openvpn
+      networkmanager-fortisslvpn
+    ];
     # Port's for work stuff.
     firewall = {
       enable = true;
@@ -107,6 +117,9 @@
       }
     ];
   };
+
+  # See https://github.com/Mic92/nix-ld#how-does-nix-ld-work
+  programs.nix-ld.enable = true;
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
@@ -210,6 +223,9 @@
   # Bother me, less.
   services.gnome.gnome-keyring.enable = true;
 
-  # FIXME: https://github.com/nix-community/home-manager/issues/3153
+  # Need to enable udisks2 on the system level
   services.udisks2.enable = true;
+
+  # Enable CUPS to print documents.
+  services.printing.enable = true;
 }

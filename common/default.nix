@@ -74,10 +74,11 @@
         inetutils
         openvpn
         lsof
+        usbutils
         (import ./../pkgs/colortest {inherit pkgs;})
       ]
       ++ (with pkgs.unixtools; [netstat ifconfig]) # Basic network
-      ++ [nix-prefetch-git cachix nix-tree]; # Nix convinience
+      ++ [nix-prefetch nix-prefetch-git cachix nix-tree]; # Nix convinience
   };
 
   # Default shell

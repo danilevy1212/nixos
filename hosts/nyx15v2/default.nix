@@ -20,6 +20,19 @@
 
   networking.hostName = "nixosNyx15V2"; # Define your hostname.
 
+  # Select internationalization properties.
+  i18n = {
+    defaultLocale = "ja_JP.UTF-8";
+    extraLocaleSettings = {
+      LC_CTYPE = "en_US.UTF-8";
+      LC_COLLATE = "en_US.UTF-8";
+    };
+    inputMethod = {
+      enabled = "ibus";
+      ibus.engines = with pkgs.ibus-engines; [mozc];
+    };
+  };
+
   # The global useDHCP flag is deprecated, therefore explicitly set to false here.
   # Per-interface useDHCP will be mandatory in the future, so this generated config
   # replicates the default behaviour.
@@ -29,23 +42,6 @@
 
   # Enable bluetooth
   hardware.bluetooth.enable = true;
-
-  # High quality BT calls
-  services.pipewire = {
-    media-session.config.bluez-monitor.rules = [
-      {
-        matches = [
-          # Matches all sources
-          {"node.name" = "~bluez_input.*";}
-          # Matches all outputs
-          {"node.name" = "~bluez_output.*";}
-        ];
-        actions = {
-          "node.pause-on-idle" = false;
-        };
-      }
-    ];
-  };
 
   environment.systemPackages = lib.mkIf (config.services.xserver.enable) [
     (pkgs.writeShellScriptBin "x-dual" ''

@@ -435,7 +435,7 @@ zinit ice wait lucid atclone"dircolors -b LS_COLORS > c.zsh" atpull'%atclone' pi
 zinit light trapd00r/LS_COLORS
 
 # McFly
-zinit ice lucid wait"0a" from"gh-r" as"program" atload'eval "$(mcfly init zsh)"'
+zinit ice lucid wait"0a" from"gh-r" as"program" bpick"*linux-musl*" atload'eval "$(mcfly init zsh)"'
 zinit light cantino/mcfly
 
 # Enable fuzzy sorting
