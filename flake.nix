@@ -40,7 +40,12 @@
           home-manager.nixosModules.home-manager
           ./hosts/${hostname}
         ];
-        specialArgs = specialArgs // {inherit hostname;};
+        specialArgs =
+          specialArgs
+          // {
+            inherit hostname;
+            inherit HOSTS;
+          };
       };
   in {
     # NOTE https://teu5us.github.io/nix-lib.html#lib.attrsets.mapattrs

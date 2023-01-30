@@ -3,6 +3,8 @@
   lib,
   pkgs,
   unstable,
+  hostname,
+  HOSTS,
   ...
 }: let
   emacs-dir = "${config.xdg.configHome}/emacs";
@@ -85,7 +87,8 @@ in {
       jq
     ]
     ++ (
-      if stdenv.isLinux
+      # Only in my personal computer
+      if hostname == HOSTS.nyx15v2
       then [
         # latex
         texlive.combined.scheme-full

@@ -4,6 +4,8 @@
   pkgs,
   unstable,
   emacs-overlay,
+  hostname,
+  HOSTS,
   ...
 }: {
   nixpkgs.overlays = [emacs-overlay];
@@ -37,7 +39,11 @@
     useGlobalPkgs = true;
     # Unclutter $HOME.
     useUserPackages = true;
-    extraSpecialArgs = {inherit unstable;};
+    extraSpecialArgs = {
+      inherit unstable;
+      inherit hostname;
+      inherit HOSTS;
+    };
   };
 
   environment = {
