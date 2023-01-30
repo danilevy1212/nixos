@@ -19,7 +19,7 @@
     darwin,
     emacs-overlay,
     ...
-  } @ inputs: let
+  }: let
     system = "x86_64-linux";
     specialArgs = {
       emacs-overlay = emacs-overlay.overlay;
@@ -28,33 +28,24 @@
         config.allowUnfree = true;
       };
     };
-  in {
-    nixosConfigurations = {
-      dellXps15 = nixpkgs.lib.nixosSystem {
-        inherit system;
-        modules = [
-          home-manager.nixosModules.home-manager
-          ./hosts/dellXps15
-        ];
-        inherit specialArgs;
-      };
-      nyx15v2 = nixpkgs.lib.nixosSystem {
-        inherit system;
-        modules = [
-          home-manager.nixosModules.home-manager
-          ./hosts/nyx15v2
-        ];
-        inherit specialArgs;
-      };
-      inspirion = nixpkgs.lib.nixosSystem {
-        inherit system;
-        modules = [
-          home-manager.nixosModules.home-manager
-          ./hosts/inspirion
-        ];
-        inherit specialArgs;
-      };
+    HOSTS = {
+      dellXps15 = "dellXps15";
+      nyx15v2 = "nyx15v2";
+      inspirion = "inspirion";
     };
+    addHostConfiguration = hostname: _:
+      nixpkgs.lib.nixosSystem {
+        inherit system;
+        modules = [
+          home-manager.nixosModules.home-manager
+          ./hosts/${hostname}
+        ];
+        specialArgs = specialArgs // {inherit hostname;};
+      };
+  in {
+    # NOTE https://teu5us.github.io/nix-lib.html#lib.attrsets.mapattrs
+    nixosConfigurations = nixpkgs.lib.attrsets.mapAttrs addHostConfiguration HOSTS;
+    # TODO Deprecating soon
     darwinConfigurations = {
       autoMac = darwin.lib.darwinSystem {
         system = "x86_64-darwin";

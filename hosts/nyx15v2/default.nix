@@ -18,8 +18,6 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  networking.hostName = "nixosNyx15V2"; # Define your hostname.
-
   # Select internationalization properties.
   i18n = {
     defaultLocale = "ja_JP.UTF-8";

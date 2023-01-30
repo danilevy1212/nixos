@@ -18,9 +18,6 @@
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
 
-  # Unique name for the host
-  networking.hostName = "nixosInspirion";
-
   # Set your time zone.
   time.timeZone = "America/New_York";
 
@@ -61,8 +58,8 @@
   services.fprintd = {
     enable = true;
     tod = {
-        enable = true;
-        driver = pkgs.libfprint-2-tod1-goodix;
+      enable = true;
+      driver = pkgs.libfprint-2-tod1-goodix;
     };
   };
 

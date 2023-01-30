@@ -3,6 +3,7 @@
   pkgs,
   options,
   lib,
+  hostname,
   ...
 }: {
   imports = [
@@ -20,7 +21,7 @@
   # Per-interface useDHCP will be mandatory in the future, so this generated config
   # replicates the default behavior.
   networking = {
-    hostName = "nixosXps15"; # Define your hostname.
+    hostName = "${hostname}"; # Define your hostname.
     interfaces = {wlp59s0.useDHCP = true;};
   };
 

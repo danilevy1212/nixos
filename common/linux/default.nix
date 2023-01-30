@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  hostname,
   ...
 }: {
   system.stateVersion = "23.05";
@@ -83,6 +84,7 @@
   };
 
   networking = {
+    hostName = "${hostname}";
     networkmanager.plugins = with pkgs; [
       networkmanager-openvpn
       networkmanager-fortisslvpn
