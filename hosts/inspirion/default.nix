@@ -18,6 +18,11 @@
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
 
+  # NOTE https://discourse.nixos.org/t/getting-nvidia-to-work-avoiding-screen-tearing/10422/16
+  boot.kernelParams = [
+    "nvidia-drm.modeset=1"
+  ];
+
   # Set your time zone.
   time.timeZone = "America/New_York";
 
@@ -36,8 +41,29 @@
     LC_TIME = "en_US.UTF-8";
   };
 
-  # Enable touchpad support
-  services.xserver.libinput.enable = true;
+  # NOTE nvidia options taken from https://nixos.wiki/wiki/Nvidia#sync_mode
+  services.xserver = {
+    dpi = 144;
+    # Enable touchpad support
+    libinput.enable = true;
+    # Enable external monitor through discrete GPU
+    videoDrivers = ["nvidia"];
+  };
+  hardware.opengl.driSupport32Bit = true;
+
+  # Always on GPU, unfortunately
+  hardware.nvidia = {
+    powerManagement = {
+      enable = true;
+    };
+    prime = {
+      sync.enable = true;
+
+      intelBusId = "PCI:0:2:0";
+
+      nvidiaBusId = "PCI:1:0:0";
+    };
+  };
 
   # List packages installed in system profile. To search, run:
   environment.systemPackages = with pkgs; [
