@@ -127,7 +127,6 @@ in {
       unzip
       zip
       python3
-      rnix-lsp
     ]
     ++ (
       if stdenv.isLinux
