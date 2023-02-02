@@ -3,6 +3,8 @@
   lib,
   pkgs,
   unstable,
+  hostname,
+  HOSTS,
   ...
 }: {
   home.packages = with pkgs; [
@@ -17,6 +19,9 @@
 
     # Youtube Archiver
     yt-dlp
+
+    # Database client, overkill mode
+    (lib.mkIf (hostname == HOSTS.inspirion) jetbrains.datagrip)
   ];
 
   # default file-browser
