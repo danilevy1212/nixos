@@ -174,12 +174,9 @@
     };
   };
 
+  # NOTE https://www.reddit.com/r/NixOS/comments/b255k5/comment/i8jpqum/?utm_source=share&utm_medium=web2x&context=3
   # Gnome craziness.
-  services.dbus.packages = with pkgs; [
-    dconf
-    gnome.adwaita-icon-theme
-    gnome2.GConf
-  ];
+  programs.dconf.enable = true;
 
   # Don't bother me for passwords.
   security.polkit.enable = true;
