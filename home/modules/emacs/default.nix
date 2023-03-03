@@ -38,7 +38,6 @@ in {
       # General Dependencies
       fd
       coreutils
-      (lib.mkIf stdenv.isLinux clang)
       (ripgrep.override {withPCRE2 = true;})
       gnutls # for TLS connectivity
       zstd # for undo-fu-session/undo-tree compression

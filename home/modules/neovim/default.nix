@@ -18,7 +18,6 @@
     # For tree-sitter
     zig
     gcc
-    clang
     tree-sitter
 
     # For telescope fzf
