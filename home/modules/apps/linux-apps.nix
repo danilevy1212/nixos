@@ -31,6 +31,6 @@ lib.mkIf pkgs.stdenv.isLinux {
     qbittorrent
 
     # mpv + jellyfin, streaming heaven
-    jellyfin-mpv-shim
+    unstable.jellyfin-mpv-shim
   ];
 }
