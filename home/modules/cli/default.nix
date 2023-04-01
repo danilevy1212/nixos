@@ -50,7 +50,7 @@
         size = 10.0;
       };
       window = {
-        decorations_theme_variant = "nordic";
+        decorations_theme_variant = "Dark";
         opacity = 0.9;
       };
       colors = {

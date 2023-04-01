@@ -67,20 +67,7 @@
       support32Bit = true;
     };
     pulse.enable = true;
-    # High quality BT calls
-    media-session.config.bluez-monitor.rules = [
-      {
-        matches = [
-          # Matches all sources
-          {"node.name" = "~bluez_input.*";}
-          # Matches all outputs
-          {"node.name" = "~bluez_output.*";}
-        ];
-        actions = {
-          "node.pause-on-idle" = false;
-        };
-      }
-    ];
+    wireplumber.enable = true;
   };
 
   networking = {
