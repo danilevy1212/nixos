@@ -1,5 +1,4 @@
 {
-  config,
   lib,
   pkgs,
   unstable,
@@ -22,7 +21,7 @@ lib.mkIf pkgs.stdenv.isLinux {
     brave
 
     # Editing documents, normie style
-    unstable.libreoffice
+    # libreoffice
 
     # Keep my passwords safe
     keepassxc
