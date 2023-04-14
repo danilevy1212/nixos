@@ -20,9 +20,6 @@ lib.mkIf pkgs.stdenv.isLinux {
     # Browser for the...
     brave
 
-    # Editing documents, normie style
-    # libreoffice
-
     # Keep my passwords safe
     keepassxc
 
