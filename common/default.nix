@@ -14,7 +14,11 @@
   time.timeZone = "America/New_York";
 
   nix = {
-    gc = {automatic = true;};
+    gc = {
+      automatic = true;
+      randomizedDelaySec = "15m";
+      options = "--delete-older-than 15d";
+    };
     package = pkgs.nixVersions.stable;
     # Protect nix-shell against garbage collection
     extraOptions = ''
