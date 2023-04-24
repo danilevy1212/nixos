@@ -216,5 +216,5 @@
   services.printing.enable = true;
 
   # Suspend and hibernate when the lid closes (in case of laptop)
-  services.logind.lidSwitch = "suspend-then-hibernate";
+  services.logind.lidSwitch = "hibernate";
 }
