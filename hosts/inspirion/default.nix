@@ -14,14 +14,24 @@
   ];
 
   # Bootloader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-  boot.loader.efi.efiSysMountPoint = "/boot/efi";
-
-  # NOTE https://discourse.nixos.org/t/getting-nvidia-to-work-avoiding-screen-tearing/10422/16
-  boot.kernelParams = [
-    "nvidia-drm.modeset=1"
-  ];
+  boot = {
+    loader = {
+      systemd-boot.enable = true;
+    };
+    efi = {
+      canTouchEfiVariables = true;
+      efiSysMountPoint = "/boot/efi";
+    };
+    # NOTE https://discourse.nixos.org/t/getting-nvidia-to-work-avoiding-screen-tearing/10422/16
+    kernelParams = [
+      "nvidia-drm.modeset=1"
+    ];
+    # NOTE https://discourse.nixos.org/t/sound-not-working/12585
+    extraModprobeConfig = ''
+      options snd-intel-dspcfg dsp_driver=1
+    '';
+    hardware.enableAllFirmware = true;
+  };
 
   # Set your time zone.
   time.timeZone = "America/New_York";
@@ -58,9 +68,7 @@
     };
     prime = {
       sync.enable = true;
-
       intelBusId = "PCI:0:2:0";
-
       nvidiaBusId = "PCI:1:0:0";
     };
   };
