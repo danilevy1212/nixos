@@ -9,13 +9,16 @@
 }: {
   home.packages = with pkgs; [
     # File management.
-    (lib.mkIf stdenv.isLinux spaceFM)
-
-    # DB Client
-    dbeaver
+    spaceFM
 
     # REST Client
-    (lib.mkIf pkgs.stdenv.isLinux unstable.postman)
+    (insomnia.overrideAttrs
+      # NOTE  https://github.com/NixOS/nixpkgs/pull/227905
+      (finalAttrs: previousAttrs: {
+        preFixup = ''
+          wrapProgram "$out/bin/insomnia" "''${gappsWrapperArgs[@]}" --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath [curl glibc libudev0-shim nghttp2 openssl stdenv.cc.cc.lib]}
+        '';
+      }))
 
     # Youtube Archiver
     yt-dlp
