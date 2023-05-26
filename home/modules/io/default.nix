@@ -19,6 +19,9 @@
 
     # Database client, overkill mode
     (lib.mkIf (hostname == HOSTS.inspirion) jetbrains.datagrip)
+
+    # A nice debugger with a terrible editor
+    (lib.mkIf (hostname == HOSTS.inspirion) jetbrains.webstorm)
   ];
 
   # default file-browser
