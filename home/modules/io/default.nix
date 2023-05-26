@@ -12,13 +12,7 @@
     spaceFM
 
     # REST Client
-    (insomnia.overrideAttrs
-      # NOTE  https://github.com/NixOS/nixpkgs/pull/227905
-      (finalAttrs: previousAttrs: {
-        preFixup = ''
-          wrapProgram "$out/bin/insomnia" "''${gappsWrapperArgs[@]}" --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath [curl glibc libudev0-shim nghttp2 openssl stdenv.cc.cc.lib]}
-        '';
-      }))
+    insomnia
 
     # Youtube Archiver
     yt-dlp
