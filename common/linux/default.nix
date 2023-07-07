@@ -11,6 +11,8 @@
     firefox
     lxappearance
     pciutils
+    p7zip
+    unzip
   ];
 
   nix = {
