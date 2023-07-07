@@ -61,4 +61,7 @@
 
   # Notify battery status
   services.upower.enable = true;
+
+  # GVFS (Connect to mobile devices)
+  services.gvfs.enable = true;
 }
