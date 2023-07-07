@@ -1,6 +1,9 @@
 {
   inputs = {
     nixpkgs = {url = "github:nixos/nixpkgs/nixos-unstable";};
+    nixpkgs-stable = {
+      url = "github:nixos/nixpkgs/nixos-23.05";
+    };
     nixpkgs-unstable = {url = "github:nixos/nixpkgs/nixpkgs-unstable";};
     home-manager = {
       url = "github:nix-community/home-manager/master";
@@ -14,6 +17,7 @@
   };
   outputs = {
     nixpkgs,
+    nixpkgs-stable,
     nixpkgs-unstable,
     home-manager,
     darwin,
@@ -21,12 +25,14 @@
     ...
   }: let
     system = "x86_64-linux";
+    nixpkgs-args = {
+      inherit system;
+      config.allowUnfree = true;
+    };
     specialArgs = {
       emacs-overlay = emacs-overlay.overlay;
-      unstable = import nixpkgs-unstable {
-        inherit system;
-        config.allowUnfree = true;
-      };
+      unstable = import nixpkgs-unstable nixpkgs-args;
+      stable = import nixpkgs-stable nixpkgs-args;
     };
     HOSTS = {
       dellXps15 = "dellXps15";
