@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  stable,
   unstable,
   ...
 }: {
@@ -43,6 +44,6 @@
     anki
 
     # mpv + jellyfin, streaming heaven
-    unstable.jellyfin-mpv-shim
+    stable.jellyfin-mpv-shim
   ];
 }

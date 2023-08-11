@@ -3,6 +3,7 @@
   lib,
   pkgs,
   unstable,
+  stable,
   emacs-overlay,
   hostname,
   HOSTS,
@@ -45,6 +46,7 @@
     useUserPackages = true;
     extraSpecialArgs = {
       inherit unstable;
+      inherit stable;
       inherit hostname;
       inherit HOSTS;
     };
