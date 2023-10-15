@@ -1,0 +1,16 @@
+# vim: set ft=zsh:
+
+# Function to url encode a string                                                                                                                                        
+url_encode() {                     
+    local string="$1"  
+    local length="${#string}"                       
+    local encoded=""                                    
+    for ((i = 0; i < length; i++)); do
+        local char="${string:$i:1}"
+        case "$char" in
+            [a-za-z0-9.~_-\\:/]) encoded+="$char" ;;
+            *) encoded+="$(printf '%%%02x' "'$char")" ;;
+        esac
+    done
+    echo "$encoded"
+}

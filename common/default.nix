@@ -96,6 +96,9 @@
   # Default shell
   programs.zsh = {enable = true;};
 
+  # Ensure all downloaded packages have auto completion info
+  environment.pathsToLink = ["/share/zsh"];
+
   # Minimal bash config (for root)
   # autocd
   programs.bash.interactiveShellInit = "shopt -s autocd";

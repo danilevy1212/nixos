@@ -86,6 +86,9 @@ autoload edit-command-line
 zle -N edit-command-line
 bindkey '^[e' edit-command-line
 
+# set EDITOR
+export EDITOR="nvim"
+
 # FZF, the best finder.
 export FZF_DEFAULT_COMMAND='fd --type f --type l '
 
@@ -166,9 +169,6 @@ zinit light Flinner/zsh-emacs
 
 if command -v  emacsclient  &>/dev/null ; then
     export EMACS_PLUGIN_LAUNCHER=emacsclient.sh
-
-    # set EDITOR
-    export EDITOR="$EMACS_PLUGIN_LAUNCHER"
 
     alias emacs="$EMACS_PLUGIN_LAUNCHER --no-wait"
     alias e=emacs
@@ -272,3 +272,12 @@ zinit light cantino/mcfly
 
 # Enable fuzzy sorting
 export MCFLY_FUZZY=2
+
+# Add all files from the autoloa directory to the fpath array
+fpath+=("$USER_CUSTOM_AUTOLOAD")
+for file in "$USER_CUSTOM_AUTOLOAD"/*; do
+    if [[ -f "$file" ]]; then
+        # Autoload the function
+        autoload -Uz `basename "$file"`
+    fi
+done

@@ -1,0 +1,7 @@
+# vim: set ft=zsh:
+
+# Function to URL decode a string
+url_decode() {
+    local string="$1"
+    printf '%b' "$(echo -e "${string//%/\\x}")"
+}
