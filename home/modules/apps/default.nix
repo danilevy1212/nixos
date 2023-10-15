@@ -32,7 +32,6 @@
       # Social closeness
       tdesktop
       slack
-      teams
 
       # Browser for the...
       brave
