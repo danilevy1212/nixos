@@ -47,6 +47,9 @@
 
       # mpv + jellyfin, streaming heaven
       stable.jellyfin-mpv-shim
+
+      # raspi
+      stable.rpi-imager
     ]
     ++ (
       if hostname == HOSTS.nyx15v2
