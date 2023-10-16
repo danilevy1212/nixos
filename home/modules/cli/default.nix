@@ -42,10 +42,11 @@ in
       dotDir = ZDOTDIR;
       initExtra = builtins.readFile ./zshrc;
       shellAliases = {
-        # HACK
         ssh = "TERM=xterm-256color ssh";
         # colorized ls
         ls = "ls --color=auto";
+        # The only way to use rsync
+        rsync = "rsync -azvhP --info=progress2";
       };
     };
 
