@@ -13,6 +13,7 @@
     pciutils
     p7zip
     unzip
+    gnome.dconf-editor
   ];
 
   nix = {
