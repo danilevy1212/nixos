@@ -13,7 +13,6 @@
       url = "github:lnl7/nix-darwin/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    emacs-overlay = {url = "github:nix-community/emacs-overlay";};
   };
   outputs = {
     nixpkgs,
@@ -21,7 +20,6 @@
     nixpkgs-unstable,
     home-manager,
     darwin,
-    emacs-overlay,
     ...
   }: let
     system = "x86_64-linux";
@@ -30,7 +28,6 @@
       config.allowUnfree = true;
     };
     specialArgs = {
-      emacs-overlay = emacs-overlay.overlay;
       unstable = import nixpkgs-unstable nixpkgs-args;
       stable = import nixpkgs-stable nixpkgs-args;
     };

@@ -154,7 +154,6 @@ in {
   programs.emacs = with pkgs;
     lib.mkIf stdenv.isLinux {
       enable = true;
-      package = emacs-unstable;
       # For vterm.
       extraPackages = epkgs: with epkgs; [vterm oauth2];
     };

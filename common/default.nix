@@ -4,13 +4,10 @@
   pkgs,
   unstable,
   stable,
-  emacs-overlay,
   hostname,
   HOSTS,
   ...
 }: {
-  nixpkgs.overlays = [emacs-overlay];
-
   # Set your time zone.
   time.timeZone = "America/New_York";
 
