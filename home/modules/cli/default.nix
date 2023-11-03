@@ -158,6 +158,10 @@ in
       tldr
       fasd
 
+      # output processing
+      jq
+      xq-xml
+
       # Terminal Font
       (lib.mkIf stdenv.isLinux victor-mono)
 
