@@ -5,9 +5,6 @@
   ...
 }:
 lib.mkIf pkgs.stdenv.isLinux {
-  # Connect up to external devices.
-  services.udiskie.enable = true;
-
   # I 💙 bluetooth.
   services.blueman-applet.enable = true;
 

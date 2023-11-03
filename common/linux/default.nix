@@ -3,6 +3,7 @@
   lib,
   pkgs,
   hostname,
+  stable,
   ...
 }: {
   system.stateVersion = "23.05";
@@ -213,7 +214,9 @@
   services.gnome.gnome-keyring.enable = true;
 
   # Need to enable udisks2 on the system level
-  services.udisks2.enable = true;
+  services.udisks2 = {
+    enable = true;
+  };
 
   # Enable CUPS to print documents.
   services.printing.enable = true;

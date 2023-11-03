@@ -6,7 +6,6 @@ in
     lib,
     pkgs,
     hostname,
-    # stable,
     HOSTS,
     ...
   }: {
@@ -163,7 +162,6 @@ in
       (lib.mkIf stdenv.isLinux victor-mono)
 
       # TODO Create a welcome script with all of this.
-
       ## Fun
       cowsay
       lolcat
