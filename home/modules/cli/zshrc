@@ -270,6 +270,10 @@ zinit light trapd00r/LS_COLORS
 zinit ice lucid wait"0a" from"gh-r" as"program" bpick"*linux-musl*" atload'eval "$(mcfly init zsh)"'
 zinit light cantino/mcfly
 
+# Yarn completions
+zinit ice atload"zpcdreplay" atclone'sed -i "1s|^.*$|#!/usr/bin/env zsh|" zplug.zsh && ./zplug.zsh' atpull'%atclone'
+zinit light g-plane/zsh-yarn-autocompletions
+
 # Enable fuzzy sorting
 export MCFLY_FUZZY=2
 
