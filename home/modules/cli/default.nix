@@ -41,6 +41,17 @@ in
       # NOTE This is just for easier debugging.
       dotDir = ZDOTDIR;
       initExtra = builtins.readFile ./zshrc;
+      # NOTE  Have custom functions available throughout subshells
+      envExtra = ''
+        # Add all files from the autoload directory to the fpath array
+        fpath+=("$USER_CUSTOM_AUTOLOAD")
+        for file in "$USER_CUSTOM_AUTOLOAD"/*; do
+            if [[ -f "$file" ]]; then
+                # Autoload the function
+                autoload -Uz `basename "$file"`
+            fi
+        done
+      '';
       shellAliases = {
         ssh = "TERM=xterm-256color ssh";
         # colorized ls

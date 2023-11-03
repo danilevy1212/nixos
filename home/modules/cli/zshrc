@@ -276,12 +276,3 @@ zinit light g-plane/zsh-yarn-autocompletions
 
 # Enable fuzzy sorting
 export MCFLY_FUZZY=2
-
-# Add all files from the autoloa directory to the fpath array
-fpath+=("$USER_CUSTOM_AUTOLOAD")
-for file in "$USER_CUSTOM_AUTOLOAD"/*; do
-    if [[ -f "$file" ]]; then
-        # Autoload the function
-        autoload -Uz `basename "$file"`
-    fi
-done

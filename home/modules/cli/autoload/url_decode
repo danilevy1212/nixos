@@ -3,5 +3,16 @@
 # Function to URL decode a string
 url_decode() {
     local string="$1"
+
+    if [ -z "$input" ]; then
+        if [ -p /dev/stdin ]; then
+            # Read from stdin and assign it to the input variable
+            string=$(cat)
+        else 
+            # Nothing to decode
+            return ""
+        fi
+    fi
+
     printf '%b' "$(echo -e "${string//%/\\x}")"
 }

@@ -1,14 +1,25 @@
 # vim: set ft=zsh:
 
-# Function to url encode a string                                                                                                                                        
-url_encode() {                     
+# Function to url encode a string, close approximation on how a browser would.
+url_encode() {
     local string="$1"  
+
+    if [ -z "$string" ]; then
+        if [ -p /dev/stdin ]; then
+            # Read from stdin and assign it to the input variable
+            string=$(cat)
+        else 
+            # Nothing to encode
+            return ""
+        fi
+    fi
+
     local length="${#string}"                       
     local encoded=""                                    
     for ((i = 0; i < length; i++)); do
         local char="${string:$i:1}"
         case "$char" in
-            [a-za-z0-9.~_-\\:/]) encoded+="$char" ;;
+            [a-zA-Z0-9.~_-\\!\\¡\\:/]) encoded+="$char" ;;
             *) encoded+="$(printf '%%%02x' "'$char")" ;;
         esac
     done
