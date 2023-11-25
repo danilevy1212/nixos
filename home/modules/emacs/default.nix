@@ -65,16 +65,6 @@ in {
       # format
       nodePackages.prettier
 
-      # :lang
-      # go
-      gopls
-      gocode
-      gore
-      (lib.mkIf stdenv.isLinux golangci-lint)
-      gotools
-      gotests
-      gomodifytags
-
       # nix
       alejandra
 
