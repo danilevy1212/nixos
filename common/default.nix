@@ -81,6 +81,7 @@
         htop
         docker-compose
         inetutils
+        dig
         openvpn
         lsof
         usbutils
