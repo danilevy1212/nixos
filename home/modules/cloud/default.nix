@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  stable,
   ...
 }: {
   # File sharing, p2p style
@@ -15,7 +16,7 @@
 
   # Work stuff
   home.packages = with pkgs; [
-    awscli2
+    stable.awscli2
     rclone
   ];
 
