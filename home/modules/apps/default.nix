@@ -45,9 +45,6 @@
       # Memorize
       anki
 
-      # mpv + jellyfin, streaming heaven
-      stable.jellyfin-mpv-shim
-
       # raspi
       stable.rpi-imager
     ]

@@ -207,11 +207,33 @@
   # Docker
   virtualisation.docker.enable = true;
 
+  # Connect mpv to my jellyfin instance automatically
+  systemd.user.services = {
+    "jellyfin-mpv-shim" = let
+      dependencies = ["hm-graphical-session.target" "tray.target"];
+    in {
+      # FIXME  Not auto-starting
+      wants = dependencies;
+      requires = dependencies;
+      unitConfig = {
+        Description = "jellyfin-mpv-shim";
+      };
+      serviceConfig = {
+        Type = "simple";
+        ExecStart = "${stable.jellyfin-mpv-shim}/bin/jellyfin-mpv-shim";
+        Restart = "always";
+      };
+    };
+  };
   # Remenber me, for longer.
   security.sudo.extraConfig = "Defaults        timestamp_timeout=300";
 
   # Bother me, less.
   services.gnome.gnome-keyring.enable = true;
+
+  # FIXME This doesn't work
+  # Allow greeters to use gnome-keyring
+  security.pam.services.greeter.enableGnomeKeyring = true;
 
   # Need to enable udisks2 on the system level
   services.udisks2 = {
