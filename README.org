@@ -81,6 +81,60 @@ To update a specific input:
 sudo nix flake lock --update-input <input-name>
 #+end_src
 
+* Checking Configuration Values
+
+You can use `nix repl` to check the values of your NixOS and home-manager configurations. This can be incredibly useful for debugging and understanding how your system is configured.
+
+** NixOS Configuration Values
+
+To inspect NixOS configuration values, follow these steps:
+
+1. Open a terminal.
+
+2. Start a Nix REPL by entering the following command:
+
+   #+begin_src shell
+   $ nix repl
+   #+end_src
+
+   You will see a welcome message indicating that you are in the Nix REPL.
+
+3. Load your NixOS configuration:
+
+    #+begin_src shell
+   nix-repl> :lf /etc/nixos
+   #+end_src
+
+   This loads your NixOS configuration into the REPL.
+
+4. You can then access specific configuration values using the following format:
+
+   #+begin_src shell
+   nix-repl> nixos.<system>.config.<...>
+   #+end_src
+
+   Replace `<system>` and `<...>` with the specific components of your NixOS configuration you want to inspect.
+
+** Home-Manager Configuration Values
+
+If you want to check home-manager-specific values within your NixOS configuration, use these steps:
+
+1. Open a terminal.
+
+2. Start a Nix REPL by entering the following command:
+
+   #+begin_src shell
+   $ nix repl
+   #+end_src
+
+3. You can access home-manager configuration values within your NixOS configuration using the following format:
+
+   #+begin_src shell
+   nix-repl> nixosConfigurations.<system>.config.home-manager.users.<username>.<...>
+   #+end_src
+
+   Replace `<system>`, `<username>`, and `<...>` with the specific components of your home-manager configuration you want to inspect.
+
 * Reference
 
 - [[https://nixos.wiki/wiki/Flakes][Nix Flakes wiki]]
