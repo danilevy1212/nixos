@@ -115,7 +115,6 @@ in {
       # lsp
       unzip
       zip
-      python3
     ]
     ++ (
       if stdenv.isLinux

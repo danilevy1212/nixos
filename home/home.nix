@@ -33,6 +33,9 @@
     # Golang
     "golang"
 
+    # A system admin best friend
+    "python"
+
     # Window Management.
     "wm"
 
