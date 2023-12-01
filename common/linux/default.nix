@@ -90,9 +90,6 @@
     resolvconf.dnsExtensionMechanism = false;
   };
 
-  # Let me lock the screen. TODO Find alternatives.
-  programs.slock.enable = true;
-
   # Backlight control
   programs.light.enable = true;
   services.actkbd = {
@@ -243,6 +240,6 @@
   # Enable CUPS to print documents.
   services.printing.enable = true;
 
-  # Suspend and hibernate when the lid closes (in case of laptop)
-  services.logind.lidSwitch = "hibernate";
+  # Suspend when the lid closes (in case of laptop)
+  services.logind.lidSwitch = "suspend";
 }
