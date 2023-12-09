@@ -1,8 +1,5 @@
 {
-  self,
-  config,
   pkgs,
-  lib,
   ...
 }: let
   modules = [
@@ -42,7 +39,7 @@
     # Normie Apps so I can pretend I am not a nerd.
     "apps"
   ];
-  moduleImports = map (x: ./. + builtins.toPath "/modules/${x}") modules;
+  moduleImports = map (x: ./. +  "/modules/${x}") modules;
   username =
     if pkgs.stdenv.isDarwin
     then "dlevy"
