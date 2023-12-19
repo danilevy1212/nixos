@@ -1,9 +1,6 @@
 {
-  config,
-  lib,
   pkgs,
   stable,
-  unstable,
   hostname,
   HOSTS,
   ...
