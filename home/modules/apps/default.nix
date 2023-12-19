@@ -39,6 +39,9 @@
       # Memorize
       anki
 
+      # Pseudo-office
+      stable.libreoffice
+
       # raspi
       stable.rpi-imager
     ]
