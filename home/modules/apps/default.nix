@@ -23,9 +23,6 @@
       # Proprietary musicality
       spotify
 
-      # Non-proprietary musicality
-      (import ./nuclear.nix pkgs)
-
       # Social closeness
       tdesktop
       slack
