@@ -1,8 +1,8 @@
 {pkgs, ...}: let
   CARGO_HOME = "$XDG_DATA_HOME/cargo";
 in {
-  home.packages = [
-    pkgs.rustup
+  home.packages = with pkgs; [
+    rustup
   ];
 
   home.sessionVariables = {
