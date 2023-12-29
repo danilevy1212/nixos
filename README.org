@@ -144,3 +144,4 @@ If you want to check home-manager-specific values within your NixOS configuratio
 - [[https://nixos.org/manual/nixpkgs/stable/][nixpkgs stable manual]]
 - [[https://nixos.org/manual/nixpkgs/unstable/][nixpkgs unstable manual]]
 - [[https://github.com/nix-community/awesome-nix][Awesome Nix resources]]
+- [[https://github.com/NixOS/nixpkgs/tree/master/lib/default.nix][pkgs.lib: Library of low-level helper functions for nix expressions.]]
