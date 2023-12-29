@@ -7,6 +7,7 @@ in
 
     installPhase = ''
       mkdir -p $out/bin
+      chmod +x ./colortest.sh
       mv ./colortest.sh $out/bin/colortest
     '';
   }
