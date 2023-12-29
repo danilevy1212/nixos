@@ -1,11 +1,10 @@
 {
-  config,
-  lib,
   pkgs,
   unstable,
   stable,
   hostname,
   HOSTS,
+  obsidianmd,
   ...
 }: {
   # Set your time zone.
@@ -46,7 +45,10 @@
       inherit stable;
       inherit hostname;
       inherit HOSTS;
+      inherit obsidianmd;
     };
+    # Easier debugging
+    verbose = true;
   };
 
   environment = {

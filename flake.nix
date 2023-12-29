@@ -30,9 +30,28 @@
       inherit system;
       config.allowUnfree = true;
     };
-    specialArgs = {
-      unstable = import nixos-unstable nixpkgs-args;
+    specialArgs = rec {
       stable = import nixos-stable nixpkgs-args;
+      unstable = import nixos-unstable nixpkgs-args;
+      # ISSUE  https://github.com/NixOS/nixpkgs/issues/273611
+      obsidianmd = let
+        lib = unstable.lib;
+        obsidianVersion = unstable.pkgs.obsidian.version;
+      in
+        # NOTE  We are creating a special deriviation that will be used to build `obsidianmd`, so we don't pollute the
+        #       `nixos-unstable` derivation with `electron-25.9.0` which is only needed for `obsidianmd`.
+        #       When the issue is solved, we can remove this and get `obsidianmd` from `nixos-unstable` directly.
+        with lib;
+          (import nixos-unstable (
+            # NOTE https://discourse.nixos.org/t/how-to-permit-insecure-package-as-input-to-another-package/19960/4
+            lib.recursiveUpdate {
+              config.permittedInsecurePackages =
+                throwIf (versionOlder obsidianVersion "1.4.16") "Obsidian no longer requires EOL Electron"
+                ["electron-25.9.0"];
+            }
+            nixpkgs-args
+          ))
+          .obsidian;
     };
     HOSTS = {
       dellXps15 = "dellXps15";

@@ -2,6 +2,7 @@
   pkgs,
   stable,
   hostname,
+  obsidianmd,
   HOSTS,
   ...
 }: {
@@ -38,6 +39,7 @@
 
       # Memorize
       anki
+      obsidianmd
 
       # Pseudo-office
       stable.libreoffice
