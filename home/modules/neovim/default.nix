@@ -1,6 +1,4 @@
 {
-  config,
-  lib,
   pkgs,
   ...
 }: {
@@ -21,6 +19,8 @@
     tree-sitter
 
     # For telescope fzf
-    (lib.mkIf pkgs.stdenv.isLinux gnumake)
+    gnumake
   ];
+
+  # TODO  home.activation to install nvim auto-magically
 }

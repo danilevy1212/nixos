@@ -28,7 +28,7 @@
   ];
 
   # default file-browser
-  home.sessionVariables = lib.mkIf pkgs.stdenv.isLinux {FILEMANAGER = "spacefm";};
+  home.sessionVariables = {FILEMANAGER = "spacefm";};
 
   # Reuse an already-established connection when creating a new SSH session
   programs.ssh.extraConfig = ''

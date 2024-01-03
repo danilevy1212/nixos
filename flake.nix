@@ -75,17 +75,6 @@
   in {
     # NOTE https://teu5us.github.io/nix-lib.html#lib.attrsets.mapattrs
     nixosConfigurations = nixos-unstable.lib.attrsets.mapAttrs addHostConfiguration HOSTS;
-    # TODO Deprecating soon
-    darwinConfigurations = {
-      autoMac = darwin.lib.darwinSystem {
-        system = "x86_64-darwin";
-        modules = [
-          home-manager-unstable.darwinModules.home-manager
-          ./hosts/autoMac
-        ];
-        inherit specialArgs;
-      };
-    };
     # TODO Have a configuration that is only `home-manager`, meant for systems that may or may not be `NIXOS`
     #      See https://nix-community.github.io/home-manager/index.xhtml#sec-flakes-standalone
   };

@@ -1,12 +1,10 @@
 {
-  config,
-  lib,
   pkgs,
   stable,
   ...
 }: {
   # File sharing, p2p style
-  services.syncthing = lib.mkIf pkgs.stdenv.isLinux {
+  services.syncthing = {
     enable = true;
     tray = {
       enable = true;

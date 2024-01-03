@@ -11,7 +11,6 @@
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
     ./../../common
-    ./../../common/linux
   ];
 
   # Use the systemd-boot EFI boot loader.

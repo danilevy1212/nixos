@@ -1,7 +1,11 @@
 {
-  pkgs,
+  stateVersion,
   ...
 }: let
+  # TODO  https://nixos.org/manual/nixos/stable/#sec-writing-modules Refactor this into a module.
+  #       Each "host" imports this module that sets it's home-manager configuration.
+  #       In turn, this will enable flake configuration that are only home-manager related.
+  #       Useful for systems that are not NixOS.
   modules = [
     # XDG Base Dir.
     "xdg"
@@ -40,10 +44,8 @@
     "apps"
   ];
   moduleImports = map (x: ./. +  "/modules/${x}") modules;
-  username =
-    if pkgs.stdenv.isDarwin
-    then "dlevy"
-    else "dlevym";
+  # TODO  This should be forwarded from the host system.
+  username = "dlevym";
 in {
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
@@ -51,11 +53,8 @@ in {
   # Home Manager needs a bit of information about you and the paths it should manage.
   home = {
     inherit username;
-    homeDirectory =
-      if pkgs.stdenv.isLinux
-      then "/home/dlevym"
-      else "/Users/dlevy";
-    stateVersion = "23.05";
+    homeDirectory = "/home/${username}";
+    stateVersion = stateVersion;
   };
 
   # Be quiet, will you?

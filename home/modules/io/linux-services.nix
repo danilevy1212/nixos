@@ -3,8 +3,7 @@
   lib,
   pkgs,
   ...
-}:
-lib.mkIf pkgs.stdenv.isLinux {
+}: {
   # I 💙 bluetooth.
   services.blueman-applet.enable = true;
 

@@ -62,7 +62,7 @@ in
     };
 
     # A pretty, modern, terminal.
-    programs.alacritty = lib.mkIf pkgs.stdenv.isLinux {
+    programs.alacritty = {
       enable = true;
       # package = stable.alacritty;
       settings = {
@@ -148,11 +148,11 @@ in
     };
 
     # Nordic Terminal
-    xresources.extraConfig = lib.mkIf pkgs.stdenv.isLinux (builtins.readFile (pkgs.fetchzip {
+    xresources.extraConfig = builtins.readFile (pkgs.fetchzip {
         url = "https://github.com/arcticicestudio/nord-xresources/archive/v0.1.0.tar.gz";
         sha256 = "1bhlhlk5axiqpm6l2qaij0cz4a53i9hcfsvc3hw9ayn75034xr93";
       }
-      + "/src/nord"));
+      + "/src/nord");
 
     # HISTFILE
     home.sessionVariables = {
@@ -163,7 +163,7 @@ in
     # Networking utilities
     home.packages = with pkgs; [
       # System
-      (lib.mkIf stdenv.isLinux neofetch)
+      neofetch
       file
       rsync
       tldr
@@ -174,7 +174,7 @@ in
       xq-xml
 
       # Terminal Font
-      (lib.mkIf stdenv.isLinux victor-mono)
+      victor-mono
 
       # TODO Create a welcome script with all of this.
       ## Fun
@@ -192,6 +192,6 @@ in
       rig
 
       # Text To Speach
-      (lib.mkIf stdenv.isLinux espeak)
+      espeak
     ];
   }

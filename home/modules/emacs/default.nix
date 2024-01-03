@@ -43,23 +43,19 @@ in {
       zstd # for undo-fu-session/undo-tree compression
       pinentry-emacs # in-emacs gnupg prompts
     ]
-    ++ (
-      if stdenv.isLinux
-      then [
-        # Fonts
-        emacs-all-the-icons-fonts
-        ## Emacs
-        sarasa-gothic
-        dejavu_fonts
-        symbola
-        noto-fonts
-        noto-fonts-emoji
-        quivera
-        ## Terminal
-        victor-mono
-      ]
-      else []
-    )
+    ++ [
+      # Fonts
+      emacs-all-the-icons-fonts
+      ## Emacs
+      sarasa-gothic
+      dejavu_fonts
+      symbola
+      noto-fonts
+      noto-fonts-emoji
+      quivera
+      ## Terminal
+      victor-mono
+    ]
     ++ [
       # :editor
       # format
@@ -94,7 +90,7 @@ in {
       fish
 
       # :os
-      (lib.mkIf stdenv.isLinux xclip)
+      xclip
 
       # :checkers
       languagetool
@@ -102,7 +98,7 @@ in {
 
       # :emacs
       # dired
-      (lib.mkIf stdenv.isLinux imagemagick)
+      imagemagick
 
       # :tools
       # lookup
@@ -116,18 +112,14 @@ in {
       unzip
       zip
     ]
-    ++ (
-      if stdenv.isLinux
-      then [
-        # :app
-        # everywhere
-        xclip
-        xdotool
-        xorg.xprop
-        xorg.xwininfo
-      ]
-      else []
-    )
+    ++ [
+      # :app
+      # everywhere
+      xclip
+      xdotool
+      xorg.xprop
+      xorg.xwininfo
+    ]
     ++ [
       # telega
       ffmpeg-full
@@ -140,19 +132,18 @@ in {
     ];
 
   # I cannot live without you, my one true love...
-  programs.emacs = with pkgs;
-    lib.mkIf stdenv.isLinux {
-      enable = true;
-      # For vterm.
-      extraPackages = epkgs: with epkgs; [vterm oauth2];
-    };
+  programs.emacs = with pkgs; {
+    enable = true;
+    # For vterm.
+    extraPackages = epkgs: with epkgs; [vterm oauth2];
+  };
 
   # For :tools direnv
   programs.direnv = {
     enable = true;
     nix-direnv.enable = true;
   };
-  services.lorri = lib.mkIf pkgs.stdenv.isLinux {enable = true;};
+  services.lorri = {enable = true;};
 
   # For :tools magit
   programs.git.delta = {
@@ -171,6 +162,8 @@ in {
 
   # "auto" install doom-emacs
   home.activation = {
+    # NOTE  If I change the url to `ssh`, this will run as my home.user, so you will need to manually setup the ssh key with github.
+    #       I should probably make it an option somewhere to either use ssh or https.
     doom-install = lib.hm.dag.entryAfter ["writeBoundary"] ''
       if [ ! -d ${emacs-dir} ]
       then

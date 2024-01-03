@@ -9,7 +9,6 @@
   imports = [
     ./hardware-configuration.nix # Include the results of the hardware scan.
     ./../../common
-    ./../../common/linux
     ./nvidia-offload
     ./xrandr-utils
   ];

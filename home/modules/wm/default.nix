@@ -3,8 +3,7 @@
   lib,
   pkgs,
   ...
-}:
-lib.mkIf pkgs.stdenv.isLinux (let
+}: let
   awesome-wm-widgets = with pkgs;
     lua.pkgs.toLuaModule (stdenv.mkDerivation rec {
       name = "awesome-wm-widgets";
@@ -118,4 +117,3 @@ in {
     shadow = true;
     shadowOpacity = 0.75;
   };
-})
