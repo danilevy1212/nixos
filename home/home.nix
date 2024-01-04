@@ -1,4 +1,4 @@
-{config, ...}: let
+let
   # TODO  https://nixos.org/manual/nixos/stable/#sec-writing-modules Refactor this into a module.
   #       Each "host" imports this module that sets it's home-manager configuration.
   #       In turn, this will enable flake configuration that are only home-manager related.
@@ -41,22 +41,15 @@
     "apps"
   ];
   moduleImports = map (x: ./. + "/modules/${x}") modules;
-  # TODO  This should be forwarded from the host system.
-  username = "dlevym";
 in {
-  # Let Home Manager install and manage itself.
-  programs.home-manager.enable = true;
-
-  # Home Manager needs a bit of information about you and the paths it should manage.
-  home = {
-    inherit username;
-    homeDirectory = "/home/${username}";
-    stateVersion = config.home.version.release;
-  };
-
   # Be quiet, will you?
   news.display = "notify";
 
   # Modularize! Never compromise! 😎
-  imports = moduleImports;
+  imports =
+    moduleImports
+    ++ [
+      # Core "home" settings.
+      ./core.nix
+    ];
 }

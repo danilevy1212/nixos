@@ -9,6 +9,7 @@
   ...
 }: let
   stateVersion = config.system.nixos.release;
+  username = "dlevym";
 in {
   system.stateVersion = stateVersion;
 
@@ -22,7 +23,7 @@ in {
       "/nix/var/nix/profiles/per-user/root/channels"
     ];
     settings = {
-      trusted-users = ["root" "dlevym"];
+      trusted-users = ["root" username];
       # Protect disk space
       auto-optimise-store = true;
     };
@@ -64,7 +65,7 @@ in {
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users = {
-    dlevym = {
+    "${username}" = {
       # Default shell.
       shell = pkgs.zsh;
       isNormalUser = true;
@@ -143,18 +144,18 @@ in {
       inherit hostname;
       inherit HOSTS;
       inherit obsidianmd;
+      userConfig = {
+        inherit username;
+      };
     };
     # Load my home-manager configuration.
-    users.dlevym = import ./../home/home.nix;
+    users."${username}" = import ./../home/home.nix;
     # Easier debugging
     verbose = true;
   };
 
   environment = {
     variables = {
-      # !https://github.com/NixOS/nixpkgs/issues/16327
-      NO_AT_BRIDGE = "1";
-
       # These are the defaults, and xdg.enable does set them, but due to load
       # order, they're not set before environment.variables are set, which could
       # cause race conditions.
