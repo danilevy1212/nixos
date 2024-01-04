@@ -143,7 +143,6 @@ in {
       inherit hostname;
       inherit HOSTS;
       inherit obsidianmd;
-      inherit stateVersion;
     };
     # Load my home-manager configuration.
     users.dlevym = import ./../home/home.nix;

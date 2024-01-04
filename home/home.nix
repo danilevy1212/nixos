@@ -1,7 +1,4 @@
-{
-  stateVersion,
-  ...
-}: let
+{config, ...}: let
   # TODO  https://nixos.org/manual/nixos/stable/#sec-writing-modules Refactor this into a module.
   #       Each "host" imports this module that sets it's home-manager configuration.
   #       In turn, this will enable flake configuration that are only home-manager related.
@@ -43,7 +40,7 @@
     # Normie Apps so I can pretend I am not a nerd.
     "apps"
   ];
-  moduleImports = map (x: ./. +  "/modules/${x}") modules;
+  moduleImports = map (x: ./. + "/modules/${x}") modules;
   # TODO  This should be forwarded from the host system.
   username = "dlevym";
 in {
@@ -54,11 +51,11 @@ in {
   home = {
     inherit username;
     homeDirectory = "/home/${username}";
-    stateVersion = stateVersion;
+    stateVersion = config.home.version.release;
   };
 
   # Be quiet, will you?
-  news.display = "silent";
+  news.display = "notify";
 
   # Modularize! Never compromise! 😎
   imports = moduleImports;
