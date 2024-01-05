@@ -1,7 +1,8 @@
 {
   inputs = {
+    # Latest stable release of nixpkgs
     nixos-stable = {
-      url = "github:nixos/nixpkgs/nixos-23.05";
+      url = "github:nixos/nixpkgs/nixos-23.11";
     };
     # Rolling release of nixpkgs
     nixos-unstable = {
