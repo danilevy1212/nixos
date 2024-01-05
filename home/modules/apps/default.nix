@@ -1,11 +1,13 @@
 {
   pkgs,
+  config,
   stable,
   hostname,
-  obsidianmd,
   HOSTS,
   ...
-}: {
+}: let
+  cfg = config.userConfig;
+in {
   # Video Player
   programs.mpv = {
     enable = true;
@@ -39,7 +41,7 @@
 
       # Memorize
       anki
-      obsidianmd
+      cfg.obsidianmd
 
       # Pseudo-office
       stable.libreoffice

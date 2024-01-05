@@ -5,11 +5,11 @@
   stable,
   hostname,
   HOSTS,
-  obsidianmd,
+  userConfig,
   ...
 }: let
   stateVersion = config.system.nixos.release;
-  username = "dlevym";
+  username = userConfig.username;
 in {
   system.stateVersion = stateVersion;
 
@@ -141,12 +141,10 @@ in {
     extraSpecialArgs = {
       inherit unstable;
       inherit stable;
+      inherit userConfig;
+      # TODO  Use userConfig instead of making home-manager aware of the HOSTS variable.
       inherit hostname;
       inherit HOSTS;
-      inherit obsidianmd;
-      userConfig = {
-        inherit username;
-      };
     };
     # Load my home-manager configuration.
     users."${username}" = import ./../home/home.nix;
