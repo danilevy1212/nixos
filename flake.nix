@@ -17,11 +17,13 @@
       url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixos-unstable";
     };
+    awsvpnclient.url = "github:ymatsiuk/awsvpnclient";
   };
   outputs = {
     nixos-stable,
     nixos-unstable,
     home-manager-unstable,
+    awsvpnclient,
     ...
   }: let
     system = "x86_64-linux";
@@ -53,6 +55,7 @@
     # Home-manager configuration.
     userConfig = {
       username = "dlevym";
+      #  HACK  We pass obsidianmd as an argument to home-manager
       inherit obsidianmd;
     };
     specialArgs = {
@@ -71,6 +74,12 @@
         modules = [
           home-manager-unstable.nixosModules.home-manager
           ./hosts/${hostname}
+          {
+            # AWS VPN Client, for work
+            environment.systemPackages = [
+              awsvpnclient.packages."${system}".awsvpnclient
+            ];
+          }
         ];
         specialArgs =
           specialArgs

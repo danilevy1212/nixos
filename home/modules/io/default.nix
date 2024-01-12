@@ -1,8 +1,6 @@
 {
-  config,
   lib,
   pkgs,
-  unstable,
   hostname,
   HOSTS,
   ...
@@ -22,9 +20,6 @@
 
     # A nice debugger with a terrible editor
     (lib.mkIf (hostname == HOSTS.inspirion) jetbrains.webstorm)
-
-    # VPN Client for work
-    (lib.mkIf (hostname == HOSTS.inspirion) openfortivpn)
   ];
 
   # default file-browser
