@@ -101,7 +101,6 @@ in {
     hostName = "${hostname}";
     networkmanager.plugins = with pkgs; [
       networkmanager-openvpn
-      networkmanager-fortisslvpn
     ];
     # Port's for work stuff.
     firewall = {
