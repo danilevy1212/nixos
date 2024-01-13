@@ -93,6 +93,7 @@ in {
       support32Bit = true;
     };
     pulse.enable = true;
+    jack.enable = true;
     wireplumber.enable = true;
   };
 
@@ -193,6 +194,8 @@ in {
         unzip
         gnome.dconf-editor
         (import ./../pkgs/colortest {inherit pkgs;})
+        # Audio (pulseaudio under pipewire)
+        pulseaudio
       ]
       # Basic network
       ++ (with pkgs.unixtools; [netstat ifconfig])

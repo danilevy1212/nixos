@@ -30,6 +30,8 @@ in {
       pulsemixer
       pavucontrol
       playerctl
+      easyeffects
+      helvum
 
       # Control the screens!
       arandr
