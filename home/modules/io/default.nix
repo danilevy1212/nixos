@@ -11,6 +11,7 @@
 
     # REST Client
     insomnia
+    bruno
 
     # Youtube Archiver
     yt-dlp
