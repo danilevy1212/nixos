@@ -3,7 +3,6 @@ let
 in
   {
     config,
-    lib,
     pkgs,
     hostname,
     HOSTS,
@@ -70,7 +69,7 @@ in
           normal = {family = "Sarasa Mono J";};
           bold = {family = "Sarasa Mono J";};
           italic = {family = "Sarasa Mono J";};
-          bold-italic = {family = "Sarasa Mono J";};
+          bold_italic = {family = "Sarasa Mono J";};
           size = 10.0;
         };
         window = {
@@ -99,10 +98,6 @@ in
             matches = {
               foreground = "CellBackground";
               background = "#88c0d0";
-            };
-            footer_bar = {
-              background = "#434c5e";
-              foreground = "#d8dee9";
             };
           };
           normal = {
@@ -134,6 +129,10 @@ in
             magenta = "#8c738c";
             cyan = "#6d96a5";
             white = "#aeb3bb";
+          };
+          footer_bar = {
+            background = "#434c5e";
+            foreground = "#d8dee9";
           };
         };
       };
