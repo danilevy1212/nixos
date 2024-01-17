@@ -57,6 +57,10 @@ in
         ls = "ls --color=auto";
         # The only way to use rsync
         rsync = "rsync -azvhP --info=progress2";
+        "'??'" = "gh copilot explain";
+        "'???'" = "gh copilot suggest -t shell";
+        "'git?'" = "gh copilot suggest -t git";
+        "'gh?'" = "gh copilot suggest -t gh";
       };
     };
 
@@ -157,6 +161,12 @@ in
     home.sessionVariables = {
       HISTFILE = "${config.xdg.dataHome}/history";
       USER_CUSTOM_AUTOLOAD = "$HOME/${ZDOTDIR}/autoload";
+    };
+
+    # github
+    programs.gh = {
+      enable = true;
+      extensions = config.userConfig.gh-extensions;
     };
 
     # Networking utilities
