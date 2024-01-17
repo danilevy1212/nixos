@@ -22,6 +22,12 @@ assert assertMsg (isAttrs userConfig) "You must pass a `userConfig' attrSet to `
             example = literalExpression "pkgs.obsidian";
             description = "Obsidian package until https://github.com/NixOS/nixpkgs/issues/273611 is fixed";
           };
+          gh-extensions = mkOption {
+            type = listOf package;
+            example = literalExpression "[ pkgs.gh-markdown-preview pkgs.gh-cal ]";
+
+            description = "List of GitHub extensions to install";
+          };
         };
       };
   };
