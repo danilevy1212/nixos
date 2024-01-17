@@ -24,6 +24,11 @@
       url = "path:./pkgs/colortest";
       inputs.nixpkgs.follows = "nixos-stable";
     };
+    # gh-copilot
+    gh-copilot = {
+      url = "path:./pkgs/gh-copilot";
+      inputs.nixpkgs.follows = "nixos-stable";
+    };
   };
   outputs = {
     nixos-stable,
@@ -31,6 +36,7 @@
     home-manager-unstable,
     awsvpnclient,
     colortest,
+    gh-copilot,
     ...
   }: let
     system = "x86_64-linux";
@@ -62,8 +68,8 @@
     # Home-manager configuration.
     userConfig = {
       username = "dlevym";
-      #  HACK  We pass obsidianmd as an argument to home-manager
       inherit obsidianmd;
+      gh-extensions = [gh-copilot.packages."${system}".gh-copilot];
     };
     specialArgs = {
       inherit stable;
@@ -83,9 +89,11 @@
           home-manager-unstable.nixosModules.home-manager
           ./hosts/${hostname}
           {
-            # AWS VPN Client, for work
             environment.systemPackages = [
+              # AWS VPN Client, for work
               awsvpnclient.packages."${system}".awsvpnclient
+              # Colortest, for testing terminal colors
+              colortest.packages."${system}".colortest
             ];
           }
         ];
