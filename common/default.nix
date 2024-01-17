@@ -6,7 +6,6 @@
   hostname,
   HOSTS,
   userConfig,
-  colortest,
   ...
 }: let
   stateVersion = config.system.nixos.release;
@@ -194,7 +193,6 @@ in {
         p7zip
         unzip
         gnome.dconf-editor
-        colortest
         # Audio (pulseaudio under pipewire)
         pulseaudio
       ]
