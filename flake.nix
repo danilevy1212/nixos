@@ -17,13 +17,20 @@
       url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixos-unstable";
     };
+    # AWS VPN Client
     awsvpnclient.url = "github:ymatsiuk/awsvpnclient";
+    # Colortest, for testing terminal colors
+    colortest = {
+      url = "path:./pkgs/colortest";
+      inputs.nixpkgs.follows = "nixos-stable";
+    };
   };
   outputs = {
     nixos-stable,
     nixos-unstable,
     home-manager-unstable,
     awsvpnclient,
+    colortest,
     ...
   }: let
     system = "x86_64-linux";
@@ -62,6 +69,7 @@
       inherit stable;
       inherit unstable;
       inherit userConfig;
+      inherit colortest;
     };
     HOSTS = {
       dellXps15 = "dellXps15";

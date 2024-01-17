@@ -19,6 +19,23 @@
         "type": "github"
       }
     },
+    "colortest": {
+      "inputs": {
+        "nixpkgs": [
+          "nixos-stable"
+        ]
+      },
+      "locked": {
+        "lastModified": 1,
+        "narHash": "sha256-wh4v/OOv+QlxGRdIF3ezkXXEzKlDTp6jiwXmEN5Cb7c=",
+        "path": "./pkgs/colortest",
+        "type": "path"
+      },
+      "original": {
+        "path": "./pkgs/colortest",
+        "type": "path"
+      }
+    },
     "flake-utils": {
       "inputs": {
         "systems": "systems"
@@ -122,6 +139,7 @@
     "root": {
       "inputs": {
         "awsvpnclient": "awsvpnclient",
+        "colortest": "colortest",
         "home-manager-unstable": "home-manager-unstable",
         "nixos-stable": "nixos-stable",
         "nixos-unstable": "nixos-unstable",
