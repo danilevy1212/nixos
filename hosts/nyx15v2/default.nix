@@ -3,6 +3,7 @@
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 {
   config,
+  stable,
   pkgs,
   lib,
   ...
@@ -22,7 +23,7 @@
     defaultLocale = "en_US.UTF-8";
     inputMethod = {
       enabled = "ibus";
-      ibus.engines = with pkgs.ibus-engines; [mozc];
+      ibus.engines = with stable.ibus-engines; [mozc];
     };
   };
 
