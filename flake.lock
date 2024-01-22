@@ -28,11 +28,11 @@
       "locked": {
         "lastModified": 1,
         "narHash": "sha256-7sJUUnBsc1V7RvvUb1VFaglg/90EyLypQPSAc8i/L6M=",
-        "path": "./pkgs/colortest",
+        "path": "/nix/store/j8wlcrf0hnzpddb7nx4rw0aq4y3adczi-source/pkgs/colortest",
         "type": "path"
       },
       "original": {
-        "path": "./pkgs/colortest",
+        "path": "/nix/store/j8wlcrf0hnzpddb7nx4rw0aq4y3adczi-source/pkgs/colortest",
         "type": "path"
       }
     },
@@ -82,11 +82,11 @@
       "locked": {
         "lastModified": 1,
         "narHash": "sha256-HyHquadJ8MXNdpwYSdNtzHnDi8prKp0m5zsaK+21hPM=",
-        "path": "./pkgs/gh-copilot",
+        "path": "/nix/store/j8wlcrf0hnzpddb7nx4rw0aq4y3adczi-source/pkgs/gh-copilot",
         "type": "path"
       },
       "original": {
-        "path": "./pkgs/gh-copilot",
+        "path": "/nix/store/j8wlcrf0hnzpddb7nx4rw0aq4y3adczi-source/pkgs/gh-copilot",
         "type": "path"
       }
     },

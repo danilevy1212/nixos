@@ -21,12 +21,16 @@
     awsvpnclient.url = "github:ymatsiuk/awsvpnclient";
     # Colortest, for testing terminal colors
     colortest = {
-      url = "path:./pkgs/colortest";
+      # NOTE Use this for testing local changes, see https://github.com/NixOS/nix/issues/3978
+      url = "./pkgs/colortest";
+      # NOTE  This URL has the limitation that it can only import commited changes, so it's not useful for testing
+      # See https://discourse.nixos.org/t/flakes-re-locking-necessary-at-each-evaluation-when-import-sub-flake-by-path/34465/11
+      # url = "git+file:./?dir=pkgs/colortest";
       inputs.nixpkgs.follows = "nixos-stable";
     };
     # gh-copilot
     gh-copilot = {
-      url = "path:./pkgs/gh-copilot";
+      url = "./pkgs/gh-copilot";
       inputs.nixpkgs.follows = "nixos-stable";
     };
   };
