@@ -17,6 +17,12 @@ in {
     };
   };
 
+  # Nerdy PDF reader
+  programs.zathura = {enable = true;};
+
+  # Fork zathura when opening a new file
+  home.shellAliases.zathura = "zathura --fork";
+
   # default browser
   home.sessionVariables = {BROWSER = "brave";};
 
