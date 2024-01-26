@@ -18,7 +18,12 @@ in {
   };
 
   # Nerdy PDF reader
-  programs.zathura = {enable = true;};
+  programs.zathura = {
+    enable = true;
+    options = {
+      selection-clipboard = "clipboard";
+    };
+  };
 
   # Fork zathura when opening a new file
   home.shellAliases.zathura = "zathura --fork";
