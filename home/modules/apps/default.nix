@@ -45,6 +45,9 @@ in {
       # I only use this to download Linux ISO images I super promise
       qbittorrent
 
+      # Conferences
+      zoom-us
+
       # Memorize
       anki
       cfg.obsidianmd
