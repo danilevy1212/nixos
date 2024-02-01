@@ -1,7 +1,4 @@
-{
-  pkgs,
-  ...
-}: {
+{pkgs, ...}: {
   home.packages = with pkgs; [
     neovide
     luajitPackages.luarocks
@@ -21,6 +18,14 @@
     # For telescope fzf
     gnumake
   ];
+
+  # Basic settings for neovim + terminal integration
+  programs.neovim = {
+    enable = true;
+    defaultEditor = true;
+    vimdiffAlias = true;
+    vimAlias = true;
+  };
 
   # TODO  home.activation to install nvim auto-magically
 }

@@ -167,6 +167,9 @@ in {
       QT_IM_MODULE = "ibus";
       XMODIFIERS = "@im=ibus";
       XMODIFIER = "@im=ibus";
+
+      # EDITOR
+      EDITOR = "nvim";
     };
     # Just as good.
     shellAliases = {vim = "nvim";};
