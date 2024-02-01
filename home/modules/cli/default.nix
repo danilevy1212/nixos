@@ -169,6 +169,19 @@ in
       extensions = config.userConfig.gh-extensions;
     };
 
+    # Terminal File Manager
+    programs.yazi = {
+      enable = true;
+      enableZshIntegration = true;
+      # See https://yazi-rs.github.io/docs/configuration/yazi
+      settings = {
+        manager = {
+          show_hidden = true;
+          linemode = "permissions";
+        };
+      };
+    };
+
     # Networking utilities
     home.packages = with pkgs; [
       # System
@@ -181,6 +194,7 @@ in
       # output processing
       jq
       xq-xml
+      ueberzugpp
 
       # Terminal Font
       victor-mono
