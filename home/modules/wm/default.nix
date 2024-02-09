@@ -39,6 +39,7 @@ in {
 
       # xXxScReeN_SH0TSxXx
       flameshot
+      simplescreenrecorder
 
       # Drag and Drop convenience
       xdragon
