@@ -218,12 +218,14 @@ in {
   # Configure key-map in X11
   services.xserver = {
     enable = true;
-    layout = "us";
-    xkbVariant = "altgr-intl";
-    xkbOptions = "ctrl:nocaps";
     autoRepeatInterval = 25;
     autoRepeatDelay = 200;
     exportConfiguration = true;
+    xkb = {
+      variant = "altgr-intl";
+      options = "ctrl:nocaps";
+      layout = "us";
+    };
     libinput = {
       enable = true; # Enable touchpad support
       touchpad = {disableWhileTyping = true;};
