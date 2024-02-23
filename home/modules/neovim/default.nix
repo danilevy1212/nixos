@@ -25,6 +25,15 @@
     defaultEditor = true;
     vimdiffAlias = true;
     vimAlias = true;
+    # For CopilotChat
+    extraPython3Packages = ps:
+      with ps; [
+        pynvim
+        prompt-toolkit
+        tiktoken
+        python-dotenv
+        requests
+      ];
   };
 
   # TODO  home.activation to install nvim auto-magically
