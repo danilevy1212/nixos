@@ -93,6 +93,7 @@
                 colortest.packages."${system}".colortest
               ];
               networking.hostName = hostname;
+              home-manager.extraSpecialArgs = defaultSpecialArgs;
             }
           ]
           ++ nixos-unstable.lib.optionals (builtins.isList additionalModules) additionalModules;
@@ -101,8 +102,8 @@
   in {
     # Refactor to use flake-parts or flake-utils
     nixosConfigurations = {
-      dellXps15 = addHostConfiguration "dellXps15" [defaultSpecialArgs];
-      nyx15v2 = addHostConfiguration "nyx15v2" [defaultSpecialArgs];
+      dellXps15 = addHostConfiguration "dellXps15" [];
+      nyx15v2 = addHostConfiguration "nyx15v2" [];
       inspirion = addHostConfiguration "inspirion" [
         {
           environment.systemPackages = [
