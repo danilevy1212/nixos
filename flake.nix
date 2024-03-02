@@ -1,16 +1,12 @@
 {
   inputs = {
-    # Latest stable release of nixpkgs
+    # Latest stable release of nixos
     nixos-stable = {
       url = "github:nixos/nixpkgs/nixos-23.11";
     };
-    # Rolling release of nixpkgs
+    # Rolling release of nixos
     nixos-unstable = {
       url = "github:nixos/nixpkgs/nixos-unstable";
-    };
-    # Nightly release of nixpkgs
-    nixpkgs-unstable = {
-      url = "github:nixos/nixpkgs/nixpkgs-unstable";
     };
     # Rolling release of home-manager
     home-manager-unstable = {
@@ -21,11 +17,7 @@
     awsvpnclient.url = "github:ymatsiuk/awsvpnclient";
     # Colortest, for testing terminal colors
     colortest = {
-      # NOTE Use this for testing local changes, see https://github.com/NixOS/nix/issues/3978
       url = "./pkgs/colortest";
-      # NOTE  This URL has the limitation that it can only import commited changes, so it's not useful for testing
-      # See https://discourse.nixos.org/t/flakes-re-locking-necessary-at-each-evaluation-when-import-sub-flake-by-path/34465/11
-      # url = "git+file:./?dir=pkgs/colortest";
       inputs.nixpkgs.follows = "nixos-stable";
     };
     # gh-copilot
@@ -46,71 +38,88 @@
     system = "x86_64-linux";
     stable = import nixos-stable nixpkgs-args;
     unstable = import nixos-unstable nixpkgs-args;
-    # ISSUE  https://github.com/NixOS/nixpkgs/issues/273611
-    obsidianmd = let
-      lib = unstable.lib;
-      obsidianVersion = unstable.pkgs.obsidian.version;
-    in
-      # NOTE  We are creating a special deriviation that will be used to build `obsidianmd`, so we don't pollute the
-      #       `nixos-unstable` derivation with `electron-25.9.0` which is only needed for `obsidianmd`.
-      #       When the issue is solved, we can remove this and get `obsidianmd` from `nixos-unstable` directly.
-      with lib;
-        (import nixos-unstable (
-          # NOTE https://discourse.nixos.org/t/how-to-permit-insecure-package-as-input-to-another-package/19960/4
-          lib.recursiveUpdate {
-            config.permittedInsecurePackages =
-              throwIf (versionOlder "1.5.3" obsidianVersion) "Obsidian no longer requires EOL Electron"
-              ["electron-25.9.0"];
-          }
-          nixpkgs-args
-        ))
-        .obsidian;
     nixpkgs-args = {
       inherit system;
       config.allowUnfree = true;
     };
     # Home-manager configuration.
-    userConfig = {
+    defaultHomeManagerUserConfig = {
       username = "dlevym";
-      inherit obsidianmd;
-      gh-extensions = [gh-copilot.packages."${system}".gh-copilot];
+      modules = {
+        neovim = {
+          enable = true;
+        };
+        gui = {
+          enable = true;
+        };
+        python = {
+          enable = true;
+        };
+        nodejs = {
+          enable = true;
+        };
+        golang = {
+          enable = true;
+        };
+        cli = {
+          enable = true;
+          git = {
+            userEmail = "daniellevymoreno@gmail.com";
+            gh = {
+              extraExtensions = [
+                gh-copilot.packages."${system}".gh-copilot
+              ];
+            };
+          };
+        };
+      };
     };
-    specialArgs = {
+    defaultSpecialArgs = {
       inherit stable;
       inherit unstable;
-      inherit userConfig;
-      inherit colortest;
+      userConfig = defaultHomeManagerUserConfig;
     };
-    HOSTS = {
-      dellXps15 = "dellXps15";
-      nyx15v2 = "nyx15v2";
-      inspirion = "inspirion";
-    };
-    addHostConfiguration = hostname: _:
+    mergeWithDefaultSpecialArgs = customConfig: nixos-unstable.lib.attrsets.recursiveUpdate defaultSpecialArgs customConfig;
+    addHostConfiguration = hostname: additionalModules:
       nixos-unstable.lib.nixosSystem {
         inherit system;
-        modules = [
-          home-manager-unstable.nixosModules.home-manager
-          ./hosts/${hostname}
-          {
-            environment.systemPackages = [
-              # AWS VPN Client, for work
-              awsvpnclient.packages."${system}".awsvpnclient
-              # Colortest, for testing terminal colors
-              colortest.packages."${system}".colortest
-            ];
-          }
-        ];
-        specialArgs =
-          specialArgs
-          // {
-            inherit hostname;
-            inherit HOSTS;
-          };
+        modules =
+          [
+            home-manager-unstable.nixosModules.home-manager
+            ./hosts/${hostname}
+            {
+              environment.systemPackages = [
+                # Colortest, for testing terminal colors
+                colortest.packages."${system}".colortest
+              ];
+              networking.hostName = hostname;
+            }
+          ]
+          ++ nixos-unstable.lib.optionals (builtins.isList additionalModules) additionalModules;
+        specialArgs = defaultSpecialArgs;
       };
   in {
-    # NOTE https://teu5us.github.io/nix-lib.html#lib.attrsets.mapattrs
-    nixosConfigurations = nixos-unstable.lib.attrsets.mapAttrs addHostConfiguration HOSTS;
+    # Refactor to use flake-parts or flake-utils
+    nixosConfigurations = {
+      dellXps15 = addHostConfiguration "dellXps15" [defaultSpecialArgs];
+      nyx15v2 = addHostConfiguration "nyx15v2" [defaultSpecialArgs];
+      inspirion = addHostConfiguration "inspirion" [
+        {
+          environment.systemPackages = [
+            # AWS VPN Client
+            awsvpnclient.packages."${system}".awsvpnclient
+          ];
+          # NOTE  Through `userConfig`, we can configure the home-manager modules.
+          home-manager.extraSpecialArgs = mergeWithDefaultSpecialArgs {
+            userConfig.modules = {
+              cli.git.userEmail = "dalevy@autopay.com";
+              rust.enable = false;
+              networking.work = true;
+            };
+          };
+        }
+      ];
+    };
     # TODO Have a configuration that is only `home-manager`, meant for systems that may or may not be `NIXOS`
     #      See https://nix-community.github.io/home-manager/index.xhtml#sec-flakes-standalone
   };

@@ -1,39 +1,40 @@
 {
   pkgs,
   config,
+  unstable,
   stable,
-  hostname,
-  HOSTS,
+  lib,
   ...
 }: let
   cfg = config.userConfig;
 in {
-  # Video Player
-  programs.mpv = {
-    enable = true;
-    config = {
-      sub-auto = "exact";
-      save-position-on-quit = true;
+  # APPS that only run on the GUI
+  config = lib.mkIf cfg.modules.gui.enable {
+    # Video Player
+    programs.mpv = {
+      enable = true;
+      config = {
+        sub-auto = "exact";
+        save-position-on-quit = true;
+      };
     };
-  };
 
-  # Nerdy PDF reader
-  programs.zathura = {
-    enable = true;
-    options = {
-      selection-clipboard = "clipboard";
+    # Nerdy PDF reader
+    programs.zathura = {
+      enable = true;
+      options = {
+        selection-clipboard = "clipboard";
+      };
     };
-  };
 
-  # Fork zathura when opening a new file
-  home.shellAliases.zathura = "zathura --fork";
+    # Fork zathura when opening a new file
+    home.shellAliases.zathura = "zathura --fork";
 
-  # default browser
-  home.sessionVariables = {BROWSER = "brave";};
+    # default browser
+    home.sessionVariables = {BROWSER = "brave";};
 
-  # Apps
-  home.packages = with pkgs;
-    [
+    # Apps
+    home.packages = with pkgs; [
       # Proprietary musicality
       spotify
 
@@ -55,17 +56,13 @@ in {
 
       # Memorize
       anki
-      cfg.obsidianmd
+      unstable.obsidian
 
       # Pseudo-office
       stable.libreoffice
 
       # raspi
       stable.rpi-imager
-    ]
-    ++ (
-      if hostname == HOSTS.nyx15v2
-      then [unityhub]
-      else []
-    );
+    ];
+  };
 }

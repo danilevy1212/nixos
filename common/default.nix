@@ -3,8 +3,6 @@
   pkgs,
   unstable,
   stable,
-  hostname,
-  HOSTS,
   userConfig,
   ...
 }: let
@@ -99,7 +97,6 @@ in {
 
   # Network configuration.
   networking = {
-    hostName = "${hostname}";
     networkmanager.plugins = with pkgs; [
       networkmanager-openvpn
     ];
@@ -131,23 +128,14 @@ in {
     ];
   };
 
-  # TODO Move this out of here
   # My user environment.
   home-manager = {
     # Home manager has access to system level dependencies.
     useGlobalPkgs = true;
     # Unclutter $HOME.
     useUserPackages = true;
-    extraSpecialArgs = {
-      inherit unstable;
-      inherit stable;
-      inherit userConfig;
-      # TODO  Use userConfig instead of making home-manager aware of the HOSTS variable.
-      inherit hostname;
-      inherit HOSTS;
-    };
     # Load my home-manager configuration.
-    users."${username}" = import ./../home/home.nix;
+    users."${username}" = import ./../home;
     # Easier debugging
     verbose = true;
   };
