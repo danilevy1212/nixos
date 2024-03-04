@@ -139,7 +139,7 @@ in
         neofetch
         file
         rsync
-        tldr
+        tealdeer
         fasd
         cloc
 
