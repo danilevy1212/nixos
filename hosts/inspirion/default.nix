@@ -1,14 +1,10 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
-{
-  pkgs,
-  ...
-}: {
+{pkgs, ...}: {
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
-    ./../../common
   ];
 
   # Bootloader.
@@ -20,29 +16,8 @@
         efiSysMountPoint = "/boot/efi";
       };
     };
-    # NOTE https://discourse.nixos.org/t/getting-nvidia-to-work-avoiding-screen-tearing/10422/16
-    kernelParams = [
-      "nvidia-drm.modeset=1"
-    ];
-  };
-  hardware.enableAllFirmware = true;
-
-  # Set your time zone.
-  time.timeZone = "America/New_York";
-
-  # Select internationalisation properties.
-  i18n.defaultLocale = "en_US.UTF-8";
-
-  i18n.extraLocaleSettings = {
-    LC_ADDRESS = "en_US.UTF-8";
-    LC_IDENTIFICATION = "en_US.UTF-8";
-    LC_MEASUREMENT = "en_US.UTF-8";
-    LC_MONETARY = "en_US.UTF-8";
-    LC_NAME = "en_US.UTF-8";
-    LC_NUMERIC = "en_US.UTF-8";
-    LC_PAPER = "en_US.UTF-8";
-    LC_TELEPHONE = "en_US.UTF-8";
-    LC_TIME = "en_US.UTF-8";
+    # NOTE  https://discourse.nixos.org/t/getting-nvidia-to-work-avoiding-screen-tearing/10422/16
+    kernelParams = ["nvidia-drm.modeset=1"];
   };
 
   # NOTE nvidia options taken from https://nixos.wiki/wiki/Nvidia#sync_mode
@@ -51,11 +26,13 @@
     # Enable touchpad support
     libinput.enable = true;
     # Enable external monitor through discrete GPU
-    videoDrivers = ["nvidia"];
+    videoDrivers = [
+      "nvidia"
+    ];
   };
   hardware.opengl.driSupport32Bit = true;
 
-  # Always on GPU, unfortunately
+  # Use discrete GPU to render the display
   hardware.nvidia = {
     powerManagement = {
       enable = true;

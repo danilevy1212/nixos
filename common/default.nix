@@ -1,7 +1,6 @@
 {
   config,
   pkgs,
-  unstable,
   stable,
   userConfig,
   ...
@@ -140,7 +139,28 @@ in {
     verbose = true;
   };
 
+  hardware.enableAllFirmware = true;
+
+  # Select internationalisation properties.
+  i18n.defaultLocale = "en_US.UTF-8";
+
+  i18n.extraLocaleSettings = {
+    LC_ADDRESS = "en_US.UTF-8";
+    LC_IDENTIFICATION = "en_US.UTF-8";
+    LC_MEASUREMENT = "en_US.UTF-8";
+    LC_MONETARY = "en_US.UTF-8";
+    LC_NAME = "en_US.UTF-8";
+    LC_NUMERIC = "en_US.UTF-8";
+    LC_PAPER = "en_US.UTF-8";
+    LC_TELEPHONE = "en_US.UTF-8";
+    LC_TIME = "en_US.UTF-8";
+  };
+
   environment = {
+    plasma6.excludePackages = with pkgs.kdePackages; [
+      plasma-browser-integration
+      konsole
+    ];
     variables = {
       # These are the defaults, and xdg.enable does set them, but due to load
       # order, they're not set before environment.variables are set, which could
@@ -158,6 +178,9 @@ in {
 
       # EDITOR
       EDITOR = "nvim";
+
+      # Prefer wayland when available
+      NIXOS_OZONE_WL = "1";
     };
     # Just as good.
     shellAliases = {vim = "nvim";};
@@ -186,6 +209,9 @@ in {
         gnome.dconf-editor
         # Audio (pulseaudio under pipewire)
         pulseaudio
+        # KDE extras
+        ocs-url
+        kdePackages.discover
       ]
       # Basic network
       ++ (with pkgs.unixtools; [netstat ifconfig])
@@ -219,6 +245,10 @@ in {
       touchpad = {disableWhileTyping = true;};
     };
     desktopManager = {
+      plasma6 = {
+        enable = true;
+        enableQt5Integration = true;
+      };
       # TODO Make ibus-daemon a systemctl --user service
       session = [
         {
@@ -233,22 +263,10 @@ in {
       ];
     };
     displayManager = {
-      lightdm.greeters = {
-        gtk = with pkgs; {
-          enable = true;
-          iconTheme = {
-            name = "Papirus-Dark";
-            package = papirus-icon-theme;
-          };
-          theme = {
-            name = "Nordic";
-            package = nordic;
-          };
-          cursorTheme = {
-            name = "Numix-Cursor";
-            package = numix-cursor-theme;
-          };
-        };
+      sddm = {
+        enable = true;
+        enableHidpi = true;
+        wayland.enable = true;
       };
     };
   };

@@ -5,8 +5,7 @@
   ...
 }: {
   imports = [
-    ./hardware-configuration.nix # Include the results of the hardware scan.
-    ./../../common
+    ./hardware-configuration.nix
     ./nvidia-offload
     ./xrandr-utils
   ];

@@ -87,6 +87,7 @@
           [
             home-manager-unstable.nixosModules.home-manager
             ./hosts/${hostname}
+            ./common
             {
               environment.systemPackages = [
                 # Colortest, for testing terminal colors
