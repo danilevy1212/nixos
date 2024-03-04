@@ -7,6 +7,15 @@
 }: let
   stateVersion = config.system.nixos.release;
   username = userConfig.username;
+  discover-wrapped = with pkgs;
+    symlinkJoin {
+      name = "discover-flatpak-backend";
+      paths = [kdePackages.discover];
+      buildInputs = [pkgs.makeWrapper];
+      postBuild = ''
+        wrapProgram $out/bin/plasma-discover --add-flags "--backends flatpak"
+      '';
+    };
 in {
   system.stateVersion = stateVersion;
 
@@ -211,7 +220,7 @@ in {
         pulseaudio
         # KDE extras
         ocs-url
-        kdePackages.discover
+        discover-wrapped
       ]
       # Basic network
       ++ (with pkgs.unixtools; [netstat ifconfig])
@@ -355,4 +364,19 @@ in {
 
   # Suspend when the lid closes (in case of laptop)
   services.logind.lidSwitch = "suspend";
+
+  # Run in any distro, ask questions later
+  services.flatpak.enable = true;
+  systemd.services.addFlathubRepo = {
+    description = "Add the Flathub repository to flatpak";
+    after = ["network-online.target"];
+    wants = ["network-online.target"];
+    serviceConfig = {
+      User = "root";
+      ExecStart = "${pkgs.flatpak}/bin/flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo";
+      Type = "oneshot";
+      RemainAfterExit = true;
+    };
+    wantedBy = ["multi-user.target"];
+  };
 }
