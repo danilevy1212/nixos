@@ -139,7 +139,6 @@ in
         neofetch
         file
         rsync
-        tealdeer
         fasd
         cloc
 
@@ -167,5 +166,11 @@ in
         # Text To Speach
         espeak
       ];
+    };
+
+    # A tldr client
+    programs.tealdeer = {
+      enable = true;
+      programs.tealdeer.settings.updates.auto_update = true;
     };
   }
