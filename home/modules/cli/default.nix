@@ -112,19 +112,6 @@ in
         extensions = [] ++ cfg.git.gh.extraExtensions;
       };
 
-      # Terminal File Manager
-      programs.yazi = {
-        enable = true;
-        enableZshIntegration = true;
-        # See https://yazi-rs.github.io/docs/configuration/yazi
-        settings = {
-          manager = {
-            show_hidden = true;
-            linemode = "permissions";
-          };
-        };
-      };
-
       # TODO  This is required by several modules. Maybe I need a "mixins" folder.
       # Per directory environment
       programs.direnv = {
