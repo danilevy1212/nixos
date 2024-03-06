@@ -153,11 +153,11 @@ in
         # Text To Speach
         espeak
       ];
-    };
 
-    # A tldr client
-    programs.tealdeer = {
-      enable = true;
-      programs.tealdeer.settings.updates.auto_update = true;
+      # A tldr client
+      programs.tealdeer = {
+        enable = true;
+        settings.updates.auto_update = true;
+      };
     };
   }
