@@ -133,7 +133,6 @@ in {
     services.picom = {
       enable = true;
       backend = "glx";
-      vSync = true;
       activeOpacity = 1.0;
       inactiveOpacity = 0.9;
       fade = true;
