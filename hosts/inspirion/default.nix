@@ -1,7 +1,11 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
-{pkgs, ...}: {
+{
+  pkgs,
+  config,
+  ...
+}: {
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
@@ -16,8 +20,7 @@
         efiSysMountPoint = "/boot/efi";
       };
     };
-    # NOTE  https://discourse.nixos.org/t/getting-nvidia-to-work-avoiding-screen-tearing/10422/16
-    kernelParams = ["nvidia-drm.modeset=1"];
+    extraModulePackages = [config.boot.kernelPackages.nvidia_x11];
   };
 
   # NOTE nvidia options taken from https://nixos.wiki/wiki/Nvidia#sync_mode
@@ -30,10 +33,15 @@
       "nvidia"
     ];
   };
-  hardware.opengl.driSupport32Bit = true;
+  # Enable opengl support
+  hardware.opengl = {
+    enable = true;
+    driSupport32Bit = true;
+  };
 
   # Use discrete GPU to render the display
   hardware.nvidia = {
+    modesetting.enable = true;
     powerManagement = {
       enable = true;
     };
