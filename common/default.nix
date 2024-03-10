@@ -201,6 +201,7 @@ in {
       [
         gitAndTools.gitFull
         neovim
+        lshw
         wget
         tree
         htop
@@ -211,6 +212,7 @@ in {
         lsof
         usbutils
         firefox
+        brave
         lxappearance
         pciutils
         p7zip
@@ -221,6 +223,15 @@ in {
         # KDE extras
         ocs-url
         discover-wrapped
+        # wayland
+        wl-clipboard-rs
+        wayland-utils
+        # opencl
+        clinfo
+        # opengl
+        glxinfo
+        # vulkan
+        vulkan-tools
       ]
       # Basic network
       ++ (with pkgs.unixtools; [netstat ifconfig])
@@ -364,6 +375,9 @@ in {
 
   # Suspend when the lid closes (in case of laptop)
   services.logind.lidSwitch = "suspend";
+
+  # BIOS Upgrades
+  services.fwupd.enable = true;
 
   # Run in any distro, ask questions later
   services.flatpak.enable = true;

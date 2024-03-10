@@ -8,6 +8,7 @@
 }:
 with lib; let
   cfg = config.userConfig.modules.neovim;
+  nvim_config_dir = "${config.xdg.configHome}/nvim";
 in {
   options.userConfig.modules.neovim = {
     enable = mkEnableOption "neovim";
@@ -53,6 +54,15 @@ in {
         ];
     };
 
-    # TODO  home.activation to install nvim auto-magically
+    # "auto" install nvim
+    home.activation = {
+      # I should probably make it an option somewhere to either use ssh or https.
+      nvim-install = lib.hm.dag.entryAfter ["writeBoundary"] ''
+        if [ ! -d ${nvim_config_dir} ]
+        then
+           $DRY_RUN_CMD ${pkgs.gitAndTools.gitFull}/bin/git clone git@github.com:danilevy1212/nvim.git ${nvim_config_dir}
+        fi
+      '';
+    };
   };
 }

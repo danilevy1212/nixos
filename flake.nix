@@ -121,6 +121,7 @@
           };
         }
       ];
+      bootse = addHostConfiguration "bootse" [];
     };
     # TODO Have a configuration that is only `home-manager`, meant for systems that may or may not be `NIXOS`
     #      See https://nix-community.github.io/home-manager/index.xhtml#sec-flakes-standalone
