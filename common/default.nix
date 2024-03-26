@@ -249,6 +249,14 @@ in {
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
 
+  # plasma 6
+  services.desktopManager = {
+    plasma6 = {
+      enable = true;
+      enableQt5Integration = true;
+    };
+  };
+
   # Configure key-map in X11
   services.xserver = {
     enable = true;
@@ -265,10 +273,6 @@ in {
       touchpad = {disableWhileTyping = true;};
     };
     desktopManager = {
-      plasma6 = {
-        enable = true;
-        enableQt5Integration = true;
-      };
       # TODO Make ibus-daemon a systemctl --user service
       session = [
         {

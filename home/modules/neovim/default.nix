@@ -44,19 +44,14 @@ in {
       vimdiffAlias = true;
       vimAlias = true;
       # For CopilotChat
-      extraPython3Packages = ps:
+      extraLuaPackages = ps:
         with ps; [
-          pynvim
-          prompt-toolkit
-          tiktoken
-          python-dotenv
-          requests
+          tiktoken_core
         ];
     };
 
     # "auto" install nvim
     home.activation = {
-      # I should probably make it an option somewhere to either use ssh or https.
       nvim-install = lib.hm.dag.entryAfter ["writeBoundary"] ''
         if [ ! -d ${nvim_config_dir} ]
         then

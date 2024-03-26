@@ -28,11 +28,11 @@
       "locked": {
         "lastModified": 1,
         "narHash": "sha256-7sJUUnBsc1V7RvvUb1VFaglg/90EyLypQPSAc8i/L6M=",
-        "path": "/nix/store/8ik7dmn22n039fpdspwa63s3y1dzzg16-source/pkgs/colortest",
+        "path": "/nix/store/1rzg7y6c9l7fab3nlhjg92vb06j7fcmm-source/pkgs/colortest",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/8ik7dmn22n039fpdspwa63s3y1dzzg16-source/pkgs/colortest",
+        "path": "/nix/store/1rzg7y6c9l7fab3nlhjg92vb06j7fcmm-source/pkgs/colortest",
         "type": "path"
       }
     },
@@ -82,11 +82,11 @@
       "locked": {
         "lastModified": 1,
         "narHash": "sha256-aPgCW/uUaNJLWcLqSYwrpK7eFWX+dAA3Ukpi59F9q5M=",
-        "path": "/nix/store/8ik7dmn22n039fpdspwa63s3y1dzzg16-source/pkgs/gh-copilot",
+        "path": "/nix/store/1rzg7y6c9l7fab3nlhjg92vb06j7fcmm-source/pkgs/gh-copilot",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/8ik7dmn22n039fpdspwa63s3y1dzzg16-source/pkgs/gh-copilot",
+        "path": "/nix/store/1rzg7y6c9l7fab3nlhjg92vb06j7fcmm-source/pkgs/gh-copilot",
         "type": "path"
       }
     },
@@ -129,11 +129,11 @@
     },
     "nixos-unstable": {
       "locked": {
-        "lastModified": 1709237383,
-        "narHash": "sha256-cy6ArO4k5qTx+l5o+0mL9f5fa86tYUX3ozE1S+Txlds=",
+        "lastModified": 1711163522,
+        "narHash": "sha256-YN/Ciidm+A0fmJPWlHBGvVkcarYWSC+s3NTPk/P+q3c=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "1536926ef5621b09bba54035ae2bb6d806d72ac8",
+        "rev": "44d0940ea560dee511026a53f0e2e2cde489b4d4",
         "type": "github"
       },
       "original": {
