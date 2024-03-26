@@ -33,6 +33,11 @@
     LC_TIME = "en_US.UTF-8";
   };
 
+  environment.systemPackages = with pkgs; [
+    # Monitor GPU usage
+    nvtop
+  ];
+
   # NVIDIA crazyness
   services.xserver = {
     enable = true;
@@ -48,6 +53,7 @@
     enable = true;
     driSupport32Bit = true;
   };
+  virtualisation.docker.enableNvidia = true;
 
   # Enable the KDE Plasma Desktop Environment.
   services.xserver.displayManager.sddm.enable = true;
