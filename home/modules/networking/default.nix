@@ -23,8 +23,8 @@ in {
         insomnia
         bruno
 
-        # Database client, overkill mode
-        jetbrains.datagrip
+        # Database client
+        dbeaver
       ]
       ++ lib.optionals cfg.work [
         # Work stuff
