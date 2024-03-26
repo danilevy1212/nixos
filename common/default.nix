@@ -327,7 +327,10 @@ in {
   };
 
   # Docker
-  virtualisation.docker.enable = true;
+  virtualisation.docker = {
+    enable = true;
+    autoPrune.enable = true;
+  };
 
   # Some programs need SUID wrappers, can be configured further or are started in user sessions.
   programs.gnupg.agent = {
