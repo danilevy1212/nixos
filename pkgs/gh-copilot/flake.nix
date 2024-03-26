@@ -17,11 +17,10 @@
       packages = rec {
         gh-copilot = nixpkgs.legacyPackages.${system}.stdenv.mkDerivation {
           pname = "gh-copilot";
-          version = "v0.5.4-beta";
-
+          version = "v1.0.1";
           src = nixpkgs.legacyPackages.${system}.fetchurl {
-            url = "https://github.com/github/gh-copilot/releases/download/v0.5.4-beta/linux-amd64";
-            sha256 = "sha256-kTjQMGvlKf8iDnTxHTQHJJ9Kk/RxxyYSaIdafq+4YTI=";
+            url = "https://github.com/github/gh-copilot/releases/download/v1.0.1/linux-amd64";
+            sha256 = "sha256-vEmMxvadVkXawDGGb8el2VT2IPtWFTPRPbi7tGs/NAY=";
             executable = true;
           };
 

@@ -85,10 +85,10 @@ in
           ls = "ls --color=auto";
           # The only way to use rsync
           rsync = "rsync -azvhP --info=progress2";
-          "'??'" = "gh copilot explain";
-          "'???'" = "gh copilot suggest -t shell";
-          "'git?'" = "gh copilot suggest -t git";
-          "'gh?'" = "gh copilot suggest -t gh";
+          "'??'" = "ghce";
+          "'???'" = "ghcs -t shell";
+          "'git?'" = "ghcs -t git";
+          "'gh?'" = "ghcs -t gh";
         };
       };
 
