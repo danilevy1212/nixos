@@ -67,15 +67,6 @@
   # Notify battery status
   services.upower.enable = true;
 
-  # Finger print scanner
-  services.fprintd = {
-    enable = true;
-    tod = {
-      enable = true;
-      driver = pkgs.libfprint-2-tod1-goodix;
-    };
-  };
-
   # Main redis server
   services.redis.servers."apex-redis" = {
     enable = true;
