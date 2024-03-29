@@ -30,11 +30,11 @@
       "locked": {
         "lastModified": 1,
         "narHash": "sha256-7sJUUnBsc1V7RvvUb1VFaglg/90EyLypQPSAc8i/L6M=",
-        "path": "/nix/store/982ilgcz7pr8yybj4kpspbrh6kd1fb6l-source/pkgs/colortest",
+        "path": "/nix/store/sl1bcz2g8dm7mqvfp3gq87vj2j1xq015-source/pkgs/colortest",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/982ilgcz7pr8yybj4kpspbrh6kd1fb6l-source/pkgs/colortest",
+        "path": "/nix/store/sl1bcz2g8dm7mqvfp3gq87vj2j1xq015-source/pkgs/colortest",
         "type": "path"
       }
     },
@@ -84,11 +84,11 @@
       "locked": {
         "lastModified": 1,
         "narHash": "sha256-aPgCW/uUaNJLWcLqSYwrpK7eFWX+dAA3Ukpi59F9q5M=",
-        "path": "/nix/store/982ilgcz7pr8yybj4kpspbrh6kd1fb6l-source/pkgs/gh-copilot",
+        "path": "/nix/store/sl1bcz2g8dm7mqvfp3gq87vj2j1xq015-source/pkgs/gh-copilot",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/982ilgcz7pr8yybj4kpspbrh6kd1fb6l-source/pkgs/gh-copilot",
+        "path": "/nix/store/sl1bcz2g8dm7mqvfp3gq87vj2j1xq015-source/pkgs/gh-copilot",
         "type": "path"
       }
     },

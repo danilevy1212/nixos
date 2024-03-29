@@ -51,7 +51,11 @@
   };
   hardware.opengl = {
     enable = true;
+    driSupport = true;
     driSupport32Bit = true;
+    extraPackages = with pkgs; [
+      vaapiVdpau
+    ];
   };
   virtualisation.docker.enableNvidia = true;
 
@@ -61,6 +65,19 @@
     remotePlay.openFirewall = true;
     dedicatedServer.openFirewall = true;
     gamescopeSession.enable = true;
+    extraCompatPackages = with pkgs; [
+      vkd3d-proton
+      vkd3d
+      dxvk_2
+      proton-ge-bin
+      freetype
+      openjdk21_headless
+      wineWowPackages.waylandFull
+    ];
+  };
+  programs.gamescope = {
+    enable = true;
+    capSysNice = true;
   };
 
   # AI
