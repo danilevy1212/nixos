@@ -2,6 +2,7 @@
   pkgs,
   lib,
   config,
+  unstable,
   ...
 }:
 with lib; let
@@ -17,7 +18,7 @@ in {
     };
   };
   config = mkIf cfg.enable {
-    home.packages = with pkgs; [
+    home.packages = with unstable; [
       rustup
     ];
 

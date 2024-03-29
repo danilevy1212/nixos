@@ -6,13 +6,8 @@
   ...
 }:
 with lib; let
-  cfg = config.userConfig.modules.networking;
+  cfg = config.userConfig;
 in {
-  options.userConfig.modules.networking.work = mkOption {
-    type = types.bool;
-    default = false;
-    description = "Add extra configuration for work-related software.";
-  };
   config = {
     home.packages = with pkgs;
       [
@@ -29,9 +24,6 @@ in {
       ++ lib.optionals cfg.work [
         # Work stuff
         stable.awscli2
-
-        # Database client, overkill mode
-        jetbrains.datagrip
       ];
 
     # File sharing, p2p style

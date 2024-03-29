@@ -25,8 +25,13 @@
     });
   cfg = config.userConfig.modules.gui;
 in {
-  options.userConfig.modules.gui = {
-    enable = lib.mkEnableOption "Enable GUI";
+  options.userConfig.modules.gui = with lib; {
+    enable =mkEnableOption "Enable GUI";
+    work = mkOption {
+      type = types.bool;
+      default = false;
+      description = "Enable GUI programs for work.";
+    };
   };
   config = lib.mkIf cfg.enable {
     home = {

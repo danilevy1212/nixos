@@ -35,7 +35,7 @@
 
   environment.systemPackages = with pkgs; [
     # Monitor GPU usage
-    nvtop
+    nvtopPackages.full
   ];
 
   # NVIDIA crazyness
@@ -55,9 +55,22 @@
   };
   virtualisation.docker.enableNvidia = true;
 
+  # Gaming
+  programs.steam = {
+    enable = true;
+    remotePlay.openFirewall = true;
+    dedicatedServer.openFirewall = true;
+    gamescopeSession.enable = true;
+  };
+
+  # AI
+  services.ollama = {
+    enable = true;
+    acceleration = "cuda";
+  };
+
   # Enable the KDE Plasma Desktop Environment.
   services.xserver.displayManager.sddm.enable = true;
-  services.xserver.desktopManager.plasma6.enable = true;
 
   # Enable CUPS to print documents.
   services.printing.enable = true;

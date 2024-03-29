@@ -14,7 +14,10 @@
       inputs.nixpkgs.follows = "nixos-unstable";
     };
     # AWS VPN Client
-    awsvpnclient.url = "github:ymatsiuk/awsvpnclient";
+    awsvpnclient = {
+      url = "github:ymatsiuk/awsvpnclient";
+      inputs.nixpkgs.follows = "nixos-stable";
+    };
     # Colortest, for testing terminal colors
     colortest = {
       url = "./pkgs/colortest";
@@ -45,6 +48,7 @@
     # Home-manager configuration.
     defaultHomeManagerUserConfig = {
       username = "dlevym";
+      work = false;
       modules = {
         neovim = {
           enable = true;
@@ -59,6 +63,9 @@
           enable = true;
         };
         golang = {
+          enable = true;
+        };
+        rust = {
           enable = true;
         };
         cli = {
@@ -94,7 +101,7 @@
                 colortest.packages."${system}".colortest
               ];
               networking.hostName = hostname;
-              home-manager.extraSpecialArgs = defaultSpecialArgs;
+              home-manager.extraSpecialArgs = nixos-unstable.lib.mkDefault defaultSpecialArgs;
             }
           ]
           ++ nixos-unstable.lib.optionals (builtins.isList additionalModules) additionalModules;
@@ -112,16 +119,23 @@
             awsvpnclient.packages."${system}".awsvpnclient
           ];
           # NOTE  Through `userConfig`, we can configure the home-manager modules.
-          home-manager.extraSpecialArgs = mergeWithDefaultSpecialArgs {
-            userConfig.modules = {
-              cli.git.userEmail = "dalevy@autopay.com";
-              rust.enable = false;
-              networking.work = true;
+          home-manager.extraSpecialArgs = nixos-unstable.lib.mkForce (mergeWithDefaultSpecialArgs {
+            userConfig = {
+              work = true;
+              modules = {
+                cli.git.userEmail = "dalevy@autopay.com";
+                rust.enable = false;
+                golang.enable = false;
+              };
             };
-          };
+          });
         }
       ];
-      bootse = addHostConfiguration "bootse" [];
+      bootse = addHostConfiguration "bootse" [
+        {
+          home-manager.extraSpecialArgs = defaultSpecialArgs;
+        }
+      ];
     };
     # TODO Have a configuration that is only `home-manager`, meant for systems that may or may not be `NIXOS`
     #      See https://nix-community.github.io/home-manager/index.xhtml#sec-flakes-standalone

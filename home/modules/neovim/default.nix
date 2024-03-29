@@ -28,7 +28,8 @@ in {
 
         # For telescope fzf
         gnumake
-
+      ]
+      ++ lib.optional (!userConfig.modules.rust.enable) [
         # For mason
         ## languages
         ## rust
