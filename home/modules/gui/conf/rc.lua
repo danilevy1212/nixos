@@ -25,6 +25,18 @@ require "awful.hotkeys_popup.keys"
 -- Enable awesome-client
 require "awful.remote"
 
+function has_battery ()
+    local handle, err = io.popen("ls /sys/class/power_supply/ | grep '^BAT'")
+    if err or not handle then
+        return false
+    end
+
+    local result = handle:read("*a")
+    handle:close()
+
+    return result ~= ""
+end
+
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
 -- another config (This code will only ever execute for the fallback config)
@@ -301,11 +313,20 @@ awful.screen.connect_for_each_screen(
             -- Right widgets
             layout = wibox.layout.fixed.horizontal,
             mykeyboardlayout,
-            bat_arc(),
+        }
+        if has_battery() then
+            right_widgets[#right_widgets+1] = bat_arc()
+        end
+
+        local right_widgets_extra = {
             wibox.widget.systray(),
             mytextclock,
             s.mylayoutbox
         }
+
+        for _, w in ipairs(right_widgets_extra) do
+            right_widgets[#right_widgets+1] = w
+        end
 
         local common_widgets = {
             layout = wibox.layout.align.horizontal,
