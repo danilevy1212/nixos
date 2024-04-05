@@ -15,6 +15,7 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.extraModulePackages = [config.boot.kernelPackages.nvidia_x11];
+  boot.kernelParams = ["module_blacklist=i915" "nvidia_drm.fbdev=1"];
 
   # Enable networking
   networking.networkmanager.enable = true;
@@ -48,6 +49,7 @@
   hardware.nvidia = {
     modesetting.enable = true;
     nvidiaSettings = true;
+    powerManagement.enable = true;
   };
   hardware.opengl = {
     enable = true;

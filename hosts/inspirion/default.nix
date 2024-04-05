@@ -42,14 +42,14 @@
   # Use discrete GPU to render the display
   hardware.nvidia = {
     modesetting.enable = true;
-    powerManagement = {
-      enable = true;
-    };
+    powerManagement.enable = true;
     prime = {
       sync.enable = true;
       intelBusId = "PCI:0:2:0";
       nvidiaBusId = "PCI:1:0:0";
     };
+    # Prevent screen tearing, no matter the cost
+    forceFullCompositionPipeline = true;
   };
 
   # List packages installed in system profile. To search, run:

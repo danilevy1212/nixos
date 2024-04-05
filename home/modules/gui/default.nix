@@ -26,7 +26,7 @@
   cfg = config.userConfig.modules.gui;
 in {
   options.userConfig.modules.gui = with lib; {
-    enable =mkEnableOption "Enable GUI";
+    enable = mkEnableOption "Enable GUI";
     work = mkOption {
       type = types.bool;
       default = false;
@@ -144,6 +144,9 @@ in {
       fadeDelta = 5;
       shadow = true;
       shadowOpacity = 0.75;
+      settings = {
+        unredir-if-possible = true;
+      };
     };
 
     # A pretty, modern, terminal emulator.
