@@ -80,7 +80,7 @@ in
           done
         '';
         shellAliases = {
-          ssh = "TERM=xterm-256color ssh";
+          ssh = "ssh_autocd";
           # colorized ls
           ls = "ls --color=auto";
           # The only way to use rsync

@@ -1,0 +1,19 @@
+# vim: set ft=zsh:
+
+ssh_autocd() {
+    local host="$1"
+    shift
+    local ssh_cmd="/usr/bin/env TERM=xterm-256color ssh"
+    
+    if [[ "$host" == raspi.media* ]]; then
+        eval "$ssh_cmd -t $host 'cd /media/ext1; exec \$SHELL -i' $@"
+        return $?
+    fi
+
+    if [[ "$host" == raspi.services* ]]; then
+        eval "$ssh_cmd -t $host 'cd ~/services; exec \$SHELL -i' $@"
+        return $?
+    fi
+
+    eval "$ssh_cmd $host $@"
+}
