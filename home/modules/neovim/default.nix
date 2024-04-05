@@ -29,12 +29,10 @@ in {
         # For telescope fzf
         gnumake
       ]
-      ++ lib.optional (!userConfig.modules.rust.enable) [
-        # For mason
-        ## languages
-        ## rust
-        stable.cargo
-      ]
+      # For mason
+      ## languages
+      ## rust
+      ++ lib.optional (!userConfig.modules.rust.enable) stable.cargo
       # GUI for neovim
       ++ lib.optional userConfig.modules.gui.enable neovide;
 
