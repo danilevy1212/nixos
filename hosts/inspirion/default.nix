@@ -66,10 +66,4 @@
 
   # Notify battery status
   services.upower.enable = true;
-
-  # Main redis server
-  services.redis.servers."apex-redis" = {
-    enable = true;
-    port = 6379;
-  };
 }
