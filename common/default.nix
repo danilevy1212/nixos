@@ -256,6 +256,15 @@ in {
     };
   };
 
+  # Greeter
+  services.displayManager = {
+    sddm = {
+      enable = true;
+      enableHidpi = true;
+      wayland.enable = true;
+    };
+  };
+
   # Configure key-map in X11
   services.xserver = {
     enable = true;
@@ -284,13 +293,6 @@ in {
           '';
         }
       ];
-    };
-    displayManager = {
-      sddm = {
-        enable = true;
-        enableHidpi = true;
-        wayland.enable = true;
-      };
     };
   };
 
