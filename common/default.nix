@@ -1,7 +1,7 @@
 {
   config,
   pkgs,
-  stable,
+  lib,
   userConfig,
   ...
 }: let
@@ -360,19 +360,31 @@ in {
 
   # Connect mpv to my jellyfin instance automatically
   systemd.user.services = {
-    "jellyfin-mpv-shim" = let
-      dependencies = ["hm-graphical-session.target" "tray.target"];
-    in {
-      # FIXME  It's not auto-starting
-      wants = dependencies;
-      requires = dependencies;
-      unitConfig = {
-        Description = "jellyfin-mpv-shim";
-      };
+    "jellyfin-mpv-shim" = {
+      enable = true;
+      wantedBy = ["graphical-session.target"];
+
+      script = ''
+        retry_count=0
+        max_retries=3
+        initial_delay=1.5
+
+        while ! ${pkgs.unixtools.ping}/bin/ping -c 1 -W 1 google.com; do
+          retry_count=$((retry_count + 1))
+          if [ "$retry_count" -ge "$max_retries" ]; then
+            echo "Failed to reach google.com after $max_retries attempts."
+            exit 1
+          fi
+          sleep $((initial_delay ** retry_count))
+        done
+        exec ${pkgs.jellyfin-mpv-shim}/bin/jellyfin-mpv-shim
+      '';
       serviceConfig = {
         Type = "simple";
-        ExecStart = "${stable.jellyfin-mpv-shim}/bin/jellyfin-mpv-shim";
         Restart = "always";
+        RestartSec = 5;
+        StartLimitIntervalSec = 60;
+        StartLimitBurst = 3;
       };
     };
   };
