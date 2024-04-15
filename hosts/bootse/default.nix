@@ -34,7 +34,6 @@
   hardware.nvidia = {
     modesetting.enable = true;
     nvidiaSettings = true;
-    powerManagement.enable = true;
     package = config.boot.kernelPackages.nvidiaPackages.mkDriver {
       version = "535.129.03";
       sha256_64bit = "sha256-5tylYmomCMa7KgRs/LfBrzOLnpYafdkKwJu4oSb/AC4=";
