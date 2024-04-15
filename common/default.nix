@@ -1,6 +1,7 @@
 {
   config,
   pkgs,
+  stable,
   userConfig,
   ...
 }: let
@@ -150,18 +151,30 @@ in {
   hardware.enableAllFirmware = true;
 
   # Select internationalisation properties.
-  i18n.defaultLocale = "en_US.UTF-8";
-
-  i18n.extraLocaleSettings = {
-    LC_ADDRESS = "en_US.UTF-8";
-    LC_IDENTIFICATION = "en_US.UTF-8";
-    LC_MEASUREMENT = "en_US.UTF-8";
-    LC_MONETARY = "en_US.UTF-8";
-    LC_NAME = "en_US.UTF-8";
-    LC_NUMERIC = "en_US.UTF-8";
-    LC_PAPER = "en_US.UTF-8";
-    LC_TELEPHONE = "en_US.UTF-8";
-    LC_TIME = "en_US.UTF-8";
+  i18n = {
+    defaultLocale = "en_US.UTF-8";
+    # Japanese input
+    inputMethod = {
+      enabled = "fcitx5";
+      fcitx5 = {
+        waylandFrontend = true;
+        addons = with pkgs; [
+          fcitx5-mozc
+          fcitx5-gtk
+        ];
+      };
+    };
+    extraLocaleSettings = {
+      LC_ADDRESS = "en_US.UTF-8";
+      LC_IDENTIFICATION = "en_US.UTF-8";
+      LC_MEASUREMENT = "en_US.UTF-8";
+      LC_MONETARY = "en_US.UTF-8";
+      LC_NAME = "en_US.UTF-8";
+      LC_NUMERIC = "en_US.UTF-8";
+      LC_PAPER = "en_US.UTF-8";
+      LC_TELEPHONE = "en_US.UTF-8";
+      LC_TIME = "en_US.UTF-8";
+    };
   };
 
   environment = {
@@ -177,12 +190,6 @@ in {
       XDG_CONFIG_HOME = "$HOME/.config";
       XDG_DATA_HOME = "$HOME/.local/share";
       XDG_BIN_HOME = "$HOME/.local/bin";
-
-      # IBUS
-      GTK_IM_MODULE = "ibus";
-      QT_IM_MODULE = "ibus";
-      XMODIFIERS = "@im=ibus";
-      XMODIFIER = "@im=ibus";
 
       # EDITOR
       EDITOR = "nvim";
@@ -281,13 +288,11 @@ in {
       touchpad = {disableWhileTyping = true;};
     };
     desktopManager = {
-      # TODO Make ibus-daemon a systemctl --user service
       session = [
         {
           name = "home-manager+awesomewm";
           start = ''
-            # NOTE Careful! IBUS will overwrite your layout unless you enable "Use system keyboard layout" option in Preferences -> Advanced
-            /run/current-system/sw/bin/ibus-daemon -d -x
+            GTK_IM_MODULE="fcitx" QT_IM_MODULE="fcitx" ${config.i18n.inputMethod.package}/bin/fcitx5 -d
 
             exec $HOME/.local/share/xsession/xsession-awesome
           '';
