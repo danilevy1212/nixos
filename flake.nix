@@ -95,6 +95,7 @@
             home-manager-unstable.nixosModules.home-manager
             ./hosts/${hostname}
             ./common
+            ./cachix.nix
             {
               environment.systemPackages = [
                 # Colortest, for testing terminal colors
@@ -108,6 +109,9 @@
         specialArgs = defaultSpecialArgs;
       };
   in {
+    imports = [
+      ./cachix.nix
+    ];
     # Refactor to use flake-parts or flake-utils
     nixosConfigurations = {
       dellXps15 = addHostConfiguration "dellXps15" [];
