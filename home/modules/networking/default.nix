@@ -16,6 +16,7 @@ in {
 
         # REST Client
         insomnia
+        postman
         bruno
 
         # Database client
