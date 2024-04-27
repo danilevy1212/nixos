@@ -321,7 +321,7 @@ in {
       domain = "*";
       type = "hard";
       item = "nofile";
-      value = "65535";
+      value = "524288";
     }
   ];
 

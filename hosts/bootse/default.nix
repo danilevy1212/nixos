@@ -22,7 +22,28 @@
   environment.systemPackages = with pkgs; [
     # Monitor GPU usage
     nvtopPackages.full
+    # Monitor FPS
+    mangohud
+    # Additional tools for Windows compatibility
+    protontricks
+    (lutris.override {
+      extraPkgs = pkgs:
+        with pkgs; [
+          winetricks
+          wineWowPackages.waylandFull
+        ];
+    })
   ];
+
+  # Performance boost
+  programs.gamemode = {
+    enable = true;
+    settings = {
+      general = {
+        inhibit_screensaver = true;
+      };
+    };
+  };
 
   # NVIDIA crazyness
   services.xserver = {
@@ -33,6 +54,8 @@
   };
   hardware.nvidia = {
     modesetting.enable = true;
+    # Fixes graphical glitches after suspend
+    powerManagement.enable = true;
     nvidiaSettings = true;
     package = config.boot.kernelPackages.nvidiaPackages.mkDriver {
       version = "535.129.03";
