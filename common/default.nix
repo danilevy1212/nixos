@@ -238,6 +238,8 @@ in {
         glxinfo
         # vulkan
         vulkan-tools
+        # sensor data
+        lm_sensors
       ]
       # Basic network
       ++ (with pkgs.unixtools; [netstat ifconfig])
