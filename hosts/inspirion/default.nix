@@ -2,8 +2,8 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 {
-  pkgs,
   config,
+  userConfig,
   ...
 }: {
   imports = [
@@ -50,10 +50,14 @@
     };
   };
 
-  # List packages installed in system profile. To search, run:
-  environment.systemPackages = with pkgs; [
-    _1password-gui
-  ];
+  # 1password and its GUI
+  programs._1password = {
+    enable = true;
+  };
+  programs._1password-gui = {
+    enable = true;
+    polkitPolicyOwners = [userConfig.username];
+  };
 
   # Enable bluetooth
   services.blueman.enable = true;
