@@ -123,7 +123,7 @@ in
       # General utilities
       home.packages = with pkgs; [
         # System
-        neofetch
+        fastfetch
         file
         rsync
         fasd

@@ -141,7 +141,7 @@ vterm_cmd() {
 
 if [ -z "${INSIDE_EMACS+x}" ] && [ -z "${NVIM+x}" ]
 then
-    neofetch
+    fastfetch
 fi
 
 ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
