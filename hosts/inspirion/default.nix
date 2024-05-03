@@ -27,7 +27,12 @@
   services.xserver = {
     dpi = 144;
     # Enable touchpad support
-    libinput.enable = true;
+    libinput = {
+      enable = true;
+      touchpad = {
+        disableWhileTyping = true;
+      };
+    };
     # Enable external monitor through discrete GPU
     videoDrivers = [
       "nvidia"

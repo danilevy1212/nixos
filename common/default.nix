@@ -285,10 +285,6 @@ in {
       options = "ctrl:nocaps";
       layout = "us";
     };
-    libinput = {
-      enable = true; # Enable touchpad support
-      touchpad = {disableWhileTyping = true;};
-    };
     desktopManager = {
       session = [
         {
