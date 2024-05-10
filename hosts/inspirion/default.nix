@@ -23,16 +23,17 @@
     extraModulePackages = [config.boot.kernelPackages.nvidia_x11];
   };
 
+  # Touchpad settings
+  services.libinput = {
+    enable = true;
+    touchpad = {
+      disableWhileTyping = true;
+    };
+  };
+
   # NOTE nvidia options taken from https://nixos.wiki/wiki/Nvidia#sync_mode
   services.xserver = {
     dpi = 144;
-    # Enable touchpad support
-    libinput = {
-      enable = true;
-      touchpad = {
-        disableWhileTyping = true;
-      };
-    };
     # Enable external monitor through discrete GPU
     videoDrivers = [
       "nvidia"
