@@ -90,6 +90,9 @@
     extraPackages = with pkgs; [
       vaapiVdpau
     ];
+    extraPackages32 = with pkgs; [
+      pkgsi686Linux.vaapiVdpau
+    ];
   };
   virtualisation.docker.enableNvidia = true;
 
