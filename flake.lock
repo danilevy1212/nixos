@@ -84,12 +84,12 @@
       },
       "locked": {
         "lastModified": 1,
-        "narHash": "sha256-YQlU8QdMywQ41Q8NMHlnBdN52glyQyidqlM0SHGmeMg=",
-        "path": "/nix/store/hvz5c8dp9i7jvzk8m2l2idap5m0vdf5q-source/pkgs/gh-copilot",
+        "narHash": "sha256-7eb9SqECXaQGyskjXKqbYwdB5n9jtlUu1LkY95pKIEU=",
+        "path": "/nix/store/kba8a9r6yv3jjzjd3x0lnnhrzmgzv2z0-source/pkgs/gh-copilot",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/hvz5c8dp9i7jvzk8m2l2idap5m0vdf5q-source/pkgs/gh-copilot",
+        "path": "/nix/store/kba8a9r6yv3jjzjd3x0lnnhrzmgzv2z0-source/pkgs/gh-copilot",
         "type": "path"
       }
     },
