@@ -146,6 +146,8 @@ in {
     users."${username}" = import ./../home;
     # Easier debugging
     verbose = true;
+    # In case of collision, use a .backup file.
+    backupFileExtension = "backup";
   };
 
   hardware.enableAllFirmware = true;
