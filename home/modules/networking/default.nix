@@ -20,7 +20,7 @@ in {
         bruno
 
         # Database client
-        dbeaver
+        dbeaver-bin
       ]
       ++ lib.optionals cfg.work [
         # Work stuff

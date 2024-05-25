@@ -31,11 +31,11 @@
       "locked": {
         "lastModified": 1,
         "narHash": "sha256-7sJUUnBsc1V7RvvUb1VFaglg/90EyLypQPSAc8i/L6M=",
-        "path": "/nix/store/igfaypcy0xgzngcx8n5kw566gb893ag5-source/pkgs/colortest",
+        "path": "/nix/store/ksw1l3j5vd4rs5ffzjcwq1068sz3vyyd-source/pkgs/colortest",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/igfaypcy0xgzngcx8n5kw566gb893ag5-source/pkgs/colortest",
+        "path": "/nix/store/ksw1l3j5vd4rs5ffzjcwq1068sz3vyyd-source/pkgs/colortest",
         "type": "path"
       }
     },
@@ -75,6 +75,24 @@
         "type": "github"
       }
     },
+    "flake-utils_3": {
+      "inputs": {
+        "systems": "systems_3"
+      },
+      "locked": {
+        "lastModified": 1710146030,
+        "narHash": "sha256-SZ5L6eA7HJ/nmkzGG7/ISclqe6oZdOZTNoesiInkXPQ=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "b1d9ab70662946ef0850d488da1c9019f3a9752a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
     "gh-copilot": {
       "inputs": {
         "flake-utils": "flake-utils_2",
@@ -85,11 +103,11 @@
       "locked": {
         "lastModified": 1,
         "narHash": "sha256-7eb9SqECXaQGyskjXKqbYwdB5n9jtlUu1LkY95pKIEU=",
-        "path": "/nix/store/igfaypcy0xgzngcx8n5kw566gb893ag5-source/pkgs/gh-copilot",
+        "path": "/nix/store/ksw1l3j5vd4rs5ffzjcwq1068sz3vyyd-source/pkgs/gh-copilot",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/igfaypcy0xgzngcx8n5kw566gb893ag5-source/pkgs/gh-copilot",
+        "path": "/nix/store/ksw1l3j5vd4rs5ffzjcwq1068sz3vyyd-source/pkgs/gh-copilot",
         "type": "path"
       }
     },
@@ -100,11 +118,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1715930644,
-        "narHash": "sha256-W9pyM3/vePxrffHtzlJI6lDS3seANQ+Nqp+i58O46LI=",
+        "lastModified": 1716457508,
+        "narHash": "sha256-ZxzffLuWRyuMrkVVq7wastNUqeO0HJL9xqfY1QsYaqo=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "e3ad5108f54177e6520535768ddbf1e6af54b59d",
+        "rev": "850cb322046ef1a268449cf1ceda5fd24d930b05",
         "type": "github"
       },
       "original": {
@@ -116,11 +134,11 @@
     },
     "nixos-stable": {
       "locked": {
-        "lastModified": 1715668745,
-        "narHash": "sha256-xp62OkRkbUDNUc6VSqH02jB0FbOS+MsfMb7wL1RJOfA=",
+        "lastModified": 1716361217,
+        "narHash": "sha256-mzZDr00WUiUXVm1ujBVv6A0qRd8okaITyUp4ezYRgc4=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "9ddcaffecdf098822d944d4147dd8da30b4e6843",
+        "rev": "46397778ef1f73414b03ed553a3368f0e7e33c2f",
         "type": "github"
       },
       "original": {
@@ -132,11 +150,11 @@
     },
     "nixos-unstable": {
       "locked": {
-        "lastModified": 1715787315,
-        "narHash": "sha256-cYApT0NXJfqBkKcci7D9Kr4CBYZKOQKDYA23q8XNuWg=",
+        "lastModified": 1716330097,
+        "narHash": "sha256-8BO3B7e3BiyIDsaKA0tY8O88rClYRTjvAp66y+VBUeU=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "33d1e753c82ffc557b4a585c77de43d4c922ebb5",
+        "rev": "5710852ba686cc1fd0d3b8e22b3117d43ba374c2",
         "type": "github"
       },
       "original": {
@@ -153,7 +171,8 @@
         "gh-copilot": "gh-copilot",
         "home-manager-unstable": "home-manager-unstable",
         "nixos-stable": "nixos-stable",
-        "nixos-unstable": "nixos-unstable"
+        "nixos-unstable": "nixos-unstable",
+        "vulkan-layer": "vulkan-layer"
       }
     },
     "systems": {
@@ -184,6 +203,39 @@
         "owner": "nix-systems",
         "repo": "default",
         "type": "github"
+      }
+    },
+    "systems_3": {
+      "locked": {
+        "lastModified": 1681028828,
+        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
+        "owner": "nix-systems",
+        "repo": "default",
+        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-systems",
+        "repo": "default",
+        "type": "github"
+      }
+    },
+    "vulkan-layer": {
+      "inputs": {
+        "flake-utils": "flake-utils_3",
+        "nixpkgs": [
+          "nixos-unstable"
+        ]
+      },
+      "locked": {
+        "lastModified": 1,
+        "narHash": "sha256-4E1vBvnjslX5zuJzP/ySaPkdkuNzQBqsE3nSlXSsyBg=",
+        "path": "/nix/store/ksw1l3j5vd4rs5ffzjcwq1068sz3vyyd-source/pkgs/vulkan-hdr-layer",
+        "type": "path"
+      },
+      "original": {
+        "path": "/nix/store/ksw1l3j5vd4rs5ffzjcwq1068sz3vyyd-source/pkgs/vulkan-hdr-layer",
+        "type": "path"
       }
     }
   },

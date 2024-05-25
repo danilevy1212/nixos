@@ -28,6 +28,11 @@
       url = "./pkgs/gh-copilot";
       inputs.nixpkgs.follows = "nixos-stable";
     };
+    # Vulkan HDR layer
+    vulkan-layer = {
+      url = "./pkgs/vulkan-hdr-layer";
+      inputs.nixpkgs.follows = "nixos-unstable";
+    };
   };
   outputs = {
     nixos-stable,
@@ -36,6 +41,7 @@
     awsvpnclient,
     colortest,
     gh-copilot,
+    vulkan-layer,
     ...
   }: let
     system = "x86_64-linux";
@@ -135,11 +141,19 @@
           });
         }
       ];
-      bootse = addHostConfiguration "bootse" [
-        {
-          home-manager.extraSpecialArgs = defaultSpecialArgs;
-        }
-      ];
+      bootse = let
+        vulkan-hdr-layer = vulkan-layer.packages."${system}".default;
+      in
+        addHostConfiguration "bootse" [
+          {
+            nixpkgs.overlays = [
+              (final: prev: {
+                vulkan-hdr-layer = vulkan-hdr-layer;
+              })
+            ];
+            home-manager.extraSpecialArgs = defaultSpecialArgs;
+          }
+        ];
     };
     # TODO Have a configuration that is only `home-manager`, meant for systems that may or may not be `NIXOS`
     #      See https://nix-community.github.io/home-manager/index.xhtml#sec-flakes-standalone
