@@ -219,6 +219,7 @@ in {
         docker-compose
         inetutils
         dig
+        iperf
         openvpn
         lsof
         usbutils
@@ -247,7 +248,7 @@ in {
         lm_sensors
       ]
       # Basic network
-      ++ (with pkgs.unixtools; [netstat ifconfig])
+      ++ (with pkgs.unixtools; [netstat nmap ifconfig])
       # Nix convenience
       ++ [nix-prefetch nix-prefetch-git cachix nix-tree];
   };
