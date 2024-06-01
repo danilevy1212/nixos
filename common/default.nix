@@ -198,6 +198,9 @@ in {
 
       # Prefer wayland when available
       NIXOS_OZONE_WL = "1";
+
+      # Help with stuttering
+      SDL_VIDEODRIVER = "wayland";
     };
     # Just as good.
     shellAliases = {vim = "nvim";};
