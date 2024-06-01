@@ -2,7 +2,7 @@
   inputs = {
     # Latest stable release of nixos
     nixos-stable = {
-      url = "github:nixos/nixpkgs/nixos-23.11";
+      url = "github:nixos/nixpkgs/nixos-24.05";
     };
     # Rolling release of nixos
     nixos-unstable = {
@@ -16,7 +16,7 @@
     # AWS VPN Client
     awsvpnclient = {
       url = "github:ymatsiuk/awsvpnclient/7228bce80b664ceaa402105629355692cb71a28d";
-      inputs.nixpkgs.follows = "nixos-stable";
+      inputs.nixpkgs.url = "github:nixos/nixpkgs/nixos-23.11";
     };
     # Colortest, for testing terminal colors
     colortest = {
