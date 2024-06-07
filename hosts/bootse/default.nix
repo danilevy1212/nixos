@@ -20,6 +20,8 @@ in {
   boot.kernelParams = [
     "module_blacklist=i915"
     "nvidia_drm.fbdev=1"
+    # NOTE See https://forums.developer.nvidia.com/t/555-release-feedback-discussion/293652/32
+    "nvidia.NVreg_EnableGpuFirmware=0"
   ];
 
   # Enable networking
