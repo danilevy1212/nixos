@@ -1,7 +1,6 @@
 {
   config,
   pkgs,
-  lib,
   userConfig,
   ...
 }: let
@@ -20,7 +19,7 @@ in {
   system.stateVersion = stateVersion;
 
   # Set your time zone.
-  time.timeZone = "America/New_York";
+  time.timeZone = "America/Los_Angeles";
 
   nix = {
     # Common NIX_PATH
