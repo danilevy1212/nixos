@@ -228,7 +228,7 @@ in {
         pciutils
         p7zip
         unzip
-        gnome.dconf-editor
+        dconf-editor
         # Audio (pulseaudio under pipewire)
         pulseaudio
         # KDE extras

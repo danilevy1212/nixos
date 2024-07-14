@@ -4,10 +4,12 @@
 {
   pkgs,
   config,
+  stable,
   unstable,
   ...
 }: let
   gamescope-pkg = unstable.gamescope;
+  gamescope-wsi-pkg = unstable.gamescope-wsi;
 in {
   imports = [
     # Include the results of the hardware scan.
@@ -42,8 +44,10 @@ in {
           wineWowPackages.waylandFull
         ];
     })
-    # Vulkan layer for HDR
-    vulkan-hdr-layer
+    vulkan-loader
+    gamescope-wsi-pkg
+    # NOTE Temporary workaround, until gamescope-pkg add gamescopereaper in path
+    gamescope-pkg
   ];
 
   # Performance boost
@@ -68,12 +72,11 @@ in {
     # Fixes graphical glitches after suspend
     powerManagement.enable = true;
     nvidiaSettings = true;
-    package = config.boot.kernelPackages.nvidiaPackages.beta;
+    package = config.boot.kernelPackages.nvidiaPackages.latest;
   };
-  hardware.opengl = {
+  hardware.graphics = {
     enable = true;
-    driSupport = true;
-    driSupport32Bit = true;
+    enable32Bit = true;
     extraPackages = with pkgs; [
       vaapiVdpau
     ];
@@ -99,8 +102,9 @@ in {
           libkrb5
           keyutils
           gamescope-pkg
-          vulkan-hdr-layer
-          gnome.zenity
+          gamescope-wsi-pkg
+          vulkan-loader
+          zenity
           wayland
         ];
     };
@@ -111,7 +115,21 @@ in {
     enable = true;
     remotePlay.openFirewall = true;
     dedicatedServer.openFirewall = true;
-    gamescopeSession.enable = true;
+    gamescopeSession = {
+      enable = true;
+      args = [
+        "-w"
+        "3840"
+        "-h"
+        "2160"
+        "-r"
+        "144"
+        "--hdr-enabled"
+        "--hdr-debug-force-output"
+        "--hdr-sdr-content-nits"
+        "630"
+      ];
+    };
     extraCompatPackages = with pkgs; [
       vkd3d-proton
       vkd3d
@@ -120,6 +138,8 @@ in {
       freetype
       openjdk21_headless
       wineWowPackages.waylandFull
+      gamescope-wsi-pkg
+      vulkan-loader
     ];
   };
   programs.gamescope = {
@@ -132,6 +152,8 @@ in {
     enable = true;
     openFirewall = true;
     capSysAdmin = true;
+    # NOTE: This is a temporary workaround, fix hasn't made it to unstable yet. See https://github.com/NixOS/nixpkgs/issues/326299
+    package = stable.sunshine;
   };
 
   # Enable the KDE Plasma Desktop Environment.

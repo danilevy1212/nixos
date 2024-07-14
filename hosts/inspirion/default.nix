@@ -40,9 +40,9 @@
     ];
   };
   # Enable opengl support
-  hardware.opengl = {
+  hardware.graphics = {
     enable = true;
-    driSupport32Bit = true;
+    enable32Bit = true;
   };
 
   # Use discrete GPU to render the display
