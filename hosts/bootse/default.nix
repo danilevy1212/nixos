@@ -4,7 +4,6 @@
 {
   pkgs,
   config,
-  stable,
   unstable,
   ...
 }: let
@@ -46,8 +45,6 @@ in {
     })
     vulkan-loader
     gamescope-wsi-pkg
-    # NOTE Temporary workaround, until gamescope-pkg add gamescopereaper in path
-    gamescope-pkg
   ];
 
   # Performance boost
@@ -152,8 +149,6 @@ in {
     enable = true;
     openFirewall = true;
     capSysAdmin = true;
-    # NOTE: This is a temporary workaround, fix hasn't made it to unstable yet. See https://github.com/NixOS/nixpkgs/issues/326299
-    package = stable.sunshine;
   };
 
   # Enable the KDE Plasma Desktop Environment.
@@ -161,6 +156,10 @@ in {
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
+
+  # Better compatibility with peripherals
+  services.udev.packages = [pkgs.game-devices-udev-rules];
+  hardware.uinput.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.dlevym = {
