@@ -35,7 +35,6 @@ in {
     # Monitor FPS
     mangohud
     # Additional tools for Windows compatibility
-    protontricks
     (lutris.override {
       extraPkgs = pkgs:
         with pkgs; [
@@ -56,6 +55,10 @@ in {
       };
     };
   };
+
+  # Last time I buy an Intel CPU. 
+  # See https://www.reddit.com/r/hardware/comments/1e9mmxg/update_on_intel_k_sku_instability_from_intel/
+  hardware.cpu.intel.updateMicrocode = true;
 
   # NVIDIA crazyness
   services.xserver = {
@@ -112,6 +115,7 @@ in {
     enable = true;
     remotePlay.openFirewall = true;
     dedicatedServer.openFirewall = true;
+    protontricks.enable = true;
     gamescopeSession = {
       enable = true;
       args = [

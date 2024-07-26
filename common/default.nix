@@ -201,7 +201,10 @@ in {
       SDL_VIDEODRIVER = "wayland";
     };
     # Just as good.
-    shellAliases = {vim = "nvim";};
+    shellAliases = {
+      vim = "nvim";
+      wine = "WINEPREFIX=~/.local/share/wine wine";
+    };
     # Ensure all downloaded packages have auto completion info
     pathsToLink = ["/share/zsh"];
     # List packages installed in system profile. To search, run:
@@ -248,7 +251,12 @@ in {
       # Basic network
       ++ (with pkgs.unixtools; [netstat nmap ifconfig])
       # Nix convenience
-      ++ [nix-prefetch nix-prefetch-git cachix nix-tree];
+      ++ [nix-prefetch nix-prefetch-git cachix nix-tree]
+      ++ # Windows compatibility, just in case
+      [
+        wineWowPackages.staging
+        winetricks
+      ];
   };
 
   # TODO  https://github.com/NixOS/nixpkgs/blob/nixos-23.11/nixos/modules/services/networking/ssh/sshd.nix#L257
