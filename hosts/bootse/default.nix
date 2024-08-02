@@ -56,7 +56,7 @@ in {
     };
   };
 
-  # Last time I buy an Intel CPU. 
+  # Last time I buy an Intel CPU.
   # See https://www.reddit.com/r/hardware/comments/1e9mmxg/update_on_intel_k_sku_instability_from_intel/
   hardware.cpu.intel.updateMicrocode = true;
 
@@ -72,7 +72,6 @@ in {
     # Fixes graphical glitches after suspend
     powerManagement.enable = true;
     nvidiaSettings = true;
-    package = config.boot.kernelPackages.nvidiaPackages.latest;
   };
   hardware.graphics = {
     enable = true;
@@ -84,7 +83,7 @@ in {
       pkgsi686Linux.vaapiVdpau
     ];
   };
-  virtualisation.docker.enableNvidia = true;
+  hardware.nvidia-container-toolkit.enable = true;
 
   # Minimum requirements for Steam
   nixpkgs.config.packageOverrides = pkgs: {
