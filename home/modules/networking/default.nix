@@ -15,9 +15,12 @@ in {
         rclone
 
         # REST Client
-        insomnia
         postman
         bruno
+        atac
+
+        # e2e file transfer
+        portal
 
         # Database client
         dbeaver-bin
