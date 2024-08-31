@@ -23,7 +23,7 @@ in {
         portal
 
         # Database client
-        dbeaver-bin
+        stable.dbeaver-bin
       ]
       ++ lib.optionals cfg.work [
         # Work stuff

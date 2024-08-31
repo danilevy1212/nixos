@@ -4,6 +4,7 @@
 {
   config,
   userConfig,
+  pkgs,
   ...
 }: {
   imports = [
@@ -43,10 +44,19 @@
   hardware.graphics = {
     enable = true;
     enable32Bit = true;
+    extraPackages = with pkgs; [
+      nvidia-vaapi-driver
+      vaapiVdpau
+    ];
+  };
+  # Make sure all HW decoding uses the NVIDIA video
+  environment.sessionVariables = {
+    LIBVA_DRIVER_NAME = "nvidia";
   };
 
   # Use discrete GPU to render the display
   hardware.nvidia = {
+    open = true;
     modesetting.enable = true;
     powerManagement.enable = true;
     prime = {

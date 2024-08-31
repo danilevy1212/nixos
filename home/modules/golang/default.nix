@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }: let
   goPath = ".cache/go";
@@ -26,6 +27,11 @@ in
         enable = true;
         goPath = cfg.goPath;
       };
+
+      home.packages = with pkgs; [
+        # Pretend golang is an interpreted language
+        yaegi
+      ];
 
       home.sessionPath = mkIf cfg.addPath ["$HOME/${goPath}/bin"];
     };

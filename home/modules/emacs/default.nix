@@ -139,16 +139,10 @@ in {
     # I cannot live without you, my one true love...
     programs.emacs = with pkgs; {
       enable = true;
+      package = emacs29-pgtk;
       # For vterm.
       extraPackages = epkgs: with epkgs; [vterm oauth2];
     };
-
-    # For :tools direnv
-    programs.direnv = {
-      enable = true;
-      nix-direnv.enable = true;
-    };
-    services.lorri = {enable = true;};
 
     # For :tools magit
     programs.git.delta = {

@@ -129,7 +129,6 @@
               modules = {
                 cli.git.userEmail = "dalevy@autopay.com";
                 rust.enable = false;
-                golang.enable = false;
               };
             };
           });

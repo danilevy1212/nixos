@@ -3,8 +3,8 @@
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 {
   pkgs,
-  config,
   unstable,
+  stable,
   ...
 }: let
   gamescope-pkg = unstable.gamescope;
@@ -19,8 +19,9 @@ in {
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.kernelParams = [
-    "module_blacklist=i915"
     "nvidia_drm.fbdev=1"
+    # NOTE See https://wiki.archlinux.org/title/NVIDIA/Tips_and_tricks#Preserve_video_memory_after_suspend
+    "nvidia.NVreg_PreserveVideoMemoryAllocations=1"
     # NOTE See https://forums.developer.nvidia.com/t/555-release-feedback-discussion/293652/32
     "nvidia.NVreg_EnableGpuFirmware=0"
   ];
@@ -44,6 +45,8 @@ in {
     })
     vulkan-loader
     gamescope-wsi-pkg
+    # CUDA support
+    cudatoolkit
   ];
 
   # Performance boost
@@ -68,19 +71,29 @@ in {
     ];
   };
   hardware.nvidia = {
+    open = true;
     modesetting.enable = true;
     # Fixes graphical glitches after suspend
     powerManagement.enable = true;
     nvidiaSettings = true;
+    # Allow Intel graphics for video encoding
+    prime = {
+      sync.enable = true;
+      nvidiaBusId = "PCI:1:0:0";
+      intelBusId = "PCI:0:2:0";
+    };
   };
   hardware.graphics = {
     enable = true;
     enable32Bit = true;
     extraPackages = with pkgs; [
+      vpl-gpu-rt
+      intel-media-driver
       vaapiVdpau
     ];
     extraPackages32 = with pkgs; [
       pkgsi686Linux.vaapiVdpau
+      pkgsi686Linux.intel-media-driver
     ];
   };
   hardware.nvidia-container-toolkit.enable = true;
@@ -150,8 +163,18 @@ in {
   # Game-streaming
   services.sunshine = {
     enable = true;
+    # Enable nvenc support
+    package = stable.sunshine.override {
+      cudaSupport = true;
+    };
     openFirewall = true;
     capSysAdmin = true;
+  };
+
+  # Make sure all HW decoding uses the INTEL video
+  environment.variables = {
+    VDPAU_DRIVER = "va_gl";
+    LIBVA_DRIVER_NAME = "iHD";
   };
 
   # Enable the KDE Plasma Desktop Environment.

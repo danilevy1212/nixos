@@ -147,8 +147,17 @@ in {
     # In case of collision, use a .backup file.
     backupFileExtension = "backup";
   };
-
   hardware.enableAllFirmware = true;
+
+  # HW Acceleration for video
+  hardware.graphics = {
+    enable = true;
+    extraPackages = with pkgs; [
+      libva
+      libvdpau
+      libvdpau-va-gl
+    ];
+  };
 
   # Select internationalisation properties.
   i18n = {
@@ -247,6 +256,9 @@ in {
         vulkan-tools
         # sensor data
         lm_sensors
+        # Verify video HW acceleration, see https://nixos.wiki/wiki/Accelerated_Video_Playback
+        libva-utils
+        nvtopPackages.full
       ]
       # Basic network
       ++ (with pkgs.unixtools; [netstat nmap ifconfig])
