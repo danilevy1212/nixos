@@ -15,16 +15,16 @@ in {
     ./hardware-configuration.nix
   ];
 
+  # Prevent system from waking up on PCI devices, except for  ethernet
+  services.udev.extraRules = ''
+    ACTION=="add", SUBSYSTEM=="pci", DRIVER=="pcieport", ATTR{power/wakeup}="disabled"
+    # Enable wakeup for the network card
+    ACTION=="add", SUBSYSTEM=="pci", KERNEL=="06:00.0", ATTR{power/wakeup}="enabled"
+  '';
+
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.kernelParams = [
-    "nvidia_drm.fbdev=1"
-    # NOTE See https://wiki.archlinux.org/title/NVIDIA/Tips_and_tricks#Preserve_video_memory_after_suspend
-    "nvidia.NVreg_PreserveVideoMemoryAllocations=1"
-    # NOTE See https://forums.developer.nvidia.com/t/555-release-feedback-discussion/293652/32
-    "nvidia.NVreg_EnableGpuFirmware=0"
-  ];
 
   # Enable networking
   networking.networkmanager.enable = true;
