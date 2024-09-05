@@ -88,7 +88,7 @@ in {
     enable32Bit = true;
     extraPackages = with pkgs; [
       vpl-gpu-rt
-      intel-media-driver
+      nvidia-vaapi-driver
       vaapiVdpau
     ];
     extraPackages32 = with pkgs; [
@@ -171,10 +171,10 @@ in {
     capSysAdmin = true;
   };
 
-  # Make sure all HW decoding uses the INTEL video
+  # Make sure all HW decoding uses the nvidia
   environment.variables = {
     VDPAU_DRIVER = "va_gl";
-    LIBVA_DRIVER_NAME = "iHD";
+    LIBVA_DRIVER_NAME = "nvidia";
   };
 
   # Enable the KDE Plasma Desktop Environment.
