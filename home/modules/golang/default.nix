@@ -31,7 +31,13 @@ in
       home.packages = with pkgs; [
         # Pretend golang is an interpreted language
         yaegi
+        rlwrap
       ];
+
+      # Make yaegi easier to use
+      home.shellAliases = {
+        yaegi = "rlwrap yaegi";
+      };
 
       home.sessionPath = mkIf cfg.addPath ["$HOME/${goPath}/bin"];
     };
