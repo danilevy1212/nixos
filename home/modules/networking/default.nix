@@ -7,6 +7,22 @@
 }:
 with lib; let
   cfg = config.userConfig;
+  # NOTE Force bruno to use X11
+  brunoWrapped = pkgs.buildEnv {
+    name = "bruno-wrapped";
+
+    paths = [pkgs.bruno];
+
+    buildInputs = [pkgs.makeWrapper];
+
+    postBuild = ''
+      wrapProgram $out/bin/bruno \
+        --prefix PATH : ${pkgs.coreutils}/bin \
+        --run "env -u WAYLAND_DISPLAY"
+    '';
+
+    pathsToLink = ["/bin" "/share"];
+  };
 in {
   config = {
     home.packages = with pkgs;
@@ -16,7 +32,7 @@ in {
 
         # REST Client
         postman
-        bruno
+        brunoWrapped
         atac
 
         # e2e file transfer
