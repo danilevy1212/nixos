@@ -5,15 +5,20 @@
   pkgs,
   unstable,
   stable,
+  lib,
   ...
 }: let
   gamescope-pkg = unstable.gamescope;
   gamescope-wsi-pkg = unstable.gamescope-wsi;
+  openDrivers = false;
 in {
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
   ];
+  # Only works with closed-source drivers
+  boot.kernelParams =
+    lib.optional (!openDrivers) "nvidia.NVreg_EnableGpuFirmware=0";
 
   # Prevent system from waking up on PCI devices, except for  ethernet
   services.udev.extraRules = ''
@@ -71,7 +76,7 @@ in {
     ];
   };
   hardware.nvidia = {
-    open = true;
+    open = openDrivers;
     modesetting.enable = true;
     # Fixes graphical glitches after suspend
     powerManagement.enable = true;
