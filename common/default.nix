@@ -51,6 +51,14 @@ in {
       # Sorry, Stallman
       allowUnfree = true;
     };
+    overlays = [
+      (final: prev: {
+        # NOTE I'm putting this here because all my hardware is Nvidia. If I get an AMD card, I'll refactor this to be more host specific.
+        brave = prev.brave.override {
+          commandLineArgs = "--gtk-version=4 --ozone-platform=x11 --disable-features=WaylandWindowDecorations";
+        };
+      })
+    ];
   };
 
   # Booting
@@ -155,7 +163,6 @@ in {
     extraPackages = with pkgs; [
       libva
       libvdpau
-      libvdpau-va-gl
     ];
   };
 
