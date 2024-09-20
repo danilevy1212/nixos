@@ -302,7 +302,6 @@ in {
       enable = true;
       enableHidpi = true;
       wayland.enable = true;
-      theme = "elarun";
     };
   };
 

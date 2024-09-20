@@ -19,6 +19,8 @@ in {
   # Only works with closed-source drivers
   boot.kernelParams =
     lib.optional (!openDrivers) "nvidia.NVreg_EnableGpuFirmware=0";
+  # NOTE  Seems like 6.11.0 broke wayland, somehow
+  boot.kernelPackages = lib.mkForce pkgs.linuxPackages;
 
   # Prevent system from waking up on PCI devices, except for  ethernet
   services.udev.extraRules = ''
@@ -181,9 +183,6 @@ in {
     VDPAU_DRIVER = "va_gl";
     LIBVA_DRIVER_NAME = "nvidia";
   };
-
-  # Enable the KDE Plasma Desktop Environment.
-  services.displayManager.sddm.enable = true;
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
