@@ -18,7 +18,7 @@ with lib; let
     postBuild = ''
       wrapProgram $out/bin/bruno \
         --prefix PATH : ${pkgs.coreutils}/bin \
-        --run "env -u WAYLAND_DISPLAY"
+        --unset "WAYLAND_DISPLAY"
     '';
 
     pathsToLink = ["/bin" "/share"];
