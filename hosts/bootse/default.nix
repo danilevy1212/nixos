@@ -165,6 +165,7 @@ in {
   programs.gamescope = {
     enable = true;
     package = gamescope-pkg;
+    capSysNice = true;
   };
 
   # Game-streaming
