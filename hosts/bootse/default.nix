@@ -19,8 +19,7 @@ in {
   # Only works with closed-source drivers
   boot.kernelParams =
     lib.optional (!openDrivers) "nvidia.NVreg_EnableGpuFirmware=0";
-  # NOTE  Seems like 6.11.0 broke wayland, somehow
-  boot.kernelPackages = lib.mkForce pkgs.linuxPackages;
+  boot.kernelPackages = lib.mkForce pkgs.linuxPackages_xanmod_latest;
 
   # Prevent system from waking up on PCI devices, except for  ethernet
   services.udev.extraRules = ''
