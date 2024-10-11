@@ -15,14 +15,14 @@
   }:
     flake-utils.lib.eachDefaultSystem (system: {
       packages = let
-        version = "v1.0.4";
+        version = "v1.0.5";
       in rec {
         gh-copilot = nixpkgs.legacyPackages.${system}.stdenv.mkDerivation {
           inherit version;
           pname = "gh-copilot";
           src = nixpkgs.legacyPackages.${system}.fetchurl {
             url = "https://github.com/github/gh-copilot/releases/download/${version}/linux-amd64";
-            sha256 = "sha256-M51KWx94Y32n1ry/ByOICA4L4GiVgxHDC6WZO0BzQXo=";
+            sha256 = "sha256-u9/4q0dA3ixxv3j8u3eZKf3w2iYJjpYJIALLto9+290=";
             executable = true;
           };
 
