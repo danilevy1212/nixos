@@ -5,8 +5,11 @@
   config,
   userConfig,
   pkgs,
+  lib,
   ...
-}: {
+}: let
+  openDrivers = false;
+in {
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
@@ -22,6 +25,7 @@
       };
     };
     extraModulePackages = [config.boot.kernelPackages.nvidia_x11];
+    kernelParams = lib.optional (!openDrivers) "nvidia.NVreg_EnableGpuFirmware=0";
   };
 
   # Touchpad settings
@@ -47,16 +51,18 @@
     extraPackages = with pkgs; [
       nvidia-vaapi-driver
       vaapiVdpau
+      vpl-gpu-rt
     ];
   };
-  # Make sure all HW decoding uses the NVIDIA video
+  # Make sure all HW decoding uses the intel video
   environment.sessionVariables = {
-    LIBVA_DRIVER_NAME = "nvidia";
+    VDPAU_DRIVER = "va_gl";
+    LIBVA_DRIVER_NAME = "i915";
   };
 
   # Use discrete GPU to render the display
   hardware.nvidia = {
-    open = true;
+    open = openDrivers;
     modesetting.enable = true;
     powerManagement.enable = true;
     prime = {

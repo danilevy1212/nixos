@@ -19,7 +19,7 @@ in {
   # Only works with closed-source drivers
   boot.kernelParams =
     lib.optional (!openDrivers) "nvidia.NVreg_EnableGpuFirmware=0";
-  boot.kernelPackages = lib.mkForce pkgs.linuxPackages_xanmod_latest;
+  boot.kernelPackages = lib.mkForce pkgs.linuxPackages_xanmod;
 
   # Prevent system from waking up on PCI devices, except for  ethernet
   services.udev.extraRules = ''
