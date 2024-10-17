@@ -4,7 +4,6 @@
 {
   pkgs,
   unstable,
-  stable,
   lib,
   ...
 }: let
@@ -171,7 +170,7 @@ in {
   services.sunshine = {
     enable = true;
     # Enable nvenc support
-    package = stable.sunshine.override {
+    package = pkgs.sunshine.override {
       cudaSupport = true;
     };
     openFirewall = true;
