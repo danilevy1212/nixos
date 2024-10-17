@@ -387,6 +387,12 @@ in {
   # autocd
   programs.bash.interactiveShellInit = "shopt -s autocd";
 
+  # Register AppImage files as a binary type to binfmt_misc
+  programs.appimage = {
+    enable = true;
+    binfmt = true;
+  };
+
   # Connect mpv to my jellyfin instance automatically
   systemd.user.services = {
     "jellyfin-mpv-shim" = {
