@@ -55,7 +55,7 @@ in {
       zoom-us
 
       # Memorize
-      anki
+      stable.anki
       unstable.obsidian
 
       # Pseudo-office
