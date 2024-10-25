@@ -157,10 +157,12 @@ in {
     capSysAdmin = true;
   };
 
-  # Make sure all HW decoding uses the nvidia
   environment.variables = {
+    # Make sure all HW decoding uses the nvidia
     VDPAU_DRIVER = "va_gl";
     LIBVA_DRIVER_NAME = "nvidia";
+    # Allow HDR with nvidia GPU
+    KWIN_DRM_ALLOW_NVIDIA_COLORSPACE = 1;
   };
 
   # Enable CUPS to print documents.
