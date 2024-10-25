@@ -108,21 +108,9 @@ in {
     steam = pkgs.steam.override {
       extraPkgs = pkgs:
         with pkgs; [
-          xorg.libXcursor
-          xorg.libXi
-          xorg.libXinerama
-          xorg.libXScrnSaver
-          libpng
-          libpulseaudio
-          libvorbis
-          stdenv.cc.cc.lib
-          libkrb5
-          keyutils
           gamescope-pkg
           gamescope-wsi-pkg
           vulkan-loader
-          zenity
-          wayland
         ];
     };
   };
@@ -149,15 +137,7 @@ in {
       ];
     };
     extraCompatPackages = with pkgs; [
-      vkd3d-proton
-      vkd3d
-      dxvk_2
       proton-ge-bin
-      freetype
-      openjdk21_headless
-      wineWowPackages.waylandFull
-      gamescope-wsi-pkg
-      vulkan-loader
     ];
   };
   programs.gamescope = {
