@@ -43,7 +43,7 @@ in {
       slack
 
       # Browser for the...
-      brave
+      stable.brave
 
       # Keep my passwords safe
       keepassxc

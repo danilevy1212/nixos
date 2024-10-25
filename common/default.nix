@@ -2,6 +2,7 @@
   config,
   pkgs,
   userConfig,
+  stable,
   ...
 }: let
   stateVersion = config.system.nixos.release;
@@ -51,13 +52,6 @@ in {
       # Sorry, Stallman
       allowUnfree = true;
     };
-    overlays = [
-      (final: prev: {
-        brave = prev.brave.override {
-          commandLineArgs = "--gtk-version=4 --ozone-platform=x11 --disable-features=WaylandWindowDecorations --enable-features=DefaultANGLEVulkan,VulkanFromANGLE";
-        };
-      })
-    ];
   };
 
   # Booting
@@ -240,7 +234,7 @@ in {
         lsof
         usbutils
         firefox
-        brave
+        stable.brave
         lxappearance
         pciutils
         p7zip
