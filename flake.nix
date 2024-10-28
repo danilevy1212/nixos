@@ -28,10 +28,15 @@
       url = "./pkgs/gh-copilot";
       inputs.nixpkgs.follows = "nixos-stable";
     };
+    # Latest version with plasma that works with HDR + sunshine
+    nixos-plasma = {
+      url = "github:nixos/nixpkgs/8d5bdaf3a45a6e42a23ff476ba478731752c7f95";
+    };
   };
   outputs = {
     nixos-stable,
     nixos-unstable,
+    nixos-plasma,
     home-manager-unstable,
     awsvpnclient,
     colortest,
@@ -137,6 +142,15 @@
       bootse = addHostConfiguration "bootse" [
         {
           home-manager.extraSpecialArgs = defaultSpecialArgs;
+          # HACK  Unfortunately, version of plasma > 6.2.0 breaks my sunshine HDR setup
+          #       see https://github.com/LizardByte/Sunshine/issues/3298
+          #       see https://github.com/LizardByte/Sunshine/issues/3327
+          #       Until these are resolved, we need to pin 6.2.0 on the system.
+          nixpkgs.overlays = [
+            (self: super: {
+              kdePackages = super.kdePackages // (import nixos-plasma nixpkgs-args).kdePackages;
+            })
+          ];
         }
       ];
     };

@@ -112,6 +112,22 @@
         "type": "github"
       }
     },
+    "nixos-plasma": {
+      "locked": {
+        "lastModified": 1729005581,
+        "narHash": "sha256-AG/KBDx38CBA7p/voX3xI+XbWRn9ZsaHo8Qlb+CSpM4=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "8d5bdaf3a45a6e42a23ff476ba478731752c7f95",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "8d5bdaf3a45a6e42a23ff476ba478731752c7f95",
+        "type": "github"
+      }
+    },
     "nixos-stable": {
       "locked": {
         "lastModified": 1729691686,
@@ -166,6 +182,7 @@
         "colortest": "colortest",
         "gh-copilot": "gh-copilot",
         "home-manager-unstable": "home-manager-unstable",
+        "nixos-plasma": "nixos-plasma",
         "nixos-stable": "nixos-stable",
         "nixos-unstable": "nixos-unstable"
       }
