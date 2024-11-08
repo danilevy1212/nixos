@@ -39,7 +39,6 @@ in {
       spotify
 
       # Social closeness
-      tdesktop
       slack
 
       # Browser for the...

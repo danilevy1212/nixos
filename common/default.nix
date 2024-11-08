@@ -400,7 +400,7 @@ in {
           fi
           sleep $((initial_delay ** retry_count))
         done
-        exec ${pkgs.jellyfin-mpv-shim}/bin/jellyfin-mpv-shim
+        exec ${stable.jellyfin-mpv-shim}/bin/jellyfin-mpv-shim
       '';
       serviceConfig = {
         Type = "simple";
