@@ -43,7 +43,7 @@ in {
       slack
 
       # Browser for the...
-      stable.brave
+      brave
 
       # Keep my passwords safe
       keepassxc
@@ -56,7 +56,6 @@ in {
 
       # Memorize
       anki
-      unstable.obsidian
 
       # Pseudo-office
       stable.libreoffice

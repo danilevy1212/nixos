@@ -23,11 +23,6 @@ in {
   time.timeZone = "America/Los_Angeles";
 
   nix = {
-    # Common NIX_PATH
-    nixPath = [
-      "nixpkgs=/nix/var/nix/profiles/per-user/root/channels/nixos"
-      "/nix/var/nix/profiles/per-user/root/channels"
-    ];
     settings = {
       trusted-users = ["root" username];
       # Protect disk space
@@ -234,7 +229,7 @@ in {
         lsof
         usbutils
         firefox
-        stable.brave
+        brave
         lxappearance
         pciutils
         p7zip

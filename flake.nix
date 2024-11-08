@@ -109,6 +109,16 @@
               networking.hostName = hostname;
               home-manager.extraSpecialArgs = nixos-unstable.lib.mkDefault defaultSpecialArgs;
             }
+            {
+              # NOTE  GTK-4 has less issues with IME
+              nixpkgs.overlays = [
+                (final: prev: {
+                  brave = stable.brave.override {
+                    commandLineArgs = "--gtk-version=4";
+                  };
+                })
+              ];
+            }
           ]
           ++ nixos-unstable.lib.optionals (builtins.isList additionalModules) additionalModules;
         specialArgs = defaultSpecialArgs;
