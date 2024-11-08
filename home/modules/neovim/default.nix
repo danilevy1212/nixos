@@ -28,6 +28,9 @@ in {
 
         # For telescope fzf
         gnumake
+
+        # Nix language server
+        nixd
       ]
       # For mason
       ## languages

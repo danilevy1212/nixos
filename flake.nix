@@ -110,6 +110,12 @@
               home-manager.extraSpecialArgs = nixos-unstable.lib.mkDefault defaultSpecialArgs;
             }
             {
+              # Common NIX_PATH, by default we are on unstable
+              nix.nixPath = [
+                "nixpkgs=${nixos-unstable}"
+              ];
+            }
+            {
               # NOTE  GTK-4 has less issues with IME
               nixpkgs.overlays = [
                 (final: prev: {
