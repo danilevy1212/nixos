@@ -15,8 +15,8 @@
     };
     # AWS VPN Client
     awsvpnclient = {
-      url = "github:ymatsiuk/awsvpnclient/7228bce80b664ceaa402105629355692cb71a28d";
-      inputs.nixpkgs.url = "github:nixos/nixpkgs/nixos-23.11";
+      url = "github:ymatsiuk/awsvpnclient/56ca114e3f7fe4db9d745a0ab8ed70c6bd803a8f";
+      inputs.nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     };
     # Colortest, for testing terminal colors
     colortest = {
