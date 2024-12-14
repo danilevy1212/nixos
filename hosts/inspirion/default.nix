@@ -26,6 +26,7 @@ in {
     };
     extraModulePackages = [config.boot.kernelPackages.nvidia_x11];
     kernelParams = lib.optional (!openDrivers) "nvidia.NVreg_EnableGpuFirmware=0";
+    kernelPackages = lib.mkForce pkgs.linuxPackages;
   };
 
   # Touchpad settings

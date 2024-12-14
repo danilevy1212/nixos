@@ -116,12 +116,9 @@
               ];
             }
             {
-              # NOTE  GTK-4 has less issues with IME
               nixpkgs.overlays = [
                 (final: prev: {
-                  brave = stable.brave.override {
-                    commandLineArgs = "--gtk-version=4";
-                  };
+                  brave = stable.brave;
                 })
               ];
             }

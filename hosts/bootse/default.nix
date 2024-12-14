@@ -10,7 +10,7 @@
 }: let
   gamescope-pkg = unstable.gamescope;
   gamescope-wsi-pkg = unstable.gamescope-wsi;
-  openDrivers = true;
+  openDrivers = false;
 in {
   imports = [
     # Include the results of the hardware scan.
