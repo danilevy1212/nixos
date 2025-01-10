@@ -52,6 +52,7 @@ in {
       tray = {
         enable = true;
         command = "syncthingtray --wait";
+        package = stable.syncthingtray;
       };
     };
 

@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  stable,
   ...
 }: let
   awesome-wm-widgets = with pkgs;
@@ -37,7 +38,7 @@ in {
     home = {
       packages = with pkgs; [
         # File management.
-        spaceFM
+        stable.spaceFM
 
         # Let there be control over the sound!
         pulsemixer
