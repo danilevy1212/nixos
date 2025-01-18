@@ -118,7 +118,9 @@
             {
               nixpkgs.overlays = [
                 (final: prev: {
-                  brave = stable.brave;
+                  brave = stable.brave.override {
+                    commandLineArgs = "--gtk-version=4";
+                  };
                 })
               ];
             }
