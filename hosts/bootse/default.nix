@@ -204,4 +204,10 @@ in {
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
+
+  # AI Hype
+  services.ollama = {
+    enable = true;
+    acceleration = "cuda";
+  };
 }
