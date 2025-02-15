@@ -49,7 +49,8 @@ in {
     enable = true;
     enable32Bit = true;
     extraPackages = with pkgs; [
-      nvidia-vaapi-driver
+      vaapiIntel
+      intel-media-driver
       vaapiVdpau
       vpl-gpu-rt
     ];

@@ -139,6 +139,9 @@ in
         xq-xml
         ueberzugpp
 
+        # Docker Management
+        lazydocker
+
         ## Fun
         cowsay
         lolcat
