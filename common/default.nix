@@ -54,8 +54,8 @@ in {
     # NixOS uses NTFS-3G for NTFS support.
     supportedFilesystems = ["ntfs"];
 
-    # Cutting-edgyness
-    kernelPackages = pkgs.linuxPackages_latest;
+    # Keep things stable
+    kernelPackages = pkgs.linuxPackages;
   };
 
   # Less eye-sore console font.
@@ -235,6 +235,8 @@ in {
         p7zip
         unzip
         dconf-editor
+        memtest86plus
+        smartmontools
         # Audio (pulseaudio under pipewire)
         pulseaudio
         # KDE extras
@@ -431,14 +433,10 @@ in {
   services.flatpak.enable = true;
   systemd.services.addFlathubRepo = {
     description = "Add the Flathub repository to flatpak";
-    after = ["network-online.target"];
-    wants = ["network-online.target"];
-    serviceConfig = {
-      User = "root";
-      ExecStart = "${pkgs.flatpak}/bin/flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo";
-      Type = "oneshot";
-      RemainAfterExit = true;
-    };
     wantedBy = ["multi-user.target"];
+    path = [pkgs.flatpak];
+    script = ''
+      flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+    '';
   };
 }

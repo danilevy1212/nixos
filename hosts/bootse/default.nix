@@ -6,6 +6,7 @@
   unstable,
   lib,
   config,
+  stable,
   ...
 }: let
   gamescope-pkg = unstable.gamescope;
@@ -19,7 +20,6 @@ in {
   # Only works with closed-source drivers
   boot.kernelParams =
     lib.optional (!openDrivers) "nvidia.NVreg_EnableGpuFirmware=0";
-  boot.kernelPackages = lib.mkForce pkgs.linuxPackages_xanmod;
 
   # Prevent system from waking up on PCI devices, except for  ethernet
   services.udev.extraRules = ''
@@ -76,7 +76,6 @@ in {
   };
   hardware.nvidia = {
     open = openDrivers;
-    #   NOTE  See if the new stable version works fine
     package = config.boot.kernelPackages.nvidiaPackages.latest;
     modesetting.enable = true;
     # Fixes graphical glitches after suspend
@@ -150,25 +149,9 @@ in {
   # Game-streaming
   services.sunshine = {
     enable = true;
-    # Enable nvenc support
-    package = with pkgs;
-      (pkgs.sunshine.override {
-        cudaSupport = true;
-        cudaPackages = cudaPackages;
-      })
-      .overrideAttrs (old: {
-        nativeBuildInputs =
-          old.nativeBuildInputs
-          ++ [
-            cudaPackages.cuda_nvcc
-            (lib.getDev cudaPackages.cuda_cudart)
-          ];
-        cmakeFlags =
-          old.cmakeFlags
-          ++ [
-            "-DCMAKE_CUDA_COMPILER=${(lib.getExe cudaPackages.cuda_nvcc)}"
-          ];
-      });
+    package = pkgs.sunshine.override {
+      cudaSupport = true;
+    };
     openFirewall = true;
     capSysAdmin = true;
   };

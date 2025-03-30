@@ -163,7 +163,7 @@
           #       Until these are resolved, we need to pin 6.2.0 on the system.
           nixpkgs.overlays = [
             (self: super: {
-              kdePackages = super.kdePackages // (import nixos-plasma nixpkgs-args).kdePackages;
+              kdePackages = (import nixos-plasma nixpkgs-args).kdePackages;
             })
           ];
         }
