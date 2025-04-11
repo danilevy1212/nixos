@@ -8,7 +8,7 @@
   lib,
   ...
 }: let
-  openDrivers = false;
+  openDrivers = true;
 in {
   imports = [
     # Include the results of the hardware scan.
