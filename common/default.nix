@@ -208,6 +208,7 @@ in {
     shellAliases = {
       vim = "nvim";
       wine = "WINEPREFIX=~/.local/share/wine wine";
+      k = "kubectl";
     };
     # Ensure all downloaded packages have auto completion info
     pathsToLink = ["/share/zsh"];
@@ -256,6 +257,9 @@ in {
         # Verify video HW acceleration, see https://nixos.wiki/wiki/Accelerated_Video_Playback
         libva-utils
         nvtopPackages.full
+        # k8s (client + local dev)
+        minikube
+        kubectl
       ]
       # Basic network
       ++ (with pkgs.unixtools; [netstat nmap ifconfig])
