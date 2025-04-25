@@ -23,11 +23,6 @@
       url = "./pkgs/colortest";
       inputs.nixpkgs.follows = "nixos-stable";
     };
-    # gh-copilot
-    gh-copilot = {
-      url = "./pkgs/gh-copilot";
-      inputs.nixpkgs.follows = "nixos-stable";
-    };
     # Latest version with plasma that works with HDR + sunshine
     nixos-plasma = {
       url = "github:nixos/nixpkgs/8d5bdaf3a45a6e42a23ff476ba478731752c7f95";
@@ -40,7 +35,6 @@
     home-manager-unstable,
     awsvpnclient,
     colortest,
-    gh-copilot,
     ...
   }: let
     system = "x86_64-linux";
@@ -77,11 +71,6 @@
           enable = true;
           git = {
             userEmail = "daniellevymoreno@gmail.com";
-            gh = {
-              extraExtensions = [
-                gh-copilot.packages."${system}".gh-copilot
-              ];
-            };
           };
         };
       };

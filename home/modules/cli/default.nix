@@ -67,7 +67,7 @@ in
         enableCompletion = true;
         # NOTE This is just for easier debugging.
         dotDir = ZDOTDIR;
-        initExtra = builtins.readFile ./zshrc;
+        initContent = builtins.readFile ./zshrc;
         # NOTE  Have custom functions available throughout subshells
         envExtra = ''
           # Add all files from the autoload directory to the fpath array
@@ -104,12 +104,15 @@ in
       home.sessionVariables = {
         HISTFILE = "${config.xdg.dataHome}/history";
         USER_CUSTOM_AUTOLOAD = "$HOME/${ZDOTDIR}/autoload";
+        ATAC_KEY_BINDINGS = "${pkgs.atac.src}/share/atac/key-bindings.zsh";
       };
 
       # github cli program
       programs.gh = {
         enable = true;
-        extensions = [] ++ cfg.git.gh.extraExtensions;
+        extensions = [
+          pkgs.gh-copilot
+        ];
       };
 
       # TODO  This is required by several modules. Maybe I need a "mixins" folder.
