@@ -17,9 +17,23 @@ in {
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
   ];
+  nixpkgs.overlays = [
+    (self: super: {
+      # Use stable firefox with pinned KDE version
+      firefox = stable.firefox;
+    })
+  ];
+
   # Only works with closed-source drivers
   boot.kernelParams =
-    lib.optional (!openDrivers) "nvidia.NVreg_EnableGpuFirmware=0";
+    (lib.optional (!openDrivers) "nvidia.NVreg_EnableGpuFirmware=0")
+    ++ [
+      "pci=nomsi"
+      "pcie_aspm=off"
+    ];
+
+  # Ensure maximum compatibility
+  boot.kernelPackages = lib.mkForce pkgs.linuxPackages_6_6;
 
   # Prevent system from waking up on PCI devices, except for  ethernet
   services.udev.extraRules = ''
@@ -30,6 +44,8 @@ in {
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
+  boot.loader.systemd-boot.memtest86.enable = true;
+  boot.loader.systemd-boot.configurationLimit = 10;
   boot.loader.efi.canTouchEfiVariables = true;
 
   # Enable networking
@@ -193,4 +209,9 @@ in {
     enable = true;
     acceleration = "cuda";
   };
+
+  # Kill hanging processes after 3 mins
+  systemd.extraConfig = ''
+    DefaultTimeoutStopSec=3min
+  '';
 }
