@@ -2,7 +2,7 @@
   inputs = {
     # Latest stable release of nixos
     nixos-stable = {
-      url = "github:nixos/nixpkgs/nixos-24.05";
+      url = "github:nixos/nixpkgs/nixos-25.05";
     };
     # Rolling release of nixos
     nixos-unstable = {
@@ -102,15 +102,6 @@
               # Common NIX_PATH, by default we are on unstable
               nix.nixPath = [
                 "nixpkgs=${nixos-unstable}"
-              ];
-            }
-            {
-              nixpkgs.overlays = [
-                (final: prev: {
-                  brave = stable.brave.override {
-                    commandLineArgs = "--gtk-version=4";
-                  };
-                })
               ];
             }
           ]

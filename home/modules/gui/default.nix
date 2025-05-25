@@ -108,10 +108,12 @@ in {
       mimeApps = {
         defaultApplications = {
           # Make brave default browser
-          "x-scheme-handler/http" = ["brave-browser.desktop"];
-          "x-scheme-handler/https" = ["brave-browser.desktop"];
+          "x-scheme-handler/http" = ["firefox.desktop"];
+          "x-scheme-handler/https" = ["firefox.desktop"];
           # Make mpv default video player
           "video/x-matroska" = ["mpv.desktop"];
+          # PDF reader
+          "application/pdf" = ["zathura.desktop"];
         };
       };
       dataFile."awesome".source = "${pkgs.awesome}/share/awesome";

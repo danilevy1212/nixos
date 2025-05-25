@@ -31,7 +31,7 @@ in {
     home.shellAliases.zathura = "zathura --fork";
 
     # default browser
-    home.sessionVariables = {BROWSER = "brave";};
+    home.sessionVariables = {BROWSER = "firefox";};
 
     # Apps
     home.packages = with pkgs; [
@@ -41,8 +41,8 @@ in {
       # Social closeness
       slack
 
-      # Browser for the...
-      brave
+      # Browser
+      chromium
 
       # Keep my passwords safe
       keepassxc
