@@ -31,7 +31,6 @@ in {
         rclone
 
         # REST Client
-        postman
         brunoWrapped
         atac
 

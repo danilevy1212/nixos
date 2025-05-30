@@ -200,6 +200,7 @@ in {
 
       # Prefer wayland when available
       NIXOS_OZONE_WL = "1";
+      ELECTRON_OZONE_PLATFORM_HINT = "auto";
 
       # Help with stuttering
       SDL_VIDEODRIVER = "wayland";
@@ -209,6 +210,8 @@ in {
       vim = "nvim";
       wine = "WINEPREFIX=~/.local/share/wine wine";
       k = "kubectl";
+      suspend = "systemctl suspend";
+      poweroff = "systemctl poweroff";
     };
     # Ensure all downloaded packages have auto completion info
     pathsToLink = ["/share/zsh"];
@@ -230,7 +233,6 @@ in {
         lsof
         usbutils
         firefox
-        brave
         lxappearance
         pciutils
         p7zip

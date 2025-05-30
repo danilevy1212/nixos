@@ -6,7 +6,6 @@
   unstable,
   lib,
   config,
-  stable,
   ...
 }: let
   gamescope-pkg = unstable.gamescope;
@@ -17,13 +16,6 @@ in {
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
   ];
-  nixpkgs.overlays = [
-    (self: super: {
-      # Use stable firefox with pinned KDE version
-      firefox = stable.firefox;
-    })
-  ];
-
   # Only works with closed-source drivers
   boot.kernelParams =
     (lib.optional (!openDrivers) "nvidia.NVreg_EnableGpuFirmware=0")
@@ -178,6 +170,11 @@ in {
     LIBVA_DRIVER_NAME = "nvidia";
     # Allow HDR with nvidia GPU
     KWIN_DRM_ALLOW_NVIDIA_COLORSPACE = 1;
+    # To be able to use kscreen-doctor from SSH
+    XDG_SESSION_TYPE = "wayland";
+    XDG_RUNTIME_DIR = "/run/user/$(id -u)";
+    DBUS_SESSION_BUS_ADDRESS = "unix:path=$XDG_RUNTIME_DIR/bus";
+    QT_QPA_PLATFORM = "wayland";
   };
 
   # Enable CUPS to print documents.
@@ -203,6 +200,15 @@ in {
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
+  networking.firewall.allowedTCPPorts = [
+    22
+  ];
+
+  # Auto-login
+  services.displayManager.autoLogin = {
+    enable = true;
+    user = "dlevym";
+  };
 
   # AI Hype
   services.ollama = {

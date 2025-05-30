@@ -107,7 +107,7 @@ in {
     xdg = {
       mimeApps = {
         defaultApplications = {
-          # Make brave default browser
+          # Make firefox default browser
           "x-scheme-handler/http" = ["firefox.desktop"];
           "x-scheme-handler/https" = ["firefox.desktop"];
           # Make mpv default video player

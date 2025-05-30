@@ -141,10 +141,15 @@
           #       see https://github.com/LizardByte/Sunshine/issues/3298
           #       see https://github.com/LizardByte/Sunshine/issues/3327
           #       Until these are resolved, we need to pin 6.2.0 on the system.
-          nixpkgs.overlays = [
-            (self: super: {
-              kdePackages = (import nixos-plasma nixpkgs-args).kdePackages;
-            })
+          nixpkgs.overlays = let
+            plasma-pinned-pkgs = import nixos-plasma nixpkgs-args;
+          in [
+            (self: super:
+              with plasma-pinned-pkgs; {
+                kdePackages = kdePackages;
+                # NOTE  Prevent firefox issues by using the same firefox as the KDE version
+                firefox = firefox;
+              })
           ];
         }
       ];
