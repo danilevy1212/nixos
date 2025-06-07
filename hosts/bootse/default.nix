@@ -59,6 +59,14 @@ in {
     })
     vulkan-loader
     gamescope-wsi-pkg
+    # Other launchers
+    (heroic.override {
+      extraPkgs = pkgs: [
+        gamescope-pkg
+        gamescope-wsi-pkg
+        gamemode
+      ];
+    })
   ];
 
   # Performance boost

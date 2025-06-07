@@ -11,7 +11,7 @@ with lib; let
   brunoWrapped = pkgs.buildEnv {
     name = "bruno-wrapped";
 
-    paths = [pkgs.bruno];
+    paths = [stable.bruno];
 
     buildInputs = [pkgs.makeWrapper];
 
