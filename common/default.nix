@@ -159,7 +159,8 @@ in {
     defaultLocale = "en_US.UTF-8";
     # Japanese input
     inputMethod = {
-      enabled = "fcitx5";
+      enable = true;
+      type = "fcitx5";
       fcitx5 = {
         waylandFrontend = true;
         addons = with pkgs; [
