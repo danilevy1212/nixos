@@ -143,14 +143,27 @@
           #       Until these are resolved, we need to pin 6.2.0 on the system.
           nixpkgs.overlays = let
             plasma-pinned-pkgs = import nixos-plasma nixpkgs-args;
+            pkgs = import nixos-unstable nixpkgs-args;
           in [
             (self: super:
               with plasma-pinned-pkgs; {
-                kdePackages = kdePackages;
+                kdePackages =
+                  {
+                    aurorae = pkgs.kdePackages.aurorae;
+                    kwin-x11 = pkgs.kdePackages.kwin-x11;
+                    ksystemstats = pkgs.kdePackages.ksystemstats;
+                  }
+                  // kdePackages;
                 # NOTE  Prevent firefox issues by using the same firefox as the KDE version
                 firefox = firefox;
               })
           ];
+          # HACK  I really need to move out of this KDE version
+          security.wrappers = {
+            ksystemstats_intel_helper = nixos-unstable.lib.mkForce {
+              enable = false;
+            };
+          };
         }
       ];
     };

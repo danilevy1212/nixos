@@ -24,9 +24,6 @@ in {
       "pcie_aspm=off"
     ];
 
-  # Ensure maximum compatibility
-  boot.kernelPackages = lib.mkForce pkgs.linuxPackages_6_6;
-
   # Prevent system from waking up on PCI devices, except for  ethernet
   services.udev.extraRules = ''
     ACTION=="add", SUBSYSTEM=="pci", DRIVER=="pcieport", ATTR{power/wakeup}="disabled"

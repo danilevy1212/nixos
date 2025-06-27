@@ -64,6 +64,9 @@ in {
 
         # battery indicator
         acpi
+
+        # Sunshine client for remote desktop
+        moonlight-qt
       ];
 
       sessionVariables = {

@@ -54,8 +54,8 @@ in {
     # NixOS uses NTFS-3G for NTFS support.
     supportedFilesystems = ["ntfs"];
 
-    # Keep things stable
-    kernelPackages = pkgs.linuxPackages;
+    # Keep things stable, mirror Ubuntu
+    kernelPackages = pkgs.linuxPackages_6_14;
   };
 
   # Less eye-sore console font.
@@ -246,6 +246,9 @@ in {
         # KDE extras
         ocs-url
         discover-wrapped
+        # TV calibration
+        read-edid
+        edid-decode
         # wayland
         wl-clipboard-rs
         wayland-utils
@@ -421,6 +424,9 @@ in {
       };
     };
   };
+
+  # Enable KDE Connect
+  programs.kdeconnect.enable = true;
 
   # Bother me, less.
   services.gnome.gnome-keyring.enable = true;
