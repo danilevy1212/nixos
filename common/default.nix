@@ -54,8 +54,8 @@ in {
     # NixOS uses NTFS-3G for NTFS support.
     supportedFilesystems = ["ntfs"];
 
-    # Keep things stable, mirror Ubuntu
-    kernelPackages = pkgs.linuxPackages_6_14;
+    # Keep things stable, mirror FEDORA
+    kernelPackages = pkgs.linuxPackages_6_15;
   };
 
   # Less eye-sore console font.
@@ -246,6 +246,7 @@ in {
         # KDE extras
         ocs-url
         discover-wrapped
+        kdePackages.kcalc
         # TV calibration
         read-edid
         edid-decode
