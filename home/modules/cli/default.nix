@@ -4,7 +4,7 @@
   lib,
   ...
 }: let
-  ZDOTDIR = ".config/zsh";
+  ZDOTDIR = "${config.xdg.configHome}/zsh";
   cfg = config.userConfig.modules.cli;
 in
   with lib; {
@@ -103,7 +103,7 @@ in
       # HISTFILE
       home.sessionVariables = {
         HISTFILE = "${config.xdg.dataHome}/history";
-        USER_CUSTOM_AUTOLOAD = "$HOME/${ZDOTDIR}/autoload";
+        USER_CUSTOM_AUTOLOAD = "${ZDOTDIR}/autoload";
         ATAC_KEY_BINDINGS = "${pkgs.atac.src}/share/atac/key-bindings.zsh";
       };
 
@@ -114,6 +114,9 @@ in
           pkgs.gh-copilot
         ];
       };
+
+      # Vibing and coding
+      programs.opencode.enable = true;
 
       # TODO  This is required by several modules. Maybe I need a "mixins" folder.
       # Per directory environment
@@ -160,6 +163,9 @@ in
 
         # Text To Speach
         espeak
+
+        # TUI Browser
+        browsh
       ];
 
       # A tldr client

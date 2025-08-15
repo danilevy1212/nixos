@@ -39,6 +39,9 @@ in {
 
         # Database client
         stable.dbeaver-bin
+
+        # Redis cli client
+        redis
       ]
       ++ lib.optionals cfg.work [
         # Work stuff

@@ -222,7 +222,7 @@ in {
   };
 
   # Kill hanging processes after 3 mins
-  systemd.extraConfig = ''
-    DefaultTimeoutStopSec=3min
-  '';
+  systemd.settings.Manager = {
+    DefaultTimeoutStopSec = "90s";
+  };
 }

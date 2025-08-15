@@ -55,11 +55,6 @@ in {
       vpl-gpu-rt
     ];
   };
-  # Make sure all HW decoding uses the intel video
-  environment.sessionVariables = {
-    VDPAU_DRIVER = "va_gl";
-    LIBVA_DRIVER_NAME = "i915";
-  };
 
   # Use discrete GPU to render the display
   hardware.nvidia = {
@@ -68,7 +63,7 @@ in {
     modesetting.enable = true;
     powerManagement.enable = true;
     prime = {
-      sync.enable = true;
+      offload.enable = true;
       intelBusId = "PCI:0:2:0";
       nvidiaBusId = "PCI:1:0:0";
     };
