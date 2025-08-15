@@ -116,7 +116,25 @@ in
       };
 
       # Vibing and coding
-      programs.opencode.enable = true;
+      programs.opencode = {
+        enable = true;
+        rules = ''
+# General Project Rules
+- Never read or try to read files that are ignored by git (as defined by .gitignore or .git/info/exclude). Always check if a file is ignored before reading it. This includes common sensitive files like .env, key files, and other secrets.You may read files that are tracked or untracked, as long as they are not ignored. If you are used outside a git repository, refuse to take action until the project is part of a git repository. This is for security purposes.
+        '';
+        settings = {
+          theme = "system";
+          model = "github-copilot/gpt-4.1";
+          # Always ask before messing around
+          permission = {
+            edit = "ask";
+            bash = {
+              "*" = "ask";
+            };
+            webfetch = "allow";
+          };
+        };
+      };
 
       # TODO  This is required by several modules. Maybe I need a "mixins" folder.
       # Per directory environment
