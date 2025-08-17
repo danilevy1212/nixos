@@ -119,35 +119,35 @@ in
       programs.opencode = {
         enable = true;
         rules = ''
-          # General Project Rules
+                   # General Project Rules
 
-          1. **File Read Restrictions**
-             - Never read files that are ignored by git (as defined in `.gitignore` or `.git/info/exclude`).
-             - This includes sensitive files such as `.env`, credentials, and key files.
-             - Only read files that are tracked or untracked and not ignored.
+                   1. **File Read Restrictions**
+                      - Never read files that are ignored by git (as defined in `.gitignore` or `.git/info/exclude`).
+                      - This includes sensitive files such as `.env`, credentials, and key files.
+                      - Only read files that are tracked or untracked and not ignored.
 
-          2. **Git Repository Requirement**
-             - Before any file operation (read, write, edit, create, delete), the assistant must check if the current working directory is a git repository. If it is not, the assistant must abort the operation and return the error: "Error: This operation is not permitted outside
- a git repository."
-             - This ensures all changes are version-controlled and secure.
+                   2. **Git Repository Requirement**
+                      - Before any file operation (read, write, edit, create, delete), the assistant must check if the current working directory is a git repository. If it is not, the assistant must abort the operation and return the error: "Error: This operation is not permitted outside
+          a git repository."
+                      - This ensures all changes are version-controlled and secure.
 
-          3. **File Creation Scope**
-              - Only create new files within the current working directory (CWD).
-              - Do not create files outside the CWD, including parent, system, or user directories.
-              - If you absolutely must create a file outside the CWD, use a bash shell command such as `echo 'file_contents' > /path/outside/cwd.txt` and always ask for explicit user permission first.
+                   3. **File Creation Scope**
+                       - Only create new files within the current working directory (CWD).
+                       - Do not create files outside the CWD, including parent, system, or user directories.
+                       - If you absolutely must create a file outside the CWD, use a bash shell command such as `echo 'file_contents' > /path/outside/cwd.txt` and always ask for explicit user permission first.
 
-          4. **File Access Scope**
-             - Never read files outside the current working directory.
-             - If you must read a file outside the CWD, use a command like `cat` and always ask for explicit user permission first.
+                   4. **File Access Scope**
+                      - Never read files outside the current working directory.
+                      - If you must read a file outside the CWD, use a command like `cat` and always ask for explicit user permission first.
 
-          5. **Error Handling**
-             - If any rule is violated, abort the operation and return a clear error message.
+                   5. **Error Handling**
+                      - If any rule is violated, abort the operation and return a clear error message.
 
-           6. **Examples**
-           - Do not read `/project/secret.key` if it is listed in `.gitignore`.
-           - Do not create `/tmp/newfile.txt` if the current working directory is `/project`.
-           - Do not create `/var/log/custom.log` unless you ask for explicit permission using a shell command.
-           - Do not read `/etc/hosts` unless you ask for explicit permission using `cat`.
+                    6. **Examples**
+                    - Do not read `/project/secret.key` if it is listed in `.gitignore`.
+                    - Do not create `/tmp/newfile.txt` if the current working directory is `/project`.
+                    - Do not create `/var/log/custom.log` unless you ask for explicit permission using a shell command.
+                    - Do not read `/etc/hosts` unless you ask for explicit permission using `cat`.
         '';
         settings = {
           theme = "system";

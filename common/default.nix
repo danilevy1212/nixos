@@ -317,18 +317,6 @@ in {
       options = "ctrl:nocaps";
       layout = "us";
     };
-    desktopManager = {
-      session = [
-        {
-          name = "home-manager+awesomewm";
-          start = ''
-            GTK_IM_MODULE="fcitx" QT_IM_MODULE="fcitx" ${config.i18n.inputMethod.package}/bin/fcitx5 -d
-
-            exec $HOME/.local/share/xsession/xsession-awesome
-          '';
-        }
-      ];
-    };
   };
 
   # Don't bother me for passwords.
