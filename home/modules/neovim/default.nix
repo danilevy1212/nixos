@@ -16,7 +16,9 @@ in {
   config = mkIf cfg.enable {
     home.packages = with pkgs;
       [
+        # For lazyvim
         luajitPackages.luarocks
+        lua5_1
 
         # For nix
         alejandra
