@@ -150,6 +150,7 @@ in
                     - Do not read `/etc/hosts` unless you ask for explicit permission using `cat`.
         '';
         settings = {
+          "$schema" = "https://opencode.ai/config.json";
           theme = "system";
           model = "github-copilot/gpt-4.1";
           # Always ask before messing around
@@ -159,6 +160,18 @@ in
               "*" = "ask";
             };
             webfetch = "allow";
+          };
+          mcp = {
+            atlassian-mcp-server = {
+              enabled = false;
+              type = "local";
+              command = ["${pkgs.nodejs}/bin/npx" "-y" "mcp-remote" "https://mcp.atlassian.com/v1/sse"];
+            };
+            gitlab-mcp-server = {
+              enabled = false;
+              type = "local";
+              command = ["${pkgs.nodejs}/bin/npx" "-y" "@zereight/mcp-gitlab"];
+            };
           };
         };
       };
