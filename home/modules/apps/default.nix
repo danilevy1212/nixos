@@ -54,7 +54,7 @@ in {
       zoom-us
 
       # Memorize
-      anki
+      stable.anki
 
       # Pseudo-office
       stable.libreoffice
