@@ -124,17 +124,16 @@ in
                    1. **File Read Restrictions**
                       - Never read files that are ignored by git (as defined in `.gitignore` or `.git/info/exclude`).
                       - This includes sensitive files such as `.env`, credentials, and key files.
-                      - Only read files that are tracked or untracked and not ignored.
+                      - Only read files that are tracked or untracked and not ignored. If you must read a file outside the current project, do it with `cat` and ask for explicit user permission.
 
                    2. **Git Repository Requirement**
-                      - Before any file operation (read, write, edit, create, delete), the assistant must check if the current working directory is a git repository. If it is not, the assistant must abort the operation and return the error: "Error: This operation is not permitted outside
-          a git repository."
+                        - Before any file operation (read, write, edit, create, delete), the assistant must check if the current working directory is a git repository. If it is not, the assistant must ask for explicit user permission before proceeding, or abort the operation and return the error: "Error: This operation is not permitted outside a git repository."
                       - This ensures all changes are version-controlled and secure.
 
                    3. **File Creation Scope**
                        - Only create new files within the current working directory (CWD).
                        - Do not create files outside the CWD, including parent, system, or user directories.
-                       - If you absolutely must create a file outside the CWD, use a bash shell command such as `echo 'file_contents' > /path/outside/cwd.txt` and always ask for explicit user permission first.
+                       - If you absolutely must create a file outside the CWD, first create it with `touch` and ask for explicit user permission, then you may edit it as needed.
 
                    4. **File Access Scope**
                       - Never read files outside the current working directory.
@@ -146,7 +145,7 @@ in
                     6. **Examples**
                     - Do not read `/project/secret.key` if it is listed in `.gitignore`.
                     - Do not create `/tmp/newfile.txt` if the current working directory is `/project`.
-                    - Do not create `/var/log/custom.log` unless you ask for explicit permission using a shell command.
+                    - Do not create `/var/log/custom.log` unless you first create it with `touch` and ask for explicit user permission, then you may edit it as needed.
                     - Do not read `/etc/hosts` unless you ask for explicit permission using `cat`.
 
                     ## Tools
