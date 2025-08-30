@@ -427,7 +427,7 @@ in {
   services.printing.enable = true;
 
   # Suspend when the lid closes (in case of laptop)
-  services.logind.lidSwitch = "suspend";
+  services.logind.settings.Login.HandleLidSwitch = "suspend";
 
   # BIOS Upgrades
   services.fwupd.enable = true;
