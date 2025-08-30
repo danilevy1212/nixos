@@ -148,32 +148,48 @@ in
                     - Do not create `/tmp/newfile.txt` if the current working directory is `/project`.
                     - Do not create `/var/log/custom.log` unless you ask for explicit permission using a shell command.
                     - Do not read `/etc/hosts` unless you ask for explicit permission using `cat`.
+
+                    ## Tools
+
+                    # Edit
+
+                    - Always prefer atomic edits (single, unique string replacements) for file modifications.
+                    - Use `replaceAll` only for explicit "refactor" or "rename" requests, or if the user grants permission after being prompted.
+                    - If `replaceAll` is needed outside of "refactor"/"rename", clearly inform the user: "I'm planning on using 'replaceAll' for this edit. Can I proceed?" and only proceed if permission is granted.
         '';
-        settings = {
-          "$schema" = "https://opencode.ai/config.json";
-          theme = "system";
-          model = "github-copilot/gpt-4.1";
-          # Always ask before messing around
-          permission = {
-            edit = "ask";
-            bash = {
-              "*" = "ask";
-            };
-            webfetch = "allow";
-          };
-          mcp = {
-            atlassian-mcp-server = {
-              enabled = false;
-              type = "local";
-              command = ["${pkgs.nodejs}/bin/npx" "-y" "mcp-remote" "https://mcp.atlassian.com/v1/sse"];
-            };
-            gitlab-mcp-server = {
-              enabled = false;
-              type = "local";
-              command = ["${pkgs.nodejs}/bin/npx" "-y" "@zereight/mcp-gitlab"];
-            };
-          };
-        };
+      };
+
+    # NOTE  I have to use this so order of keys is respected, important for bash permissions
+      xdg.configFile."opencode/opencode.json" = {
+        text = ''
+          {
+              "$schema": "https://opencode.ai/config.json",
+              "theme": "system",
+              "model": "github-copilot/gpt-4.1",
+              "permission": {
+                  "edit": "ask",
+                  "bash": {
+                      "git status*": "allow",
+                      "git log*": "allow",
+                      "git diff*": "allow",
+                      "*": "ask"
+                  },
+                  "webfetch": "allow"
+              },
+              "mcp": {
+                  "atlassian-mcp-server": {
+                      "enabled": false,
+                      "type": "local",
+                      "command": ["${pkgs.nodejs}/bin/npx", "-y", "mcp-remote", "https://mcp.atlassian.com/v1/sse"]
+                  },
+                  "gitlab-mcp-server": {
+                      "enabled": false,
+                      "type": "local",
+                      "command": ["${pkgs.nodejs}/bin/npx", "-y", "@zereight/mcp-gitlab"]
+                  }
+              }
+          }
+        '';
       };
 
       # TODO  This is required by several modules. Maybe I need a "mixins" folder.
