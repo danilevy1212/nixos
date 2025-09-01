@@ -230,6 +230,8 @@ in {
         htop
         docker-compose
         inetutils
+        net-tools
+        wol
         dig
         iperf
         openvpn
