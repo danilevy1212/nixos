@@ -30,14 +30,16 @@ in {
     };
     gc = {
       automatic = true;
+      persistent = true;
       randomizedDelaySec = "15m";
       options = "--delete-older-than 15d";
     };
+    optimise = {
+      automatic = true;
+      persistent = true;
+    };
     package = pkgs.nixVersions.stable;
-    # Protect nix-shell against garbage collection
     extraOptions = ''
-      keep-outputs = true
-      keep-derivations = true
       experimental-features = nix-command flakes
     '';
   };
