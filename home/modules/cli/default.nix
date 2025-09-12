@@ -118,71 +118,45 @@ in
       # Vibing and coding
       programs.opencode = {
         enable = true;
-        rules = ''
-                   # General Project Rules
-
-                   1. **File Read Restrictions**
-                      - Never read files that are ignored by git (as defined in `.gitignore` or `.git/info/exclude`).
-                      - This includes sensitive files such as `.env`, credentials, and key files.
-                      - Only read files that are tracked or untracked and not ignored. If you must read a file outside the current project, do it with `cat` and ask for explicit user permission.
-
-                   2. **Git Repository Requirement**
-                        - Before any file operation (read, write, edit, create, delete), the assistant must check if the current working directory is a git repository. If it is not, the assistant must ask for explicit user permission before proceeding, or abort the operation and return the error: "Error: This operation is not permitted outside a git repository."
-                      - This ensures all changes are version-controlled and secure.
-
-                   3. **File Creation Scope**
-                       - Only create new files within the current working directory (CWD).
-                       - Do not create files outside the CWD, including parent, system, or user directories.
-                       - If you absolutely must create a file outside the CWD, first create it with `touch` and ask for explicit user permission, then you may edit it as needed.
-
-                   4. **File Access Scope**
-                      - Never read files outside the current working directory.
-                      - If you must read a file outside the CWD, use a command like `cat` and always ask for explicit user permission first.
-
-                   5. **Error Handling**
-                      - If any rule is violated, abort the operation and return a clear error message.
-
-                    6. **Examples**
-                    - Do not read `/project/secret.key` if it is listed in `.gitignore`.
-                    - Do not create `/tmp/newfile.txt` if the current working directory is `/project`.
-                    - Do not create `/var/log/custom.log` unless you first create it with `touch` and ask for explicit user permission, then you may edit it as needed.
-                    - Do not read `/etc/hosts` unless you ask for explicit permission using `cat`.
-
-                    ## Tools
-
-                    # Edit
-
-                    - Always prefer atomic edits (single, unique string replacements) for file modifications.
-                    - Use `replaceAll` only for explicit "refactor" or "rename" requests, or if the user grants permission after being prompted.
-                    - If `replaceAll` is needed outside of "refactor"/"rename", clearly inform the user: "I'm planning on using 'replaceAll' for this edit. Can I proceed?" and only proceed if permission is granted.
-        '';
+        rules = builtins.readFile ./opencode/RULES.md;
       };
 
-    # NOTE  I have to use this so order of keys is respected, important for bash permissions
+      # NOTE  I have to use this so order of keys is respected, important for bash permissions
       xdg.configFile."opencode/opencode.json" = {
         text = ''
           {
               "$schema": "https://opencode.ai/config.json",
               "theme": "system",
-              "model": "github-copilot/gpt-4.1",
+              "keybinds": {
+                  "session_interrupt": "<leader>esc"
+              },
+              "agent": {
+                  "plan": {
+                      "model": "anthropic/claude-opus-4-1-20250805"
+                  },
+                  "build": {
+                      "model": "anthropic/claude-sonnet-4-20250514"
+                  }
+              },
               "permission": {
                   "edit": "ask",
                   "bash": {
                       "git status*": "allow",
                       "git log*": "allow",
                       "git diff*": "allow",
+                      "git rev-parse*": "allow",
                       "*": "ask"
                   },
                   "webfetch": "allow"
               },
               "mcp": {
-                  "atlassian-mcp-server": {
-                      "enabled": false,
+                  "atlassian": {
+                      "enabled": true,
                       "type": "local",
                       "command": ["${pkgs.nodejs}/bin/npx", "-y", "mcp-remote", "https://mcp.atlassian.com/v1/sse"]
                   },
-                  "gitlab-mcp-server": {
-                      "enabled": false,
+                  "gitlab": {
+                      "enabled": true,
                       "type": "local",
                       "command": ["${pkgs.nodejs}/bin/npx", "-y", "@zereight/mcp-gitlab"]
                   }
