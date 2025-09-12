@@ -57,7 +57,7 @@ in {
     supportedFilesystems = ["ntfs"];
 
     # Keep things stable, mirror FEDORA
-    kernelPackages = pkgs.linuxPackages_6_15;
+    kernelPackages = pkgs.linuxPackages_6_16;
   };
 
   # Less eye-sore console font.
