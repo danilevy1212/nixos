@@ -5,7 +5,6 @@
   stable,
   ...
 }: let
-
   cfg = config.userConfig.modules.gui;
 in {
   options.userConfig.modules.gui = with lib; {
@@ -96,21 +95,6 @@ in {
         name = "Sarasa UI J";
         size = 10;
         package = sarasa-gothic;
-      };
-    };
-
-    # Be pretty again.
-    services.picom = {
-      enable = true;
-      backend = "glx";
-      activeOpacity = 1.0;
-      inactiveOpacity = 0.9;
-      fade = true;
-      fadeDelta = 5;
-      shadow = true;
-      shadowOpacity = 0.75;
-      settings = {
-        unredir-if-possible = true;
       };
     };
 
