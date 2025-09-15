@@ -1,14 +1,52 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
+{pkgs, ...}: let
+  # From https://forum.level1techs.com/t/flow-z13-asus-setup-on-linux-may-2025-wip/229551
+  folioReset = pkgs.writeShellScript "asus-folio-reset.sh" ''
+    # Reload ASUS HID and restore kbd backlight
+    ${pkgs.kmod}/bin/modprobe -r hid_asus
+    ${pkgs.kmod}/bin/modprobe hid_asus
+    [ -e /sys/class/leds/asus::kbd_backlight/brightness ] && echo 3 > /sys/class/leds/asus::kbd_backlight/brightness
+  '';
+in {
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+  ];
 
-{ config, pkgs, ... }:
+  # avoids some EC/HID flakiness later
+  boot.kernelParams = ["mem_sleep_default=deep"];
 
-{
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
+  # ASUS HID quirks (touchpad/extra keys)
+  boot.kernelModules = [
+    "hid_asus"
+  ];
+  boot.extraModprobeConfig = ''
+    # make hid_asus win races against hid-generic on probe
+    softdep hid-generic pre: hid_asus
+    # Enable ASUS touchpad functionality
+    options hid_asus enable_touchpad=1
+  '';
+
+  # Run once at boot
+  systemd.services."asus-folio-reset" = {
+    description = "ROG Flow Z13 folio HID reset (boot)";
+    wantedBy = ["multi-user.target"];
+    after = ["multi-user.target"];
+    serviceConfig = {
+      Type = "oneshot";
+      ExecStart = folioReset;
+    };
+  };
+
+  # Turn on backlight on resume
+  systemd.services."asus-folio-reset-resume" = {
+    description = "ROG Flow Z13 folio HID reset after resume";
+    wantedBy = ["sleep.target"];
+    after = ["sleep.target"];
+    serviceConfig = {
+      Type = "oneshot";
+      ExecStart = folioReset;
+    };
+  };
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -60,47 +98,24 @@
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
-    # If you want to use JACK applications, uncomment this
-    #jack.enable = true;
-
-    # use the example session manager (no others are packaged yet so this is enabled by default,
-    # no need to redefine it in your config for now)
-    #media-session.enable = true;
   };
 
-  # Enable touchpad support (enabled default in most desktopManager).
-  # services.xserver.libinput.enable = true;
+  # Enable touchpad support
+  services.libinput.enable = true;
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-  environment.systemPackages = with pkgs; [];
+  environment.systemPackages = with pkgs; [
+    # for `libinput list-devices`
+    libinput
+  ];
 
   # See https://asus-linux.org/guides/nixos/
   services.asusd = {
     enable = true;
     enableUserService = true;
   };
-
-
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
-
-  # List services that you want to enable:
-
-  # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
-
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
 }
