@@ -237,7 +237,6 @@ in {
         openvpn
         lsof
         usbutils
-        firefox
         lxappearance
         pciutils
         p7zip
@@ -282,6 +281,9 @@ in {
         winetricks
       ];
   };
+
+  # Install firefox.
+  programs.firefox.enable = true;
 
   # TODO  https://github.com/NixOS/nixpkgs/blob/nixos-23.11/nixos/modules/services/networking/ssh/sshd.nix#L257
   #       Change the git clones of home-manager to use ssh instead of https.

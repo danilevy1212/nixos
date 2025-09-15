@@ -139,7 +139,7 @@ in {
     # I cannot live without you, my one true love...
     programs.emacs = with pkgs; {
       enable = true;
-      package = emacs29-pgtk;
+      package = emacs30-pgtk;
       # For vterm.
       extraPackages = epkgs: with epkgs; [vterm oauth2];
     };
