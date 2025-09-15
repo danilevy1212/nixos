@@ -159,6 +159,14 @@ in
                       "enabled": true,
                       "type": "local",
                       "command": ["${pkgs.nodejs}/bin/npx", "-y", "@zereight/mcp-gitlab"]
+                  },
+                  "github": {
+                      "enabled": true,
+                      "type": "remote",
+                      "url": "https://api.githubcopilot.com/mcp/",
+                      "headers": {
+                           "Authorization": "Bearer {env:GITHUB_PERSONAL_ACCESS_TOKEN}"
+                      }
                   }
               }
           }
