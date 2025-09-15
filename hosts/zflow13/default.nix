@@ -1,9 +1,10 @@
 {pkgs, ...}: let
   # From https://forum.level1techs.com/t/flow-z13-asus-setup-on-linux-may-2025-wip/229551
   folioReset = pkgs.writeShellScript "asus-folio-reset.sh" ''
-    # Reload ASUS HID and restore kbd backlight
+    # Reload ASUS HID
     ${pkgs.kmod}/bin/modprobe -r hid_asus
     ${pkgs.kmod}/bin/modprobe hid_asus
+    # Restore keyboard backlight
     [ -e /sys/class/leds/asus::kbd_backlight/brightness ] && echo 3 > /sys/class/leds/asus::kbd_backlight/brightness
   '';
 in {
@@ -16,13 +17,12 @@ in {
   boot.kernelParams = ["mem_sleep_default=deep"];
 
   # ASUS HID quirks (touchpad/extra keys)
+  boot.initrd.kernelModules = ["hid_asus"];
   boot.kernelModules = [
     "hid_asus"
   ];
+  # Enable ASUS touchpad functionality
   boot.extraModprobeConfig = ''
-    # make hid_asus win races against hid-generic on probe
-    softdep hid-generic pre: hid_asus
-    # Enable ASUS touchpad functionality
     options hid_asus enable_touchpad=1
   '';
 
