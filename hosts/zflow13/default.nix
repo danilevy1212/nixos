@@ -73,10 +73,6 @@ in {
     LC_TIME = "en_US.UTF-8";
   };
 
-  # Enable the X11 windowing system.
-  # You can disable this if you're only using the Wayland session.
-  services.xserver.enable = true;
-
   # Enable the KDE Plasma Desktop Environment.
   services.displayManager.sddm.enable = true;
   services.desktopManager.plasma6.enable = true;
@@ -117,5 +113,29 @@ in {
   services.asusd = {
     enable = true;
     enableUserService = true;
+  };
+
+  # LLMs interface
+  services.ollama = {
+    enable = true;
+    acceleration = "rocm";
+  };
+  # Nice Web UI
+  services.open-webui = {
+    enable = true;
+  };
+  # Enable ROCm
+  nixpkgs.config.rocmSupport = true;
+  hardware.graphics = {
+    enable = true;
+    enable32Bit = true;
+    extraPackages = with pkgs; [
+      mesa
+      rocmPackages.clr
+      rocmPackages.rocm-runtime
+      rocmPackages.rocblas
+      rocmPackages.rocm-smi
+      rocmPackages.rocminfo
+    ];
   };
 }
