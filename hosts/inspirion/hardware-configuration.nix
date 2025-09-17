@@ -25,7 +25,11 @@
   };
 
   swapDevices = [
-    {device = "/dev/disk/by-uuid/fc2164d5-188a-4dd9-98c1-0666674fbc06";}
+    {
+      device = "/dev/disk/by-uuid/fc2164d5-188a-4dd9-98c1-0666674fbc06";
+      # Lowest priority so it’s only touched if zram is exhausted.
+      priority = -2;
+    }
   ];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
