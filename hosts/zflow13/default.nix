@@ -16,11 +16,8 @@ in {
   # avoids some EC/HID flakiness later
   boot.kernelParams = ["mem_sleep_default=deep"];
 
-  # ASUS HID quirks (touchpad/extra keys)
-  boot.initrd.kernelModules = ["hid_asus"];
-  boot.kernelModules = [
-    "hid_asus"
-  ];
+  # ASUS HID quirks (touchpad/extra keys) and AMD GPU
+  boot.initrd.kernelModules = ["hid_asus" "amdgpu"];
   # Enable ASUS touchpad functionality
   boot.extraModprobeConfig = ''
     options hid_asus enable_touchpad=1
@@ -77,10 +74,13 @@ in {
   services.displayManager.sddm.enable = true;
   services.desktopManager.plasma6.enable = true;
 
-  # Configure keymap in X11
-  services.xserver.xkb = {
-    layout = "us";
-    variant = "altgr-intl";
+  # Configure keymap in X11 and GPU drivers
+  services.xserver = {
+    videoDrivers = ["amdgpu"];
+    xkb = {
+      layout = "us";
+      variant = "altgr-intl";
+    };
   };
 
   # Enable CUPS to print documents.
@@ -124,7 +124,7 @@ in {
   services.open-webui = {
     enable = true;
   };
-  # Enable ROCm
+  # Enable ROCm and AMD GPU drivers
   nixpkgs.config.rocmSupport = true;
   hardware.graphics = {
     enable = true;
@@ -133,9 +133,13 @@ in {
       mesa
       rocmPackages.clr
       rocmPackages.rocm-runtime
+      rocmPackages.rocm-device-libs
       rocmPackages.rocblas
       rocmPackages.rocm-smi
       rocmPackages.rocminfo
     ];
   };
+
+  # AMD CPU microcode updates
+  hardware.enableRedistributableFirmware = true;
 }

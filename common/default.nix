@@ -58,6 +58,9 @@ in {
 
     # Keep things stable, mirror FEDORA
     kernelPackages = pkgs.linuxPackages_6_16;
+
+    # Clean /tmp on boot
+    tmp.cleanOnBoot = true;
   };
 
   # Less eye-sore console font.
