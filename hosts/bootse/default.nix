@@ -226,30 +226,7 @@ in {
     DefaultTimeoutStopSec = "90s";
   };
 
-  # Fast, compressed in-RAM swap to absorb spikes (preferred)
-  zramSwap = {
-    enable = true;
-    # 6.4 GB for 128GB system (5% is more reasonable for high-memory systems)
-    memoryPercent = 5;
-    # good ratio/speed balance
-    algorithm = "zstd";
-    # ensure zram is always used before disk swap
-    priority = 100;
-  };
-
-  # Aggressive tuning to prevent swap usage except in emergencies
-  boot.kernel.sysctl = {
-    # Minimum value - only swap to prevent OOM kills (zram will still be preferred due to priority).
-    "vm.swappiness" = 1;
-    # Keep filesystem cache longer
-    "vm.vfs_cache_pressure" = 50;
-    # Start reclaiming memory earlier (reduces direct-reclaim stalls under pressure)
-    "vm.watermark_scale_factor" = 200;
-    # Keep 128MB free minimum for high-memory system (helps latency spikes under sudden allocations)
-    "vm.min_free_kbytes" = 131072;
-    # huge allocations that can't be backed by RAM+swap are rejected up front instead of OOM-killing you later.
-    "vm.overcommit_memory" = 2;
-    # percent of RAM considered commit-eligible
-    "vm.overcommit_ratio" = 90;
-  };
+  # High-memory system overrides
+  zramSwap.memoryPercent = lib.mkForce 5; # 5% is more reasonable for 128GB system  
+  boot.kernel.sysctl."vm.min_free_kbytes" = lib.mkForce 131072; # 128MB for high-memory system
 }

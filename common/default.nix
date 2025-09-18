@@ -451,4 +451,32 @@ in {
       flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
     '';
   };
+
+  # Common memory management settings
+  # Fast, compressed in-RAM swap to absorb spikes (preferred)
+  zramSwap = {
+    enable = true;
+    # Adaptive sizing based on RAM: 10% for lower-memory systems, 5% for high-memory systems
+    memoryPercent = 10;
+    # good ratio/speed balance
+    algorithm = "zstd";
+    # ensure zram is always used before disk swap
+    priority = 100;
+  };
+
+  # Memory tuning to prevent swap usage except in emergencies
+  boot.kernel.sysctl = {
+    # Minimum value - only swap to prevent OOM kills (zram will still be preferred due to priority)
+    "vm.swappiness" = 1;
+    # Keep filesystem cache longer
+    "vm.vfs_cache_pressure" = 50;
+    # Start reclaiming memory earlier (reduces direct-reclaim stalls under pressure)
+    "vm.watermark_scale_factor" = 200;
+    # Keep 64MB free minimum (helps latency spikes under sudden allocations)
+    "vm.min_free_kbytes" = 65536;
+    # Allow reasonable memory overcommit for development workloads
+    "vm.overcommit_memory" = 1;
+    # percent of RAM considered commit-eligible
+    "vm.overcommit_ratio" = 100;
+  };
 }

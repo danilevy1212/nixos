@@ -144,17 +144,6 @@ in {
   # AMD CPU microcode updates
   hardware.enableRedistributableFirmware = true;
 
-  # Fast, compressed in-RAM swap to absorb spikes (preferred)
-  zramSwap = {
-    enable = true;
-    # 3 GB
-    memoryPercent = 10;
-    # good ratio/speed balance
-    algorithm = "zstd";
-    # ensure zram is always used before disk swap
-    priority = 100;
-  };
-
   # Emergency-only 8GB swapfile - absolutely last resort (very low priority)
   swapDevices = [
     {
@@ -167,20 +156,4 @@ in {
       priority = -2;
     }
   ];
-
-  # Aggressive tuning to prevent swap usage except in emergencies
-  boot.kernel.sysctl = {
-    # Minimum value - only swap to prevent OOM kills (zram will still be preferred due to priority).
-    "vm.swappiness" = 1;
-    # Keep filesystem cache longer
-    "vm.vfs_cache_pressure" = 50;
-    # Start reclaiming memory earlier (reduces direct-reclaim stalls under pressure)
-    "vm.watermark_scale_factor" = 200;
-    # Keep 64MB free minimum (helps latency spikes under sudden allocations)
-    "vm.min_free_kbytes" = 65536;
-    # huge allocations that can’t be backed by RAM+swap are rejected up front instead of OOM-killing you later.
-    "vm.overcommit_memory" = 2;
-    # percent of RAM considered commit-eligible
-    "vm.overcommit_ratio" = 90;
-  };
 }
