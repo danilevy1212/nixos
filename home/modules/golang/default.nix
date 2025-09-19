@@ -25,7 +25,7 @@ in
     config = mkIf cfg.enable {
       programs.go = {
         enable = true;
-        goPath = cfg.goPath;
+        env.GOPATH = cfg.goPath;
       };
 
       home.packages = with pkgs; [

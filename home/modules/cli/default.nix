@@ -2,6 +2,7 @@
   config,
   pkgs,
   lib,
+  unstable,
   ...
 }: let
   ZDOTDIR = "${config.xdg.configHome}/zsh";
@@ -118,6 +119,25 @@ in
       # Vibing and coding
       programs.opencode = {
         enable = true;
+        # Bleeding edge!
+        package = unstable.opencode.overrideAttrs (oldAttrs: {
+          version = "0.10.1";
+          src = pkgs.fetchFromGitHub {
+            owner = "sst";
+            repo = "opencode";
+            tag = "v0.10.1";
+            hash = "sha256-ii8hGDz9POkj0ZIDiF+mkaExpTvlj6ea4ggO7i7grXI=";
+          };
+          # Override node_modules with platform-specific hashes from PR #443986
+          node_modules = oldAttrs.node_modules.overrideAttrs (nodeAttrs: {
+            outputHash = {
+              x86_64-linux = "sha256-fGf2VldMlxbr9pb3B6zVL+fW1S8bRjefJW+jliTO73A=";
+              aarch64-linux = "sha256-jEsDrC/uNZKx7TvD1X9ToTFFTBgrKIeSXd5cTPBvxGI=";
+              x86_64-darwin = "sha256-U2F3mXas/iMOCqQgBY34crHtkPx5wOMeFClUAGEj4Go=";
+              aarch64-darwin = "sha256-sibjZaPzA4r/CjHg0ual5ueEELDUU1jeZjDnZEMrozI=";
+            }.${pkgs.stdenv.hostPlatform.system};
+          });
+        });
         rules = builtins.readFile ./opencode/RULES.md;
       };
 
