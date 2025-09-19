@@ -4,7 +4,7 @@
   pkgs,
   ...
 }: let
-  goPath = ".cache/go";
+  goPath = "${config.xdg.cacheHome}/go";
   cfg = config.userConfig.modules.golang;
 in
   with lib; {
