@@ -137,40 +137,15 @@
       bootse = addHostConfiguration "bootse" [
         {
           home-manager.extraSpecialArgs = defaultSpecialArgs;
-          # NOTE  Leaving this commented, 6.4 + https://github.com/LizardByte/Sunshine/issues/3298#issuecomment-2726581996 seems to work
-          #       but it could break at any time
-          # HACK  Unfortunately, version of plasma > 6.2.0 breaks my sunshine HDR setup
-          #       see https://github.com/LizardByte/Sunshine/issues/3298
-          #       see https://github.com/LizardByte/Sunshine/issues/3327
-          #       Until these are resolved, we need to pin 6.2.0 on the system.
-          # nixpkgs.overlays = let
-          #   plasma-pinned-pkgs = import nixos-plasma nixpkgs-args;
-          #   pkgs = import nixos-unstable nixpkgs-args;
-          # in [
-          #   (self: super:
-          #     with plasma-pinned-pkgs; {
-          #       kdePackages =
-          #         {
-          #           aurorae = pkgs.kdePackages.aurorae;
-          #           kwin-x11 = pkgs.kdePackages.kwin-x11;
-          #           ksystemstats = pkgs.kdePackages.ksystemstats;
-          #         }
-          #         // kdePackages;
-          #       # NOTE  Prevent firefox issues by using the same firefox as the KDE version
-          #       firefox = firefox;
-          #     })
-          # ];
-          # # HACK  I really need to move out of this KDE version
-          # security.wrappers = {
-          #   ksystemstats_intel_helper = nixos-unstable.lib.mkForce {
-          #     enable = false;
-          #   };
-          # };
         }
       ];
       zflow13 = addHostConfiguration "zflow13" [
         {
           home-manager.extraSpecialArgs = defaultSpecialArgs;
+          environment.systemPackages = [
+            # AWS VPN Client
+            awsvpnclient.packages."${system}".awsvpnclient
+          ];
         }
       ];
     };
