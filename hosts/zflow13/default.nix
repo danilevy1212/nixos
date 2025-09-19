@@ -1,4 +1,7 @@
-{pkgs, ...}: let
+{
+  pkgs,
+  ...
+}: let
   # From https://forum.level1techs.com/t/flow-z13-asus-setup-on-linux-may-2025-wip/229551
   folioReset = pkgs.writeShellScript "asus-folio-reset.sh" ''
     # Reload ASUS HID
@@ -13,21 +16,39 @@ in {
     ./hardware-configuration.nix
   ];
 
-  # avoids some EC/HID flakiness later
-  boot.kernelParams = ["mem_sleep_default=deep"];
+  boot.kernelParams = [
+    # Work around USB autosuspend on the internal hub
+    "usbcore.autosuspend=0"
+    # Use deep sleep by default — avoids EC/HID quirks on ASUS laptops.
+    "mem_sleep_default=deep"
+    # Force the AMD Display Core (DCN) driver path on (already default, but explicit).
+    "amdgpu.dc=1"
+    # Disable scatter-gather scanout. Keeps scanout buffers contiguous,
+    # which can prevent the brief “missing sliver” glitches during flips.
+    "amdgpu.sg_display=0"
+    # See https://discussion.fedoraproject.org/t/glitch-that-appears-casually-on-screen-of-an-amd-laptop-60-hz-running-fedora-kde-plasma/142323?utm_source=chatgpt.com
+    "amdgpu.dcdebugmask=0x10"
+  ];
 
   # ASUS HID quirks (touchpad/extra keys) and AMD GPU
-  boot.initrd.kernelModules = ["hid_asus" "amdgpu"];
+  boot.kernelModules = [
+    "hid"
+    "usbhid"
+    "hid_generic"
+    "hid_asus"
+    "i2c-dev"
+    "i2c-hid-acpi"
+  ];
   # Enable ASUS touchpad functionality
   boot.extraModprobeConfig = ''
     options hid_asus enable_touchpad=1
   '';
 
   # Run once at boot
-  systemd.services."asus-folio-reset" = {
-    description = "ROG Flow Z13 folio HID reset (boot)";
-    wantedBy = ["multi-user.target"];
-    after = ["multi-user.target"];
+  systemd.services.asus-folio-reset = {
+    description = "ROG Flow Z13 folio HID reset after GUI starts";
+    wantedBy = ["graphical.target"];
+    after = ["display-manager.service" "graphical.target"];
     serviceConfig = {
       Type = "oneshot";
       ExecStart = folioReset;
@@ -47,6 +68,7 @@ in {
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
+  boot.loader.systemd-boot.configurationLimit = 5;
   boot.loader.efi.canTouchEfiVariables = true;
 
   # Enable networking
@@ -152,7 +174,7 @@ in {
       size = 8 * 1024;
       # Hint TRIM for NVMe; harmless elsewhere.
       options = ["discard"];
-      # Lowest priority so it’s only touched if zram is exhausted.
+      # Lowest priority so it's only touched if zram is exhausted.
       priority = -2;
     }
   ];
