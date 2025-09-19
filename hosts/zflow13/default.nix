@@ -1,5 +1,6 @@
 {
   pkgs,
+  userConfig,
   ...
 }: let
   # From https://forum.level1techs.com/t/flow-z13-asus-setup-on-linux-may-2025-wip/229551
@@ -130,6 +131,19 @@ in {
     # for `libinput list-devices`
     libinput
   ];
+
+  # 1password and its GUI
+  programs._1password = {
+    enable = true;
+  };
+  programs._1password-gui = {
+    enable = true;
+    polkitPolicyOwners = [userConfig.username];
+  };
+
+  # Enable bluetooth
+  services.blueman.enable = true;
+  hardware.bluetooth.enable = true;
 
   # See https://asus-linux.org/guides/nixos/
   services.asusd = {
