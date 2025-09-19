@@ -29,6 +29,8 @@ in {
     "amdgpu.sg_display=0"
     # See https://discussion.fedoraproject.org/t/glitch-that-appears-casually-on-screen-of-an-amd-laptop-60-hz-running-fedora-kde-plasma/142323?utm_source=chatgpt.com
     "amdgpu.dcdebugmask=0x10"
+    # Bluetooth quirks
+    "usbcore.quirks=13d3:3608:k"
   ];
 
   # ASUS HID quirks (touchpad/extra keys) and AMD GPU
@@ -40,9 +42,11 @@ in {
     "i2c-dev"
     "i2c-hid-acpi"
   ];
-  # Enable ASUS touchpad functionality
   boot.extraModprobeConfig = ''
+    # Enable ASUS touchpad functionality
     options hid_asus enable_touchpad=1
+    # Prevent Bluetooth from disconnecting
+    options btusb enable_autosuspend=0
   '';
 
   # Run once at boot
