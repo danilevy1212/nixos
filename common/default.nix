@@ -214,6 +214,7 @@ in {
     # Just as good.
     shellAliases = {
       vim = "nvim";
+      vi = "nvim";
       wine = "WINEPREFIX=~/.local/share/wine wine";
       k = "kubectl";
       suspend = "systemctl suspend";
@@ -225,7 +226,6 @@ in {
     # $ nix search ...
     systemPackages = with pkgs;
       [
-        gitAndTools.gitFull
         neovim
         lshw
         wget
@@ -283,6 +283,18 @@ in {
         wineWowPackages.staging
         winetricks
       ];
+  };
+
+  # Git
+  programs.git = {
+    enable = true;
+    package = pkgs.gitAndTools.gitFull;
+    config = {
+      safe.directory = [
+        "/home/${username}/.config/nixos"
+        "/etc/nixos"
+      ];
+    };
   };
 
   # Install firefox.
