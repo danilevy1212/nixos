@@ -31,6 +31,8 @@ in {
     "amdgpu.dcdebugmask=0x10"
     # Bluetooth quirks
     "usbcore.quirks=13d3:3608:k"
+    # Enable AMD P-State driver for better power management
+    "amd_pstate=active"
   ];
 
   # ASUS HID quirks (touchpad/extra keys) and AMD GPU
