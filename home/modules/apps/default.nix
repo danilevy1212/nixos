@@ -40,6 +40,7 @@ in {
 
       # Social closeness
       slack
+      telegram-desktop
 
       # Browser
       chromium
