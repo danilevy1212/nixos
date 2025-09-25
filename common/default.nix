@@ -427,6 +427,7 @@ in {
         done
         exec ${stable.jellyfin-mpv-shim}/bin/jellyfin-mpv-shim
       '';
+      path = with pkgs; [ xdg-utils ];
       serviceConfig = {
         Type = "simple";
         Restart = "always";
