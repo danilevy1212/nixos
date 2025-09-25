@@ -1,3 +1,5 @@
+# TODO  Rename this into modules/common/core/default.nix
+#       We will have other modules
 {
   config,
   pkgs,

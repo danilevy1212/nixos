@@ -3,6 +3,21 @@
   userConfig,
   ...
 }: let
+  # TODO  This whole llm-studio setup should + certs should be moved to it's own module
+  # SSL configuration variables
+  sslDir = "/etc/ssl/llm-studio";
+  certName = "openai.local";
+  certFile = "${certName}.pem";
+  keyFile = "${certName}-key.pem";
+  caCertFile = "rootCA.pem";
+  caKeyFile = "rootCA-key.pem";
+  lmstudioStart = pkgs.writeShellScript "lmstudio-start.sh" ''
+    set -euo pipefail
+    # Start API server in the background; it will exit once it connects.
+    "${pkgs.lmstudio}/bin/lms" server start --port 1234 --cors &
+    # Now start the app minimized as a background service
+    exec "${pkgs.lmstudio}/bin/lm-studio" --run-as-service --minimized
+  '';
   # From https://forum.level1techs.com/t/flow-z13-asus-setup-on-linux-may-2025-wip/229551
   folioReset = pkgs.writeShellScript "asus-folio-reset.sh" ''
     # Reload ASUS HID
@@ -11,6 +26,28 @@
     # Restore keyboard backlight
     [ -e /sys/class/leds/asus::kbd_backlight/brightness ] && echo 3 > /sys/class/leds/asus::kbd_backlight/brightness
   '';
+  # Generate certificates in the Nix store
+  llmStudioLocalCerts =
+    pkgs.runCommand "llm-studio-certs" {
+      buildInputs = [pkgs.mkcert];
+    } ''
+      mkdir -p $out/ca $out/certs
+      export CAROOT=$out/ca
+
+      # Create CA
+      mkcert -install
+
+      # Create leaf cert
+      mkcert \
+        -cert-file $out/certs/${certFile} \
+        -key-file  $out/certs/${keyFile} \
+        ${certName}
+
+      chmod 0644 $out/certs/${certFile}
+      chmod 0644 $out/certs/${keyFile}
+      chmod 0644 $out/ca/${caCertFile}
+      chmod 0644 $out/ca/${caKeyFile}
+    '';
 in {
   imports = [
     # Include the results of the hardware scan.
@@ -136,6 +173,19 @@ in {
   environment.systemPackages = with pkgs; [
     # for `libinput list-devices`
     libinput
+    # LLMs
+    lmstudio
+    vulkan-tools
+    llmStudioLocalCerts
+    # ROCm
+    rocmPackages.rocm-smi
+    rocmPackages.rocminfo
+    rocmPackages.rocm-core
+    rocmPackages.rocmPath
+    rocmPackages.rocm-runtime
+    rocmPackages.rocm-device-libs
+    rocmPackages.rocblas
+    rocmPackages.rccl
   ];
 
   # 1password and its GUI
@@ -157,10 +207,87 @@ in {
     enableUserService = true;
   };
 
+  systemd.user.services.lmstudio-headless = {
+    description = "LM Studio (server then minimized app)";
+    wantedBy = ["graphical-session.target"];
+    after = ["graphical-session.target"];
+
+    serviceConfig = {
+      Type = "simple";
+      ExecStart = lmstudioStart;
+      Restart = "on-failure";
+      RestartSec = "3s";
+      StandardOutput = "journal";
+      StandardError = "journal";
+    };
+  };
+
+  # HACK  To be able to use https://public.amplenote.com/WykvBZZSXReMcVFRrjrhk4mS (Ample Copilot)
+  #       I fool the plugin into believing that It is connecting to openai.
+  #       I also create a fake certificate so Firefox allows the connection
+  #       This is ugly as sin, but it works!
+  networking.hosts = {
+    "127.0.0.1" = ["openai.local" "localhost"];
+  };
+  # Install CA certificate in system trust store for automatic browser trust
+  security.pki.certificates = [
+    (builtins.readFile "${llmStudioLocalCerts}/ca/${caCertFile}")
+  ];
+  # Create symlinks to leaf certificates for llm-studio service
+  systemd.tmpfiles.rules = [
+    "d ${sslDir} 0755 root root -"
+    "L+ ${sslDir}/${certFile} - - - - ${llmStudioLocalCerts}/certs/${certFile}"
+    "L+ ${sslDir}/${keyFile} - - - - ${llmStudioLocalCerts}/certs/${keyFile}"
+  ];
+  # Make Firefox trust the CA as well, so it allows connections to openai.local
+  programs.firefox = {
+    policies.Certificates = {
+      ImportEnterpriseRoots = true;
+      Install = ["${llmStudioLocalCerts}/ca/${caCertFile}"];
+    };
+    preferences."security.enterprise_roots.enabled" = true;
+  };
+  # Reverse proxy because the stupid plugin automatically upgrades to https
+  services.nginx = {
+    enable = true;
+    recommendedProxySettings = true;
+    recommendedTlsSettings = true;
+
+    virtualHosts."openai.local" = {
+      serverName = "openai.local";
+      serverAliases = ["localhost"];
+
+      # Let the module add `listen 443 ssl;` AND the `ssl_certificate` lines
+      onlySSL = true;
+      http2 = true;
+
+      sslCertificate = "${sslDir}/${certFile}";
+      sslCertificateKey = "${sslDir}/${keyFile}";
+
+      # Route back to lmstudio
+      locations."/" = {
+        proxyPass = "http://127.0.0.1:1234";
+        extraConfig = ''
+          proxy_set_header Host $host;
+          proxy_set_header X-Forwarded-Proto https;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        '';
+      };
+    };
+  };
+
   # LLMs interface
   services.ollama = {
-    enable = true;
+    # TODO  I've given up, let's do lmstudio with vulkan backend instead. When ROCm 7 lands on nixos, I'll try again.
+    enable = false;
     acceleration = "rocm";
+    environmentVariables = {
+      # NOTE  See https://www.amplenote.com/plugins/WykvBZZSXReMcVFRrjrhk4mS
+      OLLAMA_ORIGINS = "amplenote-handler://*,https://plugins.amplenote.com";
+      OLLAMA_FLASH_ATTENTION = "true";
+      OLLAMA_KV_CACHE_TYPE = "q8_0";
+    };
+    rocmOverrideGfx = "11.5.1";
   };
   # Nice Web UI
   services.open-webui = {
@@ -174,12 +301,6 @@ in {
     enable32Bit = true;
     extraPackages = with pkgs; [
       mesa
-      rocmPackages.clr
-      rocmPackages.rocm-runtime
-      rocmPackages.rocm-device-libs
-      rocmPackages.rocblas
-      rocmPackages.rocm-smi
-      rocmPackages.rocminfo
     ];
   };
 
