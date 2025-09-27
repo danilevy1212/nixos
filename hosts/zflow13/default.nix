@@ -206,6 +206,9 @@ in {
     enable = true;
     enableUserService = true;
   };
+  services.supergfxd = {
+    enable = true;
+  };
 
   systemd.user.services.lmstudio-headless = {
     description = "LM Studio (server then minimized app)";
@@ -292,6 +295,14 @@ in {
   # Nice Web UI
   services.open-webui = {
     enable = true;
+    # NOTE  See https://github.com/NixOS/nixpkgs/pull/446013#issuecomment-3335605779
+    package = pkgs.open-webui.overridePythonAttrs (oldAttrs: {
+      dependencies =
+        oldAttrs.dependencies
+        ++ [
+          pkgs.python3Packages.itsdangerous
+        ];
+    });
   };
 
   # Enable ROCm and AMD GPU drivers
