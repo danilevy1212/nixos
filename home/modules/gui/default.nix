@@ -2,7 +2,6 @@
   config,
   lib,
   pkgs,
-  stable,
   ...
 }: let
   cfg = config.userConfig.modules.gui;
@@ -18,19 +17,12 @@ in {
   config = lib.mkIf cfg.enable {
     home = {
       packages = with pkgs; [
-        # File management.
-        stable.spaceFM
-
         # Let there be control over the sound!
         pulsemixer
         pavucontrol
         playerctl
         easyeffects
         helvum
-
-        # Control the screens!
-        arandr
-        xorg.xkill
 
         # xXxScReeN_SH0TSxXx
         flameshot
@@ -53,7 +45,7 @@ in {
         # Default theme.
         GTK_THEME = "Nordic";
         # default file-browser
-        FILEMANAGER = "spacefm";
+        FILEMANAGER = "dolphin";
       };
 
       # Don't manage the keyboard layout.
@@ -98,6 +90,7 @@ in {
       };
     };
 
+    # TODO  Switch to wezterm
     # A pretty, modern, terminal emulator.
     programs.alacritty = {
       enable = true;
