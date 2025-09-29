@@ -71,22 +71,7 @@ in {
         # json
         jq
       ]
-      ++
-      # FIXME  Move this to a shell nix file
-      # ++ (
-      #   # Only in my personal computer
-      #   if hostname == HOSTS.nyx15v2
-      #   then [
-      #     # latex
-      #     texlive.combined.scheme-full
-      #     texlab
-      #   ]
-      #   else []
-      # )
-      /*
-      ++
-      */
-      [
+      ++ [
         # markdown
         pandoc
 
