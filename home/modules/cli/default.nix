@@ -122,54 +122,87 @@ in
         rules = builtins.readFile ./opencode/RULES.md;
       };
 
-      # NOTE  I have to use this so order of keys is respected, important for bash permissions
-      xdg.configFile."opencode/opencode.json" = {
+      xdg.configFile."opencode/opencode.jsonc" = {
         text = ''
           {
-              "$schema": "https://opencode.ai/config.json",
-              "theme": "system",
-              "keybinds": {
-                  "session_interrupt": "<leader>esc"
-              },
-              "agent": {
-                  "plan": {
-                      "model": "anthropic/claude-opus-4-1-20250805"
+            "$schema": "https://opencode.ai/config.json",
+            "theme": "system",
+            "plugin": [
+              "opencode-openai-codex-auth@v1.0.3"
+            ],
+            "keybinds": {
+              "session_interrupt": "<leader>esc"
+            },
+            "provider": {
+              "openai": {
+                "models": {
+                  "gpt-5-codex-thinker": {
+                    "id": "gpt-5-codex",
+                    "options": {
+                      "reasoningEffort": "high",
+                      "textVerbosity": "low",
+                      "reasoningSummary": "auto"
+                    }
                   },
-                  "build": {
-                      "model": "anthropic/claude-sonnet-4-5-20250929"
+                  "gpt-5-codex-builder": {
+                    "id": "gpt-5-codex",
+                    "options": {
+                      "reasoningEffort": "low",
+                      "textVerbosity": "low",
+                      "reasoningSummary": "auto"
+                    }
                   }
-              },
-              "permission": {
-                  "edit": "ask",
-                  "bash": {
-                      "git status*": "allow",
-                      "git log*": "allow",
-                      "git diff*": "allow",
-                      "git rev-parse*": "allow",
-                      "*": "ask"
-                  },
-                  "webfetch": "allow"
-              },
-              "mcp": {
-                  "atlassian": {
-                      "enabled": true,
-                      "type": "local",
-                      "command": ["${pkgs.nodejs}/bin/npx", "-y", "mcp-remote", "https://mcp.atlassian.com/v1/sse"]
-                  },
-                  "gitlab": {
-                      "enabled": true,
-                      "type": "local",
-                      "command": ["${pkgs.nodejs}/bin/npx", "-y", "@zereight/mcp-gitlab"]
-                  },
-                  "github": {
-                      "enabled": true,
-                      "type": "remote",
-                      "url": "https://api.githubcopilot.com/mcp/",
-                      "headers": {
-                           "Authorization": "Bearer {env:GITHUB_PERSONAL_ACCESS_TOKEN}"
-                      }
-                  }
+                }
               }
+            },
+            "agent": {
+              "plan": {
+                "model": "openai/gpt-5-codex-thinker"
+              },
+              "build": {
+                "model": "openai/gpt-5-codex-builder"
+              }
+            },
+            "permission": {
+              "edit": "ask",
+              "bash": {
+                "git status*": "allow",
+                "git log*": "allow",
+                "git diff*": "allow",
+                "git rev-parse*": "allow",
+                "*": "ask"
+              },
+              "webfetch": "allow"
+            },
+            "mcp": {
+              "atlassian": {
+                "enabled": false,
+                "type": "local",
+                "command": [
+                  "${pkgs.nodejs}/bin/npx",
+                  "-y",
+                  "mcp-remote",
+                  "https://mcp.atlassian.com/v1/sse"
+                ]
+              },
+              "gitlab": {
+                "enabled": true,
+                "type": "local",
+                "command": [
+                  "${pkgs.nodejs}/bin/npx",
+                  "-y",
+                  "@zereight/mcp-gitlab"
+                ]
+              },
+              "github": {
+                "enabled": true,
+                "type": "remote",
+                "url": "https://api.githubcopilot.com/mcp/",
+                "headers": {
+                  "Authorization": "Bearer {env:GITHUB_PERSONAL_ACCESS_TOKEN}"
+                }
+              }
+            }
           }
         '';
       };
