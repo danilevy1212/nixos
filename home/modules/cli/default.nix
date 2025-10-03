@@ -200,6 +200,7 @@ in
         jq
         xq-xml
         ueberzugpp
+        bc
 
         # Docker Management
         lazydocker
