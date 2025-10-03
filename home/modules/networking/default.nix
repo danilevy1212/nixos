@@ -30,6 +30,9 @@ in {
         # Mount anything, anywhere, all at once
         rclone
 
+        # Sync with anything, anywhere, all at once
+        mutagen
+
         # REST Client
         brunoWrapped
         atac

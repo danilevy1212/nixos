@@ -267,8 +267,12 @@ zinit ice atload"zpcdreplay" atclone'sed -i "1s|^.*$|#!/usr/bin/env zsh|" zplug.
 zinit light g-plane/zsh-yarn-autocompletions
 
 # Ollama completions
-zinit ice as"completion" id-as"_ollama"
+zinit ice wait lucid as"completion" id-as"_ollama"
 zinit snippet "https://gist.githubusercontent.com/obeone/9313811fd61a7cbb843e0001a4434c58/raw/_ollama.zsh"
+
+# Mutagen completions
+zinit ice wait lucid id-as"mutagen-completion" atclone'mutagen completion zsh > _mutagen' atpull'%atclone' as"completion" nocompile'!'
+zinit load zdharma-continuum/null
 
 # Enable fuzzy sorting
 export MCFLY_FUZZY=2
