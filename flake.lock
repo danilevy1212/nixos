@@ -1,25 +1,5 @@
 {
   "nodes": {
-    "awsvpnclient": {
-      "inputs": {
-        "flake-utils": "flake-utils",
-        "nixpkgs": "nixpkgs"
-      },
-      "locked": {
-        "lastModified": 1709887232,
-        "narHash": "sha256-SpJv0a1QORJ0V1I2qWMGGTjkk3i3gb41ELOetlmM8oA=",
-        "owner": "ymatsiuk",
-        "repo": "awsvpnclient",
-        "rev": "56ca114e3f7fe4db9d745a0ab8ed70c6bd803a8f",
-        "type": "github"
-      },
-      "original": {
-        "owner": "ymatsiuk",
-        "repo": "awsvpnclient",
-        "rev": "56ca114e3f7fe4db9d745a0ab8ed70c6bd803a8f",
-        "type": "github"
-      }
-    },
     "colortest": {
       "inputs": {
         "nixpkgs": [
@@ -35,24 +15,6 @@
         "type": "path"
       },
       "parent": []
-    },
-    "flake-utils": {
-      "inputs": {
-        "systems": "systems"
-      },
-      "locked": {
-        "lastModified": 1701680307,
-        "narHash": "sha256-kAuep2h5ajznlPMD9rnQyffWG8EM/C73lejGofXvdM8=",
-        "owner": "numtide",
-        "repo": "flake-utils",
-        "rev": "4022d587cbbfd70fe950c1e2083a02621806a725",
-        "type": "github"
-      },
-      "original": {
-        "owner": "numtide",
-        "repo": "flake-utils",
-        "type": "github"
-      }
     },
     "home-manager-unstable": {
       "inputs": {
@@ -123,45 +85,13 @@
         "type": "github"
       }
     },
-    "nixpkgs": {
-      "locked": {
-        "lastModified": 1748026580,
-        "narHash": "sha256-rWtXrcIzU5wm/C8F9LWvUfBGu5U5E7cFzPYT1pHIJaQ=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "11cb3517b3af6af300dd6c055aeda73c9bf52c48",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nixos",
-        "ref": "25.05",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
     "root": {
       "inputs": {
-        "awsvpnclient": "awsvpnclient",
         "colortest": "colortest",
         "home-manager-unstable": "home-manager-unstable",
         "nixos-plasma": "nixos-plasma",
         "nixos-stable": "nixos-stable",
         "nixos-unstable": "nixos-unstable"
-      }
-    },
-    "systems": {
-      "locked": {
-        "lastModified": 1681028828,
-        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
-        "owner": "nix-systems",
-        "repo": "default",
-        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-systems",
-        "repo": "default",
-        "type": "github"
       }
     }
   },

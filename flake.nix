@@ -13,11 +13,6 @@
       url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixos-unstable";
     };
-    # AWS VPN Client
-    awsvpnclient = {
-      url = "github:ymatsiuk/awsvpnclient/56ca114e3f7fe4db9d745a0ab8ed70c6bd803a8f";
-      inputs.nixpkgs.url = "github:nixos/nixpkgs/25.05";
-    };
     # Colortest, for testing terminal colors
     colortest = {
       url = "./pkgs/colortest";
@@ -31,9 +26,7 @@
   outputs = {
     nixos-stable,
     nixos-unstable,
-    nixos-plasma,
     home-manager-unstable,
-    awsvpnclient,
     colortest,
     ...
   }: let
@@ -116,24 +109,6 @@
     nixosConfigurations = {
       dellXps15 = addHostConfiguration "dellXps15" [];
       nyx15v2 = addHostConfiguration "nyx15v2" [];
-      inspirion = addHostConfiguration "inspirion" [
-        {
-          environment.systemPackages = [
-            # AWS VPN Client
-            awsvpnclient.packages."${system}".awsvpnclient
-          ];
-          # NOTE  Through `userConfig`, we can configure the home-manager modules.
-          home-manager.extraSpecialArgs = nixos-unstable.lib.mkForce (mergeWithDefaultSpecialArgs {
-            userConfig = {
-              work = true;
-              modules = {
-                cli.git.userEmail = "dalevy@autopay.com";
-                rust.enable = false;
-              };
-            };
-          });
-        }
-      ];
       bootse = addHostConfiguration "bootse" [
         {
           home-manager.extraSpecialArgs = defaultSpecialArgs;
@@ -142,10 +117,6 @@
       zflow13 = addHostConfiguration "zflow13" [
         {
           home-manager.extraSpecialArgs = defaultSpecialArgs;
-          environment.systemPackages = [
-            # AWS VPN Client
-            awsvpnclient.packages."${system}".awsvpnclient
-          ];
         }
       ];
     };

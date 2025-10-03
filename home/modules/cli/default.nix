@@ -2,7 +2,6 @@
   config,
   pkgs,
   lib,
-  unstable,
   ...
 }: let
   ZDOTDIR = "${config.xdg.configHome}/zsh";
