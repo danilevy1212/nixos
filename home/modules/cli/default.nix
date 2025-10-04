@@ -127,28 +127,36 @@ in
             "$schema": "https://opencode.ai/config.json",
             "theme": "system",
             "plugin": [
-              "opencode-openai-codex-auth@v1.0.3"
+              "opencode-openai-codex-auth@v2.0.0"
             ],
             "keybinds": {
               "session_interrupt": "<leader>esc"
             },
             "provider": {
               "openai": {
+                "options": {
+                  "reasoningEffort": "medium",
+                  "reasoningSummary": "auto",
+                  "textVerbosity": "medium",
+                  "include": [
+                    "reasoning.encrypted_content"
+                  ]
+                },
                 "models": {
-                  "gpt-5-codex-thinker": {
+                  "gpt-5-codex-planner": {
                     "id": "gpt-5-codex",
                     "options": {
                       "reasoningEffort": "high",
-                      "textVerbosity": "low",
-                      "reasoningSummary": "auto"
+                      "reasoningSummary": "detailed",
+                      "textVerbosity": "medium"
                     }
                   },
                   "gpt-5-codex-builder": {
                     "id": "gpt-5-codex",
                     "options": {
                       "reasoningEffort": "low",
-                      "textVerbosity": "low",
-                      "reasoningSummary": "auto"
+                      "reasoningSummary": "auto",
+                      "textVerbosity": "medium"
                     }
                   }
                 }
@@ -156,7 +164,7 @@ in
             },
             "agent": {
               "plan": {
-                "model": "openai/gpt-5-codex-thinker"
+                "model": "openai/gpt-5-codex-planner"
               },
               "build": {
                 "model": "openai/gpt-5-codex-builder"
