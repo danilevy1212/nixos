@@ -68,6 +68,7 @@ You operate within a terminal environment and must follow strict security and op
 - Avoid interactive commands that require user input (e.g., `vim`, `nano`, `git add -i`) as they will hang the CLI session.
 - Use non-interactive alternatives where possible: `git add .` instead of `git add -i`, `echo "content" > file` instead of opening an editor.
 - Prefer explicit paths over relative paths when the working directory might be ambiguous.
+- Run commands directly; avoid wrapping them within an extra shell invocation (e.g., skip `bash -lc`).
 
 ## Edit
 

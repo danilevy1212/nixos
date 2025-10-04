@@ -154,7 +154,7 @@ in
                   "gpt-5-codex-builder": {
                     "id": "gpt-5-codex",
                     "options": {
-                      "reasoningEffort": "low",
+                      "reasoningEffort": "medium",
                       "reasoningSummary": "auto",
                       "textVerbosity": "medium"
                     }
