@@ -135,39 +135,21 @@ in
             "provider": {
               "openai": {
                 "options": {
-                  "reasoningEffort": "medium",
+                  "reasoningEffort": "high",
                   "reasoningSummary": "auto",
                   "textVerbosity": "medium",
                   "include": [
                     "reasoning.encrypted_content"
                   ]
-                },
-                "models": {
-                  "gpt-5-codex-planner": {
-                    "id": "gpt-5-codex",
-                    "options": {
-                      "reasoningEffort": "high",
-                      "reasoningSummary": "detailed",
-                      "textVerbosity": "medium"
-                    }
-                  },
-                  "gpt-5-codex-builder": {
-                    "id": "gpt-5-codex",
-                    "options": {
-                      "reasoningEffort": "medium",
-                      "reasoningSummary": "auto",
-                      "textVerbosity": "medium"
-                    }
-                  }
                 }
               }
             },
             "agent": {
               "plan": {
-                "model": "openai/gpt-5-codex-planner"
+                "model": "openai/gpt-5-codex"
               },
               "build": {
-                "model": "openai/gpt-5-codex-builder"
+                "model": "opencode/kimi-k2"
               }
             },
             "permission": {
