@@ -5,6 +5,7 @@
   pkgs,
   userConfig,
   stable,
+  lib,
   ...
 }: let
   stateVersion = config.system.nixos.release;
@@ -59,7 +60,7 @@ in {
     supportedFilesystems = ["ntfs"];
 
     # Keep things stable, mirror FEDORA
-    kernelPackages = pkgs.linuxPackages_6_16;
+    kernelPackages = lib.mkDefault pkgs.linuxPackages_6_16;
 
     # Clean /tmp on boot
     tmp.cleanOnBoot = true;
@@ -427,7 +428,7 @@ in {
         done
         exec ${stable.jellyfin-mpv-shim}/bin/jellyfin-mpv-shim
       '';
-      path = with pkgs; [ xdg-utils ];
+      path = with pkgs; [xdg-utils];
       serviceConfig = {
         Type = "simple";
         Restart = "always";

@@ -127,7 +127,7 @@ in
             "$schema": "https://opencode.ai/config.json",
             "theme": "system",
             "plugin": [
-              "opencode-openai-codex-auth@v2.0.0"
+              "opencode-openai-codex-auth@v2.1.1"
             ],
             "keybinds": {
               "session_interrupt": "<leader>esc"
@@ -149,7 +149,7 @@ in
                 "model": "openai/gpt-5-codex"
               },
               "build": {
-                "model": "opencode/kimi-k2"
+                "model": "openai/gpt-5-mini"
               }
             },
             "permission": {

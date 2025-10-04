@@ -227,6 +227,6 @@ in {
   };
 
   # High-memory system overrides
-  zramSwap.memoryPercent = lib.mkForce 5; # 5% is more reasonable for 128GB system  
+  zramSwap.memoryPercent = lib.mkForce 5; # 5% is more reasonable for 128GB system
   boot.kernel.sysctl."vm.min_free_kbytes" = lib.mkForce 131072; # 128MB for high-memory system
 }

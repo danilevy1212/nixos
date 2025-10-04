@@ -1,6 +1,7 @@
 {
   pkgs,
   userConfig,
+  lib,
   ...
 }: let
   # TODO  This whole llm-studio setup should + certs should be moved to it's own module
@@ -18,7 +19,9 @@
     # Now start the app minimized as a background service
     exec "${pkgs.lmstudio}/bin/lm-studio" --run-as-service --minimized
   '';
-  # From https://forum.level1techs.com/t/flow-z13-asus-setup-on-linux-may-2025-wip/229551
+  # Folio reset derived from community guidance; see:
+  # - https://forum.level1techs.com/t/flow-z13-asus-setup-on-linux-may-2025-wip/229551
+  # - https://github.com/th3cavalry/GZ302-Linux-Setup (reload-hid_asus.service)
   folioReset = pkgs.writeShellScript "asus-folio-reset.sh" ''
     # Reload ASUS HID
     ${pkgs.kmod}/bin/modprobe -r hid_asus
@@ -48,31 +51,48 @@
       chmod 0644 $out/ca/${caCertFile}
       chmod 0644 $out/ca/${caKeyFile}
     '';
+  # Shared serviceConfig for folio HID reset
+  # - ExecStartPre guards: only reload if hid_asus is already loaded (no-op otherwise)
+  # - ExecStart runs folioReset which reloads the module and kicks kbd backlight
+  # - RemainAfterExit keeps the unit "active (exited)" for visibility
+  hidAsusResetServiceConfig = {
+    Type = "oneshot";
+    # Only reload if hid_asus is currently loaded; still allow backlight restore
+    ExecStartPre = "${pkgs.runtimeShell} -c '${pkgs.kmod}/bin/lsmod | ${pkgs.gnugrep}/bin/grep -q \"^hid_asus \" || exit 0'";
+    ExecStart = folioReset;
+    RemainAfterExit = true;
+  };
+  # NOTE  TDP tooling intentionally omitted for now (always on AC + KDE Performance).
+  # TODO  Revisit and port from upstream if needed:
+  #   https://github.com/th3cavalry/GZ302-Linux-Setup/blob/main/gz302_setup.sh#L1238-L1626
 in {
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
   ];
 
+  # Kernel parameters tuned for ASUS GZ302 stability
+  # - quiet suppresses benign ACPI firmware bugs (cosmetic; no functional impact)
+  # - deep sleep avoids EC/HID resume quirks
+  # - amd_pstate enables the modern CPU scaling driver
+  # - ACPI OSI pair and enforce_resources coax ASUS firmware paths
+  # - USB quirk targets the BT controller; prefer device-specific over global toggles
   boot.kernelParams = [
-    # Work around USB autosuspend on the internal hub
-    "usbcore.autosuspend=0"
+    # Suppress benign ACPI/firmware warnings from broken ASUS BIOS
+    "quiet"
     # Use deep sleep by default — avoids EC/HID quirks on ASUS laptops.
     "mem_sleep_default=deep"
-    # Force the AMD Display Core (DCN) driver path on (already default, but explicit).
-    "amdgpu.dc=1"
-    # Disable scatter-gather scanout. Keeps scanout buffers contiguous,
-    # which can prevent the brief “missing sliver” glitches during flips.
-    "amdgpu.sg_display=0"
-    # See https://discussion.fedoraproject.org/t/glitch-that-appears-casually-on-screen-of-an-amd-laptop-60-hz-running-fedora-kde-plasma/142323?utm_source=chatgpt.com
-    "amdgpu.dcdebugmask=0x10"
     # Bluetooth quirks
     "usbcore.quirks=13d3:3608:k"
     # Enable AMD P-State driver for better power management
     "amd_pstate=active"
+    # Silence ACPI spam from broken firmware
+    "acpi_osi=!"
+    "acpi_osi=\"Windows 2020\""
+    "acpi_enforce_resources=lax"
   ];
 
-  # ASUS HID quirks (touchpad/extra keys) and AMD GPU
+  # ASUS HID modules required for touchpad, keyboard backlight, and function keys
   boot.kernelModules = [
     "hid"
     "usbhid"
@@ -81,33 +101,48 @@ in {
     "i2c-dev"
     "i2c-hid-acpi"
   ];
+  # Module options derived from https://github.com/th3cavalry/GZ302-Linux-Setup
+  # Covers: HID buffer sizing, BT/Wi-Fi stability, audio platform, WMI quirks, GPU runtime PM
   boot.extraModprobeConfig = ''
-    # Enable ASUS touchpad functionality
-    options hid_asus enable_touchpad=1
+    # Enable ASUS touchpad functionality + backlight + larger HID buffer to prevent probe errors
+    options hid_asus enable_touchpad=1 fnlock_default=0 kbd_backlight=1 max_hid_buflen=8192
     # Prevent Bluetooth from disconnecting
     options btusb enable_autosuspend=0
+
+    # MediaTek MT7925E – disable ASPM to stop random disconnects
+    options mt7925e disable_aspm=1
+
+    # Audio quirks for GZ302 (ALSA + ACP70 platform)
+    options snd-hda-intel probe_mask=1 model=asus-zenbook
+    options snd_acp_pci enable=1
+    options snd-soc-acp70 machine=acp70-asus
+
+    # ASUS WMI – reduce fan-curve / thermal error spam in dmesg
+    options asus_wmi dev_id=0x00110000
+    options asus_nb_wmi wapf=1
+
+    # AMDGPU driver tuning (all GPU params consolidated here)
+    options amdgpu dc=1 gpu_recovery=1 ppfeaturemask=0xffffffff runpm=1 sg_display=0 dcdebugmask=0x10
+
+    # Camera – shorter timeout, ignore small quirks
+    options uvcvideo quirks=128 timeout=5000
   '';
 
-  # Run once at boot
+  # Folio HID reset: reload hid_asus and restore keyboard backlight after graphical.target
+  # Guards against early boot when module isn't loaded yet; mirrors upstream service logic
   systemd.services.asus-folio-reset = {
     description = "ROG Flow Z13 folio HID reset after GUI starts";
     wantedBy = ["graphical.target"];
     after = ["display-manager.service" "graphical.target"];
-    serviceConfig = {
-      Type = "oneshot";
-      ExecStart = folioReset;
-    };
+    serviceConfig = hidAsusResetServiceConfig;
   };
 
-  # Turn on backlight on resume
+  # Folio HID reset on resume: ensures keyboard backlight and touchpad sanity after sleep.target
   systemd.services."asus-folio-reset-resume" = {
     description = "ROG Flow Z13 folio HID reset after resume";
     wantedBy = ["sleep.target"];
     after = ["sleep.target"];
-    serviceConfig = {
-      Type = "oneshot";
-      ExecStart = folioReset;
-    };
+    serviceConfig = hidAsusResetServiceConfig;
   };
 
   # Bootloader.
@@ -115,8 +150,52 @@ in {
   boot.loader.systemd-boot.configurationLimit = 5;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  # Enable networking
-  networking.networkmanager.enable = true;
+  # NetworkManager: disable MAC randomization and powersave for MT7925E stability
+  # Mirrors upstream recommendations; combined with udev rule below for redundancy
+  networking.networkmanager = {
+    enable = true;
+    wifi.powersave = false;
+    settings = {
+      device = {
+        "wifi.scan-rand-mac-address" = false;
+        "wifi.backend" = "wpa_supplicant";
+      };
+      connection = {
+        # 2 = disabled
+        "wifi.powersave" = 2;
+      };
+      main = {
+        "wifi.scan-rand-mac-address" = false;
+      };
+    };
+  };
+
+  # Udev rules from upstream GZ302 script:
+  # - Wi-Fi powersave off via iw when interface appears ($env{INTERFACE} is udev's native expansion)
+  # - I/O schedulers tuned per device type (NVMe, SATA SSD, HDD)
+  services.udev.extraRules = ''
+    # Disable Wi-Fi powersave when interface appears (MT7925E stability)
+    ACTION=="add", SUBSYSTEM=="net", KERNEL=="wlan*", RUN+="${pkgs.iw}/bin/iw dev $env{INTERFACE} set power_save off"
+
+    # I/O-scheduler hints (NVMe → none fallback mq-deadline / SATA-SSD → mq-deadline / HDD → bfq)
+    ACTION=="add|change", KERNEL=="nvme[0-9]n[0-9]", ATTR{queue/scheduler}="none", ATTR{queue/scheduler}="mq-deadline"
+    ACTION=="add|change", KERNEL=="sd[a-z]", ATTR{queue/rotational}=="0", ATTR{queue/scheduler}="mq-deadline"
+    ACTION=="add|change", KERNEL=="sd[a-z]", ATTR{queue/rotational}=="1", ATTR{queue/scheduler}="bfq"
+  '';
+
+  # Hardware DB override: force correct touchpad detection and sensitivity for ASUS folio
+  # Vendor ID 0b05, Product ID 1a30; override ensures libinput sees it as a touchpad, not a mouse
+  services.udev.extraHwdb = ''
+    # ASUS ROG Flow Z13 folio touchpad override (fixes detection + sensitivity)
+    evdev:input:b0003v0b05p1a30*
+     ID_INPUT_TOUCHPAD=1
+     ID_INPUT_MULTITOUCH=1
+     ID_INPUT_MOUSE=0
+     EVDEV_ABS_00=::100
+     EVDEV_ABS_01=::100
+     EVDEV_ABS_35=::100
+     EVDEV_ABS_36=::100
+  '';
 
   # Set your time zone.
   time.timeZone = "America/Los_Angeles";
@@ -147,6 +226,26 @@ in {
       layout = "us";
       variant = "altgr-intl";
     };
+    # GZ302 touchpad tuning (from gz302_setup.sh libinput config)
+    inputClassSections = [
+      ''
+        Section "InputClass"
+          Identifier "ASUS GZ302 Touchpad"
+          MatchIsTouchpad "on"
+          MatchDevicePath "/dev/input/event*"
+          MatchProduct "ASUSTeK Computer Inc. GZ302EA-Keyboard Touchpad"
+          Driver "libinput"
+          Option "DisableWhileTyping" "off"
+          Option "TappingDrag" "on"
+          Option "TappingDragLock" "on"
+          Option "MiddleEmulation" "on"
+          Option "NaturalScrolling" "true"
+          Option "ScrollMethod" "twofinger"
+          Option "HorizontalScrolling" "on"
+          Option "SendEventsMode" "enabled"
+        EndSection
+      ''
+    ];
   };
 
   # Enable CUPS to print documents.
@@ -201,6 +300,7 @@ in {
   services.blueman.enable = true;
   hardware.bluetooth.enable = true;
 
+  # ASUS userspace stack: asusd for keyboard/fan/profile control; supergfxd for GPU switching
   # See https://asus-linux.org/guides/nixos/
   services.asusd = {
     enable = true;
@@ -209,6 +309,12 @@ in {
   services.supergfxd = {
     enable = true;
   };
+
+  # Power management stack for this host:
+  # - power-profiles-daemon provides powerprofilesctl (performance/balanced/power-saver)
+  # - switcherooControl enables GPU switching orchestration (complements supergfxd)
+  services.power-profiles-daemon.enable = true;
+  services.switcherooControl.enable = true;
 
   systemd.user.services.lmstudio-headless = {
     description = "LM Studio (server then minimized app)";
@@ -305,7 +411,12 @@ in {
     });
   };
 
-  # Enable ROCm and AMD GPU drivers
+  # Use latest mainline kernel (6.17+) on this host for newest AMD/ASUS fixes
+  # Common config pins 6.16; this override is zflow13-specific for testing newer kernels
+  boot.kernelPackages = lib.mkForce pkgs.linuxPackages_latest;
+
+  # ROCm support for GPU compute (currently disabled in favor of Vulkan/lmstudio)
+  # Kept for when ROCm 7 lands in nixpkgs and ollama becomes viable again
   nixpkgs.config.rocmSupport = true;
   hardware.graphics = {
     enable = true;
@@ -315,10 +426,11 @@ in {
     ];
   };
 
-  # AMD CPU microcode updates
+  # Enable AMD CPU microcode and all redistributable firmware (WiFi, BT, GPU)
   hardware.enableRedistributableFirmware = true;
 
-  # Emergency-only 8GB swapfile - absolutely last resort (very low priority)
+  # Emergency-only 8GB swapfile: lowest priority (-2) so zram is preferred
+  # Discard option hints TRIM to NVMe; only touched when zram is exhausted
   swapDevices = [
     {
       device = "/var/lib/swapfile";

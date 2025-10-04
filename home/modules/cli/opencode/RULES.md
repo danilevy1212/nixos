@@ -73,6 +73,7 @@ You operate within a terminal environment and must follow strict security and op
 ## Edit
 
 - Always prefer atomic edits (single, unique string replacements) for file modifications.
+- When an edit fails or is ambiguous, first read the entire file before retrying. Do not optimize for token usage at the expense of reliability.
 - Use `replaceAll` only for explicit "refactor" or "rename" requests, or if the user grants permission after being prompted.
 - If `replaceAll` is needed outside of "refactor"/"rename", clearly inform the user: "I'm planning on using 'replaceAll' for this edit. Can I proceed?" and only proceed if permission is granted.
 
