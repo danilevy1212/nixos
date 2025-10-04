@@ -62,13 +62,11 @@
     ExecStart = folioReset;
     RemainAfterExit = true;
   };
-  # NOTE  TDP tooling intentionally omitted for now (always on AC + KDE Performance).
-  # TODO  Revisit and port from upstream if needed:
-  #   https://github.com/th3cavalry/GZ302-Linux-Setup/blob/main/gz302_setup.sh#L1238-L1626
 in {
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
+    ../../common/sunshine.nix
   ];
 
   # Kernel parameters tuned for ASUS GZ302 stability

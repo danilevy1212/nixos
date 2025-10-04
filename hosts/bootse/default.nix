@@ -15,6 +15,7 @@ in {
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
+    ../../common/sunshine.nix
   ];
   # Only works with closed-source drivers
   boot.kernelParams =
@@ -126,6 +127,8 @@ in {
           vulkan-loader
         ];
     };
+    # Disable CUDA support for ueberzugpp to avoid build issues
+    ueberzugpp = pkgs.ueberzugpp.override { enableOpencv = false; };
   };
 
   # Gaming
@@ -159,15 +162,8 @@ in {
     capSysNice = true;
   };
 
-  # Game-streaming
-  services.sunshine = {
-    enable = true;
-    package = pkgs.sunshine.override {
-      cudaSupport = true;
-    };
-    openFirewall = true;
-    capSysAdmin = true;
-  };
+  # Enable CUDA support for sunshine (imported from common/sunshine.nix)
+  nixpkgs.config.cudaSupport = true;
 
   environment.variables = {
     # Make sure all HW decoding uses the nvidia
