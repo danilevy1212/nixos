@@ -22,13 +22,12 @@
   # Folio reset derived from community guidance; see:
   # - https://forum.level1techs.com/t/flow-z13-asus-setup-on-linux-may-2025-wip/229551
   # - https://github.com/th3cavalry/GZ302-Linux-Setup (reload-hid_asus.service)
-  folioReset = pkgs.writeShellScript "asus-folio-reset.sh" ''
-    # Reload ASUS HID
-    ${pkgs.kmod}/bin/modprobe -r hid_asus
-    ${pkgs.kmod}/bin/modprobe hid_asus
-    # Restore keyboard backlight
-    [ -e /sys/class/leds/asus::kbd_backlight/brightness ] && echo 3 > /sys/class/leds/asus::kbd_backlight/brightness
-  '';
+  # Script moved to a standalone file for readability
+  folioReset = pkgs.writeShellApplication {
+    name = "asus-folio-reset";
+    runtimeInputs = [ pkgs.coreutils pkgs.kmod ];
+    text = builtins.readFile ./asus-folio-reset.sh;
+  };
   # Generate certificates in the Nix store
   llmStudioLocalCerts =
     pkgs.runCommand "llm-studio-certs" {
@@ -57,9 +56,8 @@
   # - RemainAfterExit keeps the unit "active (exited)" for visibility
   hidAsusResetServiceConfig = {
     Type = "oneshot";
-    # Only reload if hid_asus is currently loaded; still allow backlight restore
-    ExecStartPre = "${pkgs.runtimeShell} -c '${pkgs.kmod}/bin/lsmod | ${pkgs.gnugrep}/bin/grep -q \"^hid_asus \" || exit 0'";
-    ExecStart = folioReset;
+    # Run reset script; it waits (60s max) for hid_asus internally
+    ExecStart = lib.getExe folioReset;
     RemainAfterExit = true;
   };
 in {
