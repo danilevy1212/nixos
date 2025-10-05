@@ -74,8 +74,6 @@ in {
   # - ACPI OSI pair and enforce_resources coax ASUS firmware paths
   # - USB quirk targets the BT controller; prefer device-specific over global toggles
   boot.kernelParams = [
-    # Suppress benign ACPI/firmware warnings from broken ASUS BIOS
-    "quiet"
     # Use deep sleep by default — avoids EC/HID quirks on ASUS laptops.
     "mem_sleep_default=deep"
     # Bluetooth quirks
@@ -100,8 +98,6 @@ in {
   # Module options derived from https://github.com/th3cavalry/GZ302-Linux-Setup
   # Covers: HID buffer sizing, BT/Wi-Fi stability, audio platform, WMI quirks, GPU runtime PM
   boot.extraModprobeConfig = ''
-    # Enable ASUS touchpad functionality + backlight + larger HID buffer to prevent probe errors
-    options hid_asus enable_touchpad=1 fnlock_default=0 kbd_backlight=1 max_hid_buflen=8192
     # Prevent Bluetooth from disconnecting
     options btusb enable_autosuspend=0
 
@@ -312,10 +308,17 @@ in {
   services.power-profiles-daemon.enable = true;
   services.switcherooControl.enable = true;
 
+  # User session service that first starts the LM Studio HTTP server headlessly,
+  # then launches the Electron app minimized. This allows local plugins/clients
+  # to hit http://127.0.0.1:1234 immediately after login without showing a UI.
+  # Uses a tiny wrapper script (lmstudioStart) to establish the server first and
+  # keep the GUI minimized; logs go to the user journal for quick inspection.
   systemd.user.services.lmstudio-headless = {
     description = "LM Studio (server then minimized app)";
     wantedBy = ["graphical-session.target"];
     after = ["graphical-session.target"];
+    # Ensure common CLI tools (ps, coreutils) are available to the Electron app/plugins
+    path = with pkgs; [ procps coreutils ];
 
     serviceConfig = {
       Type = "simple";
@@ -335,10 +338,15 @@ in {
     "127.0.0.1" = ["openai.local" "localhost"];
   };
   # Install CA certificate in system trust store for automatic browser trust
+  # Trust our mkcert-generated CA system-wide so browsers and system daemons
+  # accept the synthetic openai.local certificate without warnings.
   security.pki.certificates = [
     (builtins.readFile "${llmStudioLocalCerts}/ca/${caCertFile}")
   ];
   # Create symlinks to leaf certificates for llm-studio service
+  # Expose the leaf certificate and key at runtime paths via tmpfiles so nginx
+  # can read them from ${sslDir}. Symlinks point to the immutable Nix store build
+  # output produced by llmStudioLocalCerts.
   systemd.tmpfiles.rules = [
     "d ${sslDir} 0755 root root -"
     "L+ ${sslDir}/${certFile} - - - - ${llmStudioLocalCerts}/certs/${certFile}"
@@ -353,6 +361,10 @@ in {
     preferences."security.enterprise_roots.enabled" = true;
   };
   # Reverse proxy because the stupid plugin automatically upgrades to https
+  # Nginx reverse proxy to terminate TLS for openai.local using locally
+  # generated certs (mkcert) and forward requests to LM Studio on 127.0.0.1:1234.
+  # This exists because the AmpleNote plugin force-upgrades to HTTPS; we mimic
+  # OpenAI by serving openai.local over HTTPS with our own trust chain.
   services.nginx = {
     enable = true;
     recommendedProxySettings = true;
@@ -397,14 +409,6 @@ in {
   # Nice Web UI
   services.open-webui = {
     enable = true;
-    # NOTE  See https://github.com/NixOS/nixpkgs/pull/446013#issuecomment-3335605779
-    package = pkgs.open-webui.overridePythonAttrs (oldAttrs: {
-      dependencies =
-        oldAttrs.dependencies
-        ++ [
-          pkgs.python3Packages.itsdangerous
-        ];
-    });
   };
 
   # Use latest mainline kernel (6.17+) on this host for newest AMD/ASUS fixes
