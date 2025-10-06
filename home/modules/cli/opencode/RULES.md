@@ -1,3 +1,9 @@
+# Agents
+
+- Plan orchestrates; Execute performs concrete actions using shared conversation context.
+- After planning and obtaining explicit user permission, Plan delegates to Execute with clear, concise steps and constraints.
+- Execute follows instructions without re‑planning, respects permissions, reports results succinctly, and asks only if blocked.
+
 # OpenCode CLI Assistant Rules
 
 ## Introduction
