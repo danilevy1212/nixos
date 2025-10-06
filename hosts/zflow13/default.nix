@@ -25,7 +25,7 @@
   # Script moved to a standalone file for readability
   folioReset = pkgs.writeShellApplication {
     name = "asus-folio-reset";
-    runtimeInputs = [ pkgs.coreutils pkgs.kmod ];
+    runtimeInputs = [pkgs.coreutils pkgs.kmod];
     text = builtins.readFile ./asus-folio-reset.sh;
   };
   # Generate certificates in the Nix store
@@ -65,6 +65,7 @@ in {
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
     ../../common/sunshine.nix
+    ../../common/gaming.nix
   ];
 
   # Kernel parameters tuned for ASUS GZ302 stability
@@ -318,7 +319,7 @@ in {
     wantedBy = ["graphical-session.target"];
     after = ["graphical-session.target"];
     # Ensure common CLI tools (ps, coreutils) are available to the Electron app/plugins
-    path = with pkgs; [ procps coreutils ];
+    path = with pkgs; [procps coreutils];
 
     serviceConfig = {
       Type = "simple";

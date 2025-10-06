@@ -1,21 +1,16 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
 {
   pkgs,
-  unstable,
   lib,
   config,
   ...
 }: let
-  gamescope-pkg = unstable.gamescope;
-  gamescope-wsi-pkg = unstable.gamescope-wsi;
   openDrivers = true;
 in {
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
     ../../common/sunshine.nix
+    ../../common/gaming.nix
   ];
   # Only works with closed-source drivers
   boot.kernelParams =
@@ -40,42 +35,6 @@ in {
 
   # Enable networking
   networking.networkmanager.enable = true;
-
-  environment.systemPackages = with pkgs; [
-    # Monitor GPU usage
-    nvtopPackages.full
-    drm_info
-    # Monitor FPS
-    mangohud
-    # Additional tools for Windows compatibility
-    (lutris.override {
-      extraPkgs = pkgs:
-        with pkgs; [
-          winetricks
-          wineWowPackages.waylandFull
-        ];
-    })
-    vulkan-loader
-    gamescope-wsi-pkg
-    # Other launchers
-    (heroic.override {
-      extraPkgs = pkgs: [
-        gamescope-pkg
-        gamescope-wsi-pkg
-        gamemode
-      ];
-    })
-  ];
-
-  # Performance boost
-  programs.gamemode = {
-    enable = true;
-    settings = {
-      general = {
-        inhibit_screensaver = true;
-      };
-    };
-  };
 
   # Last time I buy an Intel CPU.
   # See https://www.reddit.com/r/hardware/comments/1e9mmxg/update_on_intel_k_sku_instability_from_intel/
@@ -117,59 +76,37 @@ in {
   };
   hardware.nvidia-container-toolkit.enable = true;
 
-  # Minimum requirements for Steam
+  # Bootse-specific package overrides
   nixpkgs.config.packageOverrides = pkgs: {
-    steam = pkgs.steam.override {
-      extraPkgs = pkgs:
-        with pkgs; [
-          gamescope-pkg
-          gamescope-wsi-pkg
-          vulkan-loader
-        ];
-    };
     # Disable CUDA support for ueberzugpp to avoid build issues
-    ueberzugpp = pkgs.ueberzugpp.override { enableOpencv = false; };
+    ueberzugpp = pkgs.ueberzugpp.override {enableOpencv = false;};
   };
 
-  # Gaming
-  programs.steam = {
+  # Gamescope session for posterity
+  programs.steam.gamescopeSession = {
     enable = true;
-    remotePlay.openFirewall = true;
-    dedicatedServer.openFirewall = true;
-    protontricks.enable = true;
-    gamescopeSession = {
-      enable = true;
-      args = [
-        "-w"
-        "3840"
-        "-h"
-        "2160"
-        "-r"
-        "144"
-        "--hdr-enabled"
-        "--hdr-debug-force-output"
-        "--hdr-sdr-content-nits"
-        "630"
-      ];
-    };
-    extraCompatPackages = with pkgs; [
-      proton-ge-bin
+    args = [
+      "-w"
+      "3840"
+      "-h"
+      "2160"
+      "-r"
+      "144"
+      "--hdr-enabled"
+      "--hdr-debug-force-output"
+      "--hdr-sdr-content-nits"
+      "630"
     ];
-  };
-  programs.gamescope = {
-    enable = true;
-    package = gamescope-pkg;
-    capSysNice = true;
   };
 
   # Enable CUDA support for sunshine (imported from common/sunshine.nix)
   nixpkgs.config.cudaSupport = true;
 
   environment.variables = {
-    # Make sure all HW decoding uses the nvidia
+    # Prefer NVIDIA drivers for decoding
     VDPAU_DRIVER = "va_gl";
     LIBVA_DRIVER_NAME = "nvidia";
-    # Allow HDR with nvidia GPU
+    # Allow HDR with NVIDIA GPU
     KWIN_DRM_ALLOW_NVIDIA_COLORSPACE = 1;
     # To be able to use kscreen-doctor from SSH
     XDG_SESSION_TYPE = "wayland";
@@ -180,10 +117,6 @@ in {
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
-
-  # Better compatibility with peripherals
-  services.udev.packages = [pkgs.game-devices-udev-rules];
-  hardware.uinput.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.dlevym = {
