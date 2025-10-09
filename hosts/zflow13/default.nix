@@ -280,15 +280,6 @@ in {
     rocmPackages.rccl
   ];
 
-  # 1password and its GUI
-  programs._1password = {
-    enable = true;
-  };
-  programs._1password-gui = {
-    enable = true;
-    polkitPolicyOwners = [userConfig.username];
-  };
-
   # Enable bluetooth
   services.blueman.enable = true;
   hardware.bluetooth.enable = true;

@@ -39,7 +39,6 @@ in {
       spotify
 
       # Social closeness
-      slack
       telegram-desktop
 
       # Browser
