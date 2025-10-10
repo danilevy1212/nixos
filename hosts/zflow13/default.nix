@@ -1,6 +1,6 @@
 {
   pkgs,
-  userConfig,
+  stable,
   lib,
   ...
 }: let
@@ -270,14 +270,15 @@ in {
     vulkan-tools
     llmStudioLocalCerts
     # ROCm
-    rocmPackages.rocm-smi
-    rocmPackages.rocminfo
-    rocmPackages.rocm-core
-    rocmPackages.rocmPath
-    rocmPackages.rocm-runtime
-    rocmPackages.rocm-device-libs
-    rocmPackages.rocblas
-    rocmPackages.rccl
+    # TODO  Enable when I am ready to give ollama another spin
+    # rocmPackages.rocm-smi
+    # rocmPackages.rocminfo
+    # rocmPackages.rocm-core
+    # rocmPackages.rocmPath
+    # rocmPackages.rocm-runtime
+    # rocmPackages.rocm-device-libs
+    # rocmPackages.rocblas
+    # rocmPackages.rccl
   ];
 
   # Enable bluetooth
@@ -401,6 +402,8 @@ in {
   # Nice Web UI
   services.open-webui = {
     enable = true;
+    # TODO  Broken on unstable
+    package = stable.open-webui;
   };
 
   # Use latest mainline kernel (6.17+) on this host for newest AMD/ASUS fixes

@@ -142,6 +142,13 @@ in
                     "reasoning.encrypted_content"
                   ]
                 }
+              },
+              "lmstudio": {
+                "npm": "@ai-sdk/openai-compatible",
+                "name": "LM Studio (local)",
+                "options": {
+                  "baseURL": "http://127.0.0.1:1234/v1"
+                }
               }
             },
             "agent": {
@@ -173,32 +180,10 @@ in
               "webfetch": "allow"
             },
             "mcp": {
-              "atlassian": {
-                "enabled": false,
-                "type": "local",
-                "command": [
-                  "${pkgs.nodejs}/bin/npx",
-                  "-y",
-                  "mcp-remote",
-                  "https://mcp.atlassian.com/v1/sse"
-                ]
-              },
-              "gitlab": {
-                "enabled": true,
-                "type": "local",
-                "command": [
-                  "${pkgs.nodejs}/bin/npx",
-                  "-y",
-                  "@zereight/mcp-gitlab"
-                ]
-              },
-              "github": {
+              "mcphub": {
                 "enabled": true,
                 "type": "remote",
-                "url": "https://api.githubcopilot.com/mcp/",
-                "headers": {
-                  "Authorization": "Bearer {env:GITHUB_PERSONAL_ACCESS_TOKEN}"
-                }
+                "url": "http://10.0.0.202:3000/mcp"
               }
             }
           }
@@ -242,7 +227,6 @@ in
         cmatrix
         fortune
         sl
-        ddate
         toilet
         figlet
 
