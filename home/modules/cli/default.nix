@@ -155,12 +155,11 @@ in
               "plan": {
                 "model": "openai/gpt-5-codex"
               },
-              // TODO Replace with GLM-4.6 when it works, see https://github.com/sst/opencode/issues/3104
               "build": {
-                "model": "opencode/kimi-k2"
+                "model": "opencode/glm-4.6"
               },
               "execute": {
-                "model": "opencode/kimi-k2",
+                "model": "opencode/glm-4.6",
                 "mode": "subagent",
                 "description": "Executes the plans layed out by the plan agent.",
                 "prompt": "You are the Execute subagent. Carry out concrete actions delegated by the Plan agent using the shared conversation context. Do not re‑plan; follow the given steps and constraints. Respect repository rules and permissions. Be concise: state what you did, the result, and whether anything is blocked. Ask only when a blocker prevents progress. Acknowledge each delegated step after completing it before moving forward.",
