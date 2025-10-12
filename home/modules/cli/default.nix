@@ -147,7 +147,8 @@ in
                 "npm": "@ai-sdk/openai-compatible",
                 "name": "LM Studio (local)",
                 "options": {
-                  "baseURL": "http://127.0.0.1:1234/v1"
+                  "baseURL": "http://127.0.0.1:1234/v1",
+                  "max_tokens": 64000
                 }
               }
             },
