@@ -126,21 +126,21 @@ in
           {
             "$schema": "https://opencode.ai/config.json",
             "theme": "system",
-            "plugin": [
-              "opencode-openai-codex-auth@v2.1.1"
-            ],
+            "plugin": [],
             "keybinds": {
               "session_interrupt": "<leader>esc"
             },
             "provider": {
-              "openai": {
-                "options": {
-                  "reasoningEffort": "high",
-                  "reasoningSummary": "auto",
-                  "textVerbosity": "medium",
-                  "include": [
-                    "reasoning.encrypted_content"
-                  ]
+              "opencode": {
+                "models": {
+                  "gpt-5-codex": {
+                     "reasoningEffort": "high",
+                     "reasoningSummary": "auto",
+                     "textVerbosity": "medium",
+                     "include": [
+                       "reasoning.encrypted_content"
+                     ]
+                  }
                 }
               },
               "lmstudio": {
@@ -154,7 +154,7 @@ in
             },
             "agent": {
               "plan": {
-                "model": "openai/gpt-5-codex"
+                "model": "opencode/gpt-5-codex"
               },
               "build": {
                 "model": "opencode/glm-4.6"
