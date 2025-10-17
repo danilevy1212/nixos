@@ -37,7 +37,7 @@ in {
       # For mason
       ## languages
       ## rust
-      ++ lib.optional (!userConfig.modules.rust.enable) stable.cargo
+      ++ lib.optional (!userConfig.modules.rust.enable) cargo
       # GUI for neovim
       ++ lib.optional userConfig.modules.gui.enable neovide;
 

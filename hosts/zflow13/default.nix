@@ -280,6 +280,9 @@ in {
     # rocmPackages.rocblas
     # rocmPackages.rccl
   ];
+  # ROCm support for GPU compute (currently disabled in favor of Vulkan/lmstudio)
+  # Kept for when ROCm 7 lands in nixpkgs and ollama becomes viable again
+  nixpkgs.config.rocmSupport = false;
 
   # Enable bluetooth
   services.blueman.enable = true;
@@ -402,17 +405,12 @@ in {
   # Nice Web UI
   services.open-webui = {
     enable = true;
-    # TODO  Broken on unstable
-    package = stable.open-webui;
   };
 
   # Use latest mainline kernel (6.17+) on this host for newest AMD/ASUS fixes
   # Common config pins 6.16; this override is zflow13-specific for testing newer kernels
   boot.kernelPackages = lib.mkForce pkgs.linuxPackages_latest;
 
-  # ROCm support for GPU compute (currently disabled in favor of Vulkan/lmstudio)
-  # Kept for when ROCm 7 lands in nixpkgs and ollama becomes viable again
-  nixpkgs.config.rocmSupport = true;
   hardware.graphics = {
     enable = true;
     enable32Bit = true;

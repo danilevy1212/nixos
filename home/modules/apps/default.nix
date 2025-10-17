@@ -54,13 +54,13 @@ in {
       zoom-us
 
       # Memorize
-      stable.anki
+      anki
 
       # Pseudo-office
-      stable.libreoffice
+      libreoffice
 
       # raspi
-      stable.rpi-imager
+      rpi-imager
     ];
 
     # 🤮 I hate this, but everyone else in the team uses it, so I need to make sure what works for me works for them.

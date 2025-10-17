@@ -382,7 +382,6 @@ in {
   programs.gnupg.agent = {
     enable = true;
     enableSSHSupport = true;
-    pinentryPackage = stable.pinentry-qt;
   };
 
   # NOTE https://www.reddit.com/r/NixOS/comments/b255k5/comment/i8jpqum/?utm_source=share&utm_medium=web2x&context=3
@@ -424,7 +423,7 @@ in {
           fi
           sleep $((initial_delay ** retry_count))
         done
-        exec ${stable.jellyfin-mpv-shim}/bin/jellyfin-mpv-shim
+        exec ${pkgs.jellyfin-mpv-shim}/bin/jellyfin-mpv-shim
       '';
       path = with pkgs; [xdg-utils];
       serviceConfig = {

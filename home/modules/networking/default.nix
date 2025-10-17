@@ -11,7 +11,7 @@ with lib; let
   brunoWrapped = pkgs.buildEnv {
     name = "bruno-wrapped";
 
-    paths = [stable.bruno];
+    paths = [pkgs.bruno];
 
     buildInputs = [pkgs.makeWrapper];
 
@@ -41,14 +41,14 @@ in {
         portal
 
         # Database client
-        stable.dbeaver-bin
+        dbeaver-bin
 
         # Redis cli client
         redis
       ]
       ++ lib.optionals cfg.work [
         # Work stuff
-        stable.awscli2
+        awscli2
       ];
 
     # File sharing, p2p style
@@ -57,7 +57,6 @@ in {
       tray = {
         enable = true;
         command = "syncthingtray --wait";
-        package = stable.syncthingtray;
       };
     };
 
