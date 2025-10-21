@@ -211,6 +211,11 @@ in {
 
       # Help with stuttering
       SDL_VIDEODRIVER = "wayland";
+
+      # IME Input
+      XMODIFIERS = "@im=fcitx";
+      GTK_IM_MODULE = "fcitx";
+      QT_IM_MODULE = "fcitx";
     };
     # Just as good.
     shellAliases = {

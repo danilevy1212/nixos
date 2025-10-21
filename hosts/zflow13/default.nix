@@ -80,7 +80,7 @@ in {
     # Bluetooth quirks
     "usbcore.quirks=13d3:3608:k"
     # Enable AMD P-State driver for better power management
-    "amd_pstate=active"
+    "amd_pstate=guided"
     # Silence ACPI spam from broken firmware
     "acpi_osi=!"
     "acpi_osi=\"Windows 2020\""
@@ -115,7 +115,7 @@ in {
     options asus_nb_wmi wapf=1
 
     # AMDGPU driver tuning (all GPU params consolidated here)
-    options amdgpu dc=1 gpu_recovery=1 ppfeaturemask=0xffffffff runpm=1 sg_display=0 dcdebugmask=0x10
+    options amdgpu dc=1 gpu_recovery=1 ppfeaturemask=0xffffffff runpm=1
 
     # Camera – shorter timeout, ignore small quirks
     options uvcvideo quirks=128 timeout=5000
