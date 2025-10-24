@@ -163,18 +163,19 @@ in {
   # Select internationalisation properties.
   i18n = {
     defaultLocale = "en_US.UTF-8";
+    # FIXME  See https://github.com/NixOS/nixpkgs/issues/454887
     # Japanese input
-    inputMethod = {
-      enable = true;
-      type = "fcitx5";
-      fcitx5 = {
-        waylandFrontend = true;
-        addons = with pkgs; [
-          fcitx5-mozc
-          fcitx5-gtk
-        ];
-      };
-    };
+    # inputMethod = {
+    #   enable = true;
+    #   type = "fcitx5";
+    #   fcitx5 = {
+    #     waylandFrontend = true;
+    #     addons = with pkgs; [
+    #       fcitx5-mozc
+    #       # fcitx5-gtk
+    #     ];
+    #   };
+    # };
     extraLocaleSettings = {
       LC_ADDRESS = "en_US.UTF-8";
       LC_IDENTIFICATION = "en_US.UTF-8";

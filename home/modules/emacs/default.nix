@@ -107,12 +107,6 @@ in {
       extraPackages = epkgs: with epkgs; [vterm oauth2];
     };
 
-    # For :tools magit
-    programs.git.delta = {
-      enable = true;
-      options = {syntax-theme = "Nord";};
-    };
-
     # Doom directory.
     home.sessionVariables = {
       DOOMDIR = "$XDG_CONFIG_HOME/doom";

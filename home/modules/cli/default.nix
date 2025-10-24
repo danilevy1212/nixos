@@ -41,14 +41,21 @@ in
     config = lib.mkIf cfg.enable {
       programs.git = {
         enable = true;
-        userName = cfg.git.userName;
-        userEmail = cfg.git.userEmail;
-        extraConfig = {
+        settings = {
+          user = {
+            name = cfg.git.userName;
+            email = cfg.git.userEmail;
+          };
           core = {askpass = "";};
           merge = {conflictStyle = "diff3";};
           push = {autoSetupRemote = true;};
           init = {defaultBranch = "main";};
         };
+      };
+      programs.delta = {
+        enable = true;
+        enableGitIntegration = true;
+        options = {syntax-theme = "Nord";};
       };
 
       # Add custom autoloaded functions
