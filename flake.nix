@@ -45,7 +45,6 @@
     # Home-manager configuration.
     defaultHomeManagerUserConfig = {
       username = "dlevym";
-      work = false;
       modules = {
         neovim = {
           enable = true;
@@ -115,9 +114,7 @@
     ];
     # Refactor to use flake-parts or flake-utils
     nixosConfigurations = {
-      # TODO Remove
-      # dellXps15 = addHostConfiguration "dellXps15" [];
-      # nyx15v2 = addHostConfiguration "nyx15v2" [];
+      nyx15v2 = addHostConfiguration "nyx15v2" [];
       bootse = addHostConfiguration "bootse" [];
       zflow13 = addHostConfiguration "zflow13" [];
       thinkpadP14s = addHostConfiguration "thinkpadP14s" [

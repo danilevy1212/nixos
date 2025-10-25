@@ -53,10 +53,6 @@ in
               example = "dlevym";
               description = "User account name.";
             };
-            work = mkOption {
-              type = types.bool;
-              description = "Add extra configuration for work related workflows.";
-            };
           };
         };
     };

@@ -45,10 +45,6 @@ in {
 
         # Redis cli client
         redis
-      ]
-      ++ lib.optionals cfg.work [
-        # Work stuff
-        awscli2
       ];
 
     # File sharing, p2p style
@@ -58,12 +54,6 @@ in {
         enable = true;
         command = "syncthingtray --wait";
       };
-    };
-
-    home.sessionVariables = mkIf cfg.work {
-      AWS_SHARED_CREDENTIALS_FILE = "$XDG_CONFIG_HOME/aws/credentials";
-      AWS_CONFIG_FILE = "$XDG_CONFIG_HOME/aws/config";
-      AWS_PROFILE = "autopay-developer";
     };
 
     # Reuse an already-established connection when creating a new SSH session
