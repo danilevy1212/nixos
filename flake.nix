@@ -22,11 +22,16 @@
     nixos-plasma = {
       url = "github:nixos/nixpkgs/8d5bdaf3a45a6e42a23ff476ba478731752c7f95";
     };
+    # Hardware
+    nixos-hardware = {
+      url = "github:NixOS/nixos-hardware/master";
+    };
   };
   outputs = {
     nixos-stable,
     nixos-unstable,
     home-manager-unstable,
+    nixos-hardware,
     colortest,
     ...
   }: let
@@ -97,6 +102,9 @@
                 "nixpkgs=${nixos-unstable}"
               ];
             }
+            {
+              home-manager.extraSpecialArgs = defaultSpecialArgs;
+            }
           ]
           ++ nixos-unstable.lib.optionals (builtins.isList additionalModules) additionalModules;
         specialArgs = defaultSpecialArgs;
@@ -107,16 +115,17 @@
     ];
     # Refactor to use flake-parts or flake-utils
     nixosConfigurations = {
-      dellXps15 = addHostConfiguration "dellXps15" [];
-      nyx15v2 = addHostConfiguration "nyx15v2" [];
-      bootse = addHostConfiguration "bootse" [
+      # TODO Remove
+      # dellXps15 = addHostConfiguration "dellXps15" [];
+      # nyx15v2 = addHostConfiguration "nyx15v2" [];
+      bootse = addHostConfiguration "bootse" [];
+      zflow13 = addHostConfiguration "zflow13" [];
+      thinkpadP14s = addHostConfiguration "thinkpadP14s" [
         {
-          home-manager.extraSpecialArgs = defaultSpecialArgs;
-        }
-      ];
-      zflow13 = addHostConfiguration "zflow13" [
-        {
-          home-manager.extraSpecialArgs = defaultSpecialArgs;
+          imports = [
+            # add your model from this list: https://github.com/NixOS/nixos-hardware/blob/master/flake.nix
+            nixos-hardware.nixosModules.lenovo-thinkpad-p14s-amd-gen5
+          ];
         }
       ];
     };
