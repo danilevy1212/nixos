@@ -40,6 +40,7 @@ in {
 
       # Social closeness
       telegram-desktop
+      mattermost
 
       # Browser
       chromium
@@ -62,10 +63,5 @@ in {
       # raspi
       stable.rpi-imager
     ];
-
-    # 🤮 I hate this, but everyone else in the team uses it, so I need to make sure what works for me works for them.
-    programs.vscode = lib.mkIf cfg.work {
-      enable = true;
-    };
   };
 }
