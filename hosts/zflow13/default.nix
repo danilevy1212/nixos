@@ -1,7 +1,7 @@
 {
   pkgs,
-  stable,
   lib,
+  config,
   ...
 }: let
   # TODO  This whole llm-studio setup should + certs should be moved to it's own module
@@ -115,7 +115,7 @@ in {
     options asus_nb_wmi wapf=1
 
     # AMDGPU driver tuning (all GPU params consolidated here)
-    options amdgpu dc=1 gpu_recovery=1 ppfeaturemask=0xffffffff runpm=1
+    options amdgpu dc=1 gpu_recovery=1 ppfeaturemask=0xfffd7fff runpm=1
 
     # Camera – shorter timeout, ignore small quirks
     options uvcvideo quirks=128 timeout=5000
@@ -419,9 +419,6 @@ in {
     ];
   };
 
-  # Enable AMD CPU microcode and all redistributable firmware (WiFi, BT, GPU)
-  hardware.enableRedistributableFirmware = true;
-
   # Emergency-only 8GB swapfile: lowest priority (-2) so zram is preferred
   # Discard option hints TRIM to NVMe; only touched when zram is exhausted
   swapDevices = [
@@ -435,4 +432,8 @@ in {
       priority = -2;
     }
   ];
+
+  # Enable AMD CPU microcode and all redistributable firmware (WiFi, BT, GPU)
+  hardware.enableRedistributableFirmware = true;
+  hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 }
