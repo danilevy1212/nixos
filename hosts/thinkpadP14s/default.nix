@@ -64,7 +64,7 @@
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
-  # List services that you want to enable:
+  # Enable bluetooth
   hardware.bluetooth.enable = true;
 
   # Enable AMD CPU microcode and all redistributable firmware (WiFi, BT, GPU)
