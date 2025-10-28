@@ -26,6 +26,8 @@
     nixos-hardware = {
       url = "github:NixOS/nixos-hardware/master";
     };
+    # Declarative flatpaks
+    flatpaks.url = "github:in-a-dil-emma/declarative-flatpak/latest";
   };
   outputs = {
     nixos-stable,
@@ -33,6 +35,7 @@
     home-manager-unstable,
     nixos-hardware,
     colortest,
+    flatpaks,
     ...
   }: let
     system = "x86_64-linux";
@@ -103,6 +106,11 @@
             }
             {
               home-manager.extraSpecialArgs = specialArgs;
+            }
+            {
+              imports = [
+                flatpaks.nixosModules.default
+              ];
             }
           ]
           ++ nixos-unstable.lib.optionals (builtins.isList additionalModules) additionalModules;

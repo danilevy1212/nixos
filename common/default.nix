@@ -462,14 +462,15 @@ in {
   services.fwupd.enable = true;
 
   # Run in any distro, ask questions later
-  services.flatpak.enable = true;
-  systemd.services.addFlathubRepo = {
-    description = "Add the Flathub repository to flatpak";
-    wantedBy = ["multi-user.target"];
-    path = [pkgs.flatpak];
-    script = ''
-      flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-    '';
+  services.flatpak = {
+    enable = true;
+    # See https://github.com/in-a-dil-emma/declarative-flatpak
+    remotes = {
+      flathub = "https://flathub.org/repo/flathub.flatpakrepo";
+    };
+    packages = [
+      "flathub:app/com.mattermost.Desktop//stable"
+    ];
   };
 
   # Common memory management settings
