@@ -253,6 +253,8 @@ in {
         dconf-editor
         memtest86plus
         smartmontools
+        gparted
+        unixtools.fdisk
         # Audio (pulseaudio under pipewire)
         pulseaudio
         # KDE extras

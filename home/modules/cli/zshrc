@@ -109,6 +109,7 @@ fi
 
 ## TODO  ZINIT is overenginered, hard to understand and maintain. Is it really worth the performance if I don't understand what I am changing?
 #        Seek alternatives
+#        See https://antidote.sh , with home-manager integration programs.zsh.antidote.enable = true;
 
 ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 
