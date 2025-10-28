@@ -2,6 +2,7 @@
   pkgs,
   lib,
   config,
+  userConfig,
   ...
 }: let
   openDrivers = true;
@@ -118,13 +119,6 @@ in {
   # Enable CUPS to print documents.
   services.printing.enable = true;
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.dlevym = {
-    isNormalUser = true;
-    description = "Daniel Levy Moreno";
-    extraGroups = ["networkmanager" "wheel"];
-  };
-
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
@@ -141,7 +135,7 @@ in {
   # Auto-login
   services.displayManager.autoLogin = {
     enable = true;
-    user = "dlevym";
+    user = userConfig.username;
   };
 
   # AI Hype

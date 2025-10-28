@@ -44,7 +44,7 @@
     };
     # Home-manager configuration.
     defaultHomeManagerUserConfig = {
-      username = "dlevym";
+      username = "daniel-moreno-levy";
       modules = {
         neovim = {
           enable = true;
@@ -78,9 +78,9 @@
       userConfig = defaultHomeManagerUserConfig;
     };
     mergeWithDefaultSpecialArgs = customConfig: nixos-unstable.lib.attrsets.recursiveUpdate defaultSpecialArgs customConfig;
-    addHostConfiguration = hostname: additionalModules:
+    addHostConfiguration = hostname: additionalModules: specialArgs:
       nixos-unstable.lib.nixosSystem {
-        inherit system;
+        inherit system specialArgs;
         modules =
           [
             home-manager-unstable.nixosModules.home-manager
@@ -102,11 +102,10 @@
               ];
             }
             {
-              home-manager.extraSpecialArgs = defaultSpecialArgs;
+              home-manager.extraSpecialArgs = specialArgs;
             }
           ]
           ++ nixos-unstable.lib.optionals (builtins.isList additionalModules) additionalModules;
-        specialArgs = defaultSpecialArgs;
       };
   in {
     imports = [
@@ -114,17 +113,26 @@
     ];
     # Refactor to use flake-parts or flake-utils
     nixosConfigurations = {
-      nyx15v2 = addHostConfiguration "nyx15v2" [];
-      bootse = addHostConfiguration "bootse" [];
-      zflow13 = addHostConfiguration "zflow13" [];
-      thinkpadP14s = addHostConfiguration "thinkpadP14s" [
-        {
-          imports = [
-            # add your model from this list: https://github.com/NixOS/nixos-hardware/blob/master/flake.nix
-            nixos-hardware.nixosModules.lenovo-thinkpad-p14s-amd-gen5
-          ];
-        }
-      ];
+      nyx15v2 = addHostConfiguration "nyx15v2" [] defaultSpecialArgs;
+      bootse = addHostConfiguration "bootse" [] defaultSpecialArgs;
+      zflow13 = addHostConfiguration "zflow13" [] defaultSpecialArgs;
+      thinkpadP14s =
+        addHostConfiguration "thinkpadP14s" [
+          {
+            imports = [
+              # add your model from this list: https://github.com/NixOS/nixos-hardware/blob/master/flake.nix
+              nixos-hardware.nixosModules.lenovo-thinkpad-p14s-amd-gen5
+            ];
+          }
+        ]
+        (mergeWithDefaultSpecialArgs {
+          userconfig = {
+            username = "daniel-moreno-levy";
+            modules = {
+              cli.git.userEmail = "daniel.moreno.levy@gravwell.io";
+            };
+          };
+        });
     };
     # TODO Have a configuration that is only `home-manager`, meant for systems that may or may not be `NIXOS`
     #      See https://nix-community.github.io/home-manager/index.xhtml#sec-flakes-standalone

@@ -16,6 +16,14 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  # Full Disk Encryption
+  boot.initrd.luks.devices = {
+    root = { 
+      device = "/dev/nvme0n1p2";
+      preLVM = true;
+    };
+  };
+
   # Use latest kernel.
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
@@ -56,7 +64,8 @@
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
-  programs.git = {enable = true;};
+  # List services that you want to enable:
+  hardware.bluetooth.enable = true;
 
   # Enable AMD CPU microcode and all redistributable firmware (WiFi, BT, GPU)
   hardware.enableRedistributableFirmware = true;
