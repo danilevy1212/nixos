@@ -91,25 +91,19 @@
             ./common
             ./cachix.nix
             {
+              # Declarative flatpaks
+              imports = [
+                flatpaks.nixosModules.default
+              ];
+              # Colortest, for testing terminal colors
               environment.systemPackages = [
-                # Colortest, for testing terminal colors
                 colortest.packages."${system}".colortest
               ];
               networking.hostName = hostname;
-              home-manager.extraSpecialArgs = nixos-unstable.lib.mkDefault defaultSpecialArgs;
-            }
-            {
+              home-manager.extraSpecialArgs = specialArgs;
               # Common NIX_PATH, by default we are on unstable
               nix.nixPath = [
                 "nixpkgs=${nixos-unstable}"
-              ];
-            }
-            {
-              home-manager.extraSpecialArgs = specialArgs;
-            }
-            {
-              imports = [
-                flatpaks.nixosModules.default
               ];
             }
           ]
@@ -134,7 +128,7 @@
           }
         ]
         (mergeWithDefaultSpecialArgs {
-          userconfig = {
+          userConfig = {
             username = "daniel-moreno-levy";
             modules = {
               cli.git.userEmail = "daniel.moreno.levy@gravwell.io";
