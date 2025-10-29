@@ -18,7 +18,7 @@
 
   # Full Disk Encryption
   boot.initrd.luks.devices = {
-    root = { 
+    root = {
       device = "/dev/nvme0n1p2";
       preLVM = true;
     };

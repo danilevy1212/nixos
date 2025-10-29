@@ -25,27 +25,26 @@ with lib; let
   };
 in {
   config = {
-    home.packages = with pkgs;
-      [
-        # Mount anything, anywhere, all at once
-        rclone
+    home.packages = with pkgs; [
+      # Mount anything, anywhere, all at once
+      rclone
 
-        # Sync with anything, anywhere, all at once
-        mutagen
+      # Sync with anything, anywhere, all at once
+      mutagen
 
-        # REST Client
-        brunoWrapped
-        atac
+      # REST Client
+      brunoWrapped
+      atac
 
-        # e2e file transfer
-        portal
+      # e2e file transfer
+      portal
 
-        # Database client
-        dbeaver-bin
+      # Database client
+      dbeaver-bin
 
-        # Redis cli client
-        redis
-      ];
+      # Redis cli client
+      redis
+    ];
 
     # File sharing, p2p style
     services.syncthing = {
