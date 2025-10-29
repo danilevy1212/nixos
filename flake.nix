@@ -47,7 +47,7 @@
     };
     # Home-manager configuration.
     defaultHomeManagerUserConfig = {
-      username = "daniel-moreno-levy";
+      username = "dlevym";
       modules = {
         neovim = {
           enable = true;
