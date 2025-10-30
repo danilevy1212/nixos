@@ -39,6 +39,6 @@ in
         yaegi = "rlwrap yaegi";
       };
 
-      home.sessionPath = mkIf cfg.addPath ["$HOME/${goPath}/bin"];
+      home.sessionPath = mkIf cfg.addPath ["${goPath}/bin"];
     };
   }
