@@ -10,6 +10,13 @@ in
   with lib; {
     options.userConfig.modules.cli = {
       enable = mkEnableOption "Enable home-manager to take over the CLI environment";
+      agents = mkOption {
+        type = types.submodule {
+          options = {
+            enable = mkEnableOption "Enable AI agents and tools";
+          };
+        };
+      };
       git = mkOption {
         type = types.submodule {
           options = {
@@ -117,18 +124,18 @@ in
       # github cli program
       programs.gh = {
         enable = true;
-        extensions = [
-          pkgs.gh-copilot
+        extensions = with pkgs; lib.optionals cfg.agents.enable [
+          gh-copilot
         ];
       };
 
       # Vibing and coding
-      programs.opencode = {
+      programs.opencode = lib.mkIf cfg.agents.enable {
         enable = true;
         rules = builtins.readFile ./opencode/RULES.md;
       };
 
-      xdg.configFile."opencode/opencode.jsonc" = {
+      xdg.configFile."opencode/opencode.jsonc" = lib.mkIf cfg.agents.enable {
         text = ''
           {
             "$schema": "https://opencode.ai/config.json",
