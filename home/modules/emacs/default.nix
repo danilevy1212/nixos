@@ -29,7 +29,7 @@ in {
         dejavu_fonts
         symbola
         noto-fonts
-        noto-fonts-emoji
+        noto-fonts-color-emoji
         quivera
         ## Terminal
         # TODO Replace with Ioveska Nerd Font
@@ -123,7 +123,7 @@ in {
       doom-install = lib.hm.dag.entryAfter ["writeBoundary"] ''
         if [ ! -d ${emacs-dir} ]
         then
-           $DRY_RUN_CMD ${pkgs.gitAndTools.gitFull}/bin/git clone https://github.com/hlissner/doom-emacs ${emacs-dir}
+           $DRY_RUN_CMD ${pkgs.gitFull}/bin/git clone https://github.com/hlissner/doom-emacs ${emacs-dir}
         fi
       '';
     };

@@ -269,6 +269,8 @@ in {
     lmstudio
     vulkan-tools
     llmStudioLocalCerts
+    # GPU Watch
+    nvtopPackages.amd
     # ROCm
     # TODO  Enable when I am ready to give ollama another spin
     # rocmPackages.rocm-smi
@@ -285,7 +287,6 @@ in {
   nixpkgs.config.rocmSupport = false;
 
   # Enable bluetooth
-  services.blueman.enable = true;
   hardware.bluetooth.enable = true;
 
   # ASUS userspace stack: asusd for keyboard/fan/profile control; supergfxd for GPU switching

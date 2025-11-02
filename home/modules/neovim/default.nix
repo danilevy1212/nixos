@@ -59,8 +59,8 @@ in {
       nvim-install = lib.hm.dag.entryAfter ["writeBoundary"] ''
         if [ ! -d ${nvim_config_dir} ]
         then
-           $DRY_RUN_CMD ${pkgs.gitAndTools.gitFull}/bin/git clone https://github.com/danilevy1212/nvim.git ${nvim_config_dir}
-           $DRY_RUN_CMD ${pkgs.gitAndTools.gitFull}/bin/git remote set-url origin git@github.com:danilevy1212/nvim.git
+           $DRY_RUN_CMD ${pkgs.gitFull}/bin/git clone https://github.com/danilevy1212/nvim.git ${nvim_config_dir}
+           $DRY_RUN_CMD ${pkgs.gitFull}/bin/git remote set-url origin git@github.com:danilevy1212/nvim.git
         fi
       '';
     };

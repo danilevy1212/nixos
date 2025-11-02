@@ -270,14 +270,13 @@ in {
         # opencl
         clinfo
         # opengl
-        glxinfo
+        mesa-demos
         # vulkan
         vulkan-tools
         # sensor data
         lm_sensors
         # Verify video HW acceleration, see https://nixos.wiki/wiki/Accelerated_Video_Playback
         libva-utils
-        nvtopPackages.full
         # k8s (client + local dev)
         minikube
         kubectl
@@ -296,7 +295,7 @@ in {
   # Git
   programs.git = {
     enable = true;
-    package = pkgs.gitAndTools.gitFull;
+    package = pkgs.gitFull;
     config = {
       safe.directory = [
         "/home/${username}/.config/nixos"

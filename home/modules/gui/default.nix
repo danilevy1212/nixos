@@ -24,7 +24,7 @@ in {
         simplescreenrecorder
 
         # Drag and Drop convenience
-        xdragon
+        dragon-drop
 
         # For REPL sake
         rlwrap

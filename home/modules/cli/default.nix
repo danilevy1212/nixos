@@ -124,9 +124,10 @@ in
       # github cli program
       programs.gh = {
         enable = true;
-        extensions = with pkgs; lib.optionals cfg.agents.enable [
-          gh-copilot
-        ];
+        extensions = with pkgs;
+          lib.optionals cfg.agents.enable [
+            gh-copilot
+          ];
       };
 
       # Vibing and coding

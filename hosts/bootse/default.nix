@@ -1,6 +1,7 @@
 {
   pkgs,
   lib,
+  stable,
   config,
   userConfig,
   ...
@@ -68,10 +69,10 @@ in {
     extraPackages = with pkgs; [
       vpl-gpu-rt
       nvidia-vaapi-driver
-      vaapiVdpau
+      libva-vdpau-driver
     ];
     extraPackages32 = with pkgs; [
-      pkgsi686Linux.vaapiVdpau
+      pkgsi686Linux.libva-vdpau-driver
       pkgsi686Linux.intel-media-driver
     ];
   };
@@ -81,6 +82,13 @@ in {
   nixpkgs.config.packageOverrides = pkgs: {
     # Disable CUDA support for ueberzugpp to avoid build issues
     ueberzugpp = pkgs.ueberzugpp.override {enableOpencv = false;};
+  };
+
+  # Default browser
+  programs.firefox = {
+    enable = true;
+    # NOTE  Pinning stable, see https://github.com/NixOS/nixpkgs/issues/457406
+    package = stable.firefox;
   };
 
   # Gamescope session for posterity
@@ -115,6 +123,10 @@ in {
     DBUS_SESSION_BUS_ADDRESS = "unix:path=$XDG_RUNTIME_DIR/bus";
     QT_QPA_PLATFORM = "wayland";
   };
+  # GPU Watch
+  environment.systemPackages = [
+    stable.nvtopPackages.nvidia
+  ];
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
@@ -124,7 +136,6 @@ in {
 
   # List services that you want to enable:
   hardware.bluetooth.enable = true;
-  services.blueman.enable = true;
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
