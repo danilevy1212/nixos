@@ -38,7 +38,6 @@ in {
         # Node version manager
         fnm
         nodejs
-        nodePackages.ts-node
       ];
     };
   };
