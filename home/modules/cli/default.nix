@@ -140,7 +140,7 @@ in
         text = ''
           {
             "$schema": "https://opencode.ai/config.json",
-            "theme": "system",
+            "theme": "nord",
             "plugin": [],
             "keybinds": {
               "session_interrupt": "<leader>esc"
