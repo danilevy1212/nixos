@@ -399,13 +399,9 @@ in {
       # NOTE  See https://www.amplenote.com/plugins/WykvBZZSXReMcVFRrjrhk4mS
       OLLAMA_ORIGINS = "amplenote-handler://*,https://plugins.amplenote.com";
       OLLAMA_FLASH_ATTENTION = "true";
-      OLLAMA_KV_CACHE_TYPE = "q8_0";
+      OLLAMA_KV_CACHE_TYPE = "q5_0";
     };
     rocmOverrideGfx = "11.5.1";
-  };
-  # Nice Web UI
-  services.open-webui = {
-    enable = true;
   };
 
   # Use latest mainline kernel (6.17+) on this host for newest AMD/ASUS fixes

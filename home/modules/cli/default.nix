@@ -148,7 +148,7 @@ in
             "provider": {
               "opencode": {
                 "models": {
-                  "gpt-5-codex": {
+                  "gpt-5.1-codex": {
                      "reasoningEffort": "high",
                      "reasoningSummary": "auto",
                      "textVerbosity": "medium",
@@ -169,7 +169,7 @@ in
             },
             "agent": {
               "plan": {
-                "model": "opencode/gpt-5-codex"
+                "model": "opencode/gpt-5.1-codex"
               },
               "build": {
                 "model": "opencode/big-pickle"

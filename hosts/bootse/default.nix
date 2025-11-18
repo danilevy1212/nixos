@@ -86,7 +86,6 @@ in {
 
   # Default browser
   programs.firefox = {
-    enable = true;
     # NOTE  Pinning stable, see https://github.com/NixOS/nixpkgs/issues/457406
     package = stable.firefox;
   };

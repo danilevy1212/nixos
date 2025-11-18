@@ -382,6 +382,14 @@ in {
   virtualisation.docker = {
     enable = true;
     autoPrune.enable = true;
+    extraOptions = "--default-shm-size=2g";
+  };
+  # Enables cgroup v2 delegation so Docker can mount /dev/shm properly
+  systemd.services.docker.serviceConfig = {
+    # Allows sub-cgroups and tmpfs mounts
+    Delegate = "yes";
+    # Enables --memory limits to work
+    MemoryAccounting = "yes";
   };
 
   # Some programs need SUID wrappers, can be configured further or are started in user sessions.
