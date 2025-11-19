@@ -302,6 +302,7 @@ in {
         "/etc/nixos"
       ];
     };
+    lfs.enable = true;
   };
 
   # Install firefox.
