@@ -132,7 +132,6 @@
           userConfig = {
             username = "daniel-moreno-levy";
             modules = {
-              cli.agents.enable = false;
               cli.git.userEmail = "daniel.moreno.levy@gravwell.io";
             };
           };

@@ -169,13 +169,13 @@ in
             },
             "agent": {
               "plan": {
-                "model": "opencode/gpt-5.1-codex"
+                "model": "opencode/claude-opus-4-5"
               },
               "build": {
-                "model": "opencode/big-pickle"
+                "model": "opencode/kimi-k2-thinking"
               },
               "execute": {
-                "model": "opencode/big-pickle",
+                "model": "opencode/kimi-k2-thinking",
                 "mode": "subagent",
                 "description": "Executes the plans layed out by the plan agent.",
                 "prompt": "You are the Execute subagent. Carry out concrete actions delegated by the Plan agent using the shared conversation context. Do not re‑plan; follow the given steps and constraints. Respect repository rules and permissions. Be concise: state what you did, the result, and whether anything is blocked. Ask only when a blocker prevents progress. Acknowledge each delegated step after completing it before moving forward.",

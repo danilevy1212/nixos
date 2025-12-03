@@ -60,9 +60,8 @@ in {
       # Pseudo-office
       libreoffice
 
-      # FIXME See https://github.com/NixOS/nixpkgs/issues/458908
       # raspi
-      # unstable.rpi-imager
+      rpi-imager
     ];
   };
 }
