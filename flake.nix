@@ -28,6 +28,8 @@
     };
     # Declarative flatpaks
     flatpaks.url = "github:in-a-dil-emma/declarative-flatpak/latest";
+    # Up-to-date AI tools, for nix
+    nix-ai-tools.url = "github:numtide/nix-ai-tools";
   };
   outputs = {
     nixos-stable,
@@ -36,6 +38,7 @@
     nixos-hardware,
     colortest,
     flatpaks,
+    nix-ai-tools,
     ...
   }: let
     system = "x86_64-linux";
@@ -106,6 +109,10 @@
               nix.nixPath = [
                 "nixpkgs=${nixos-unstable}"
               ];
+              # nix-ai-tools tends to be more up-to-date
+              nixpkgs.config.packageOverrides = pkgs: {
+                opencode = nix-ai-tools.packages."${system}".opencode;
+              };
             }
           ]
           ++ nixos-unstable.lib.optionals (builtins.isList additionalModules) additionalModules;
