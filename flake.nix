@@ -18,10 +18,6 @@
       url = "./pkgs/colortest";
       inputs.nixpkgs.follows = "nixos-stable";
     };
-    # Latest version with plasma that works with HDR + sunshine
-    nixos-plasma = {
-      url = "github:nixos/nixpkgs/8d5bdaf3a45a6e42a23ff476ba478731752c7f95";
-    };
     # Hardware
     nixos-hardware = {
       url = "github:NixOS/nixos-hardware/master";
