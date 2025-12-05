@@ -10,6 +10,11 @@ in
   with lib; {
     options.userConfig.modules.cli = {
       enable = mkEnableOption "Enable home-manager to take over the CLI environment";
+      isWork = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether this is a work machine";
+      };
       agents = mkOption {
         type = types.submodule {
           options = {
@@ -169,13 +174,25 @@ in
             },
             "agent": {
               "plan": {
-                "model": "opencode/claude-opus-4-5"
+                "model": "${
+            if cfg.isWork
+            then "github-copilot/claude-sonnet-4.5"
+            else "opencode/claude-opus-4-5"
+          }"
               },
               "build": {
-                "model": "opencode/glm-4.6"
+                "model": "${
+            if cfg.isWork
+            then "github-copilot/claude-sonnet-4.5"
+            else "opencode/glm-4.6"
+          }"
               },
               "execute": {
-                "model": "opencode/glm-4.6",
+                "model": "${
+            if cfg.isWork
+            then "github-copilot/claude-sonnet-4.5"
+            else "opencode/glm-4.6"
+          }",
                 "mode": "subagent",
                 "description": "Executes the plans layed out by the plan agent.",
                 "prompt": "You are the Execute subagent. Carry out concrete actions delegated by the Plan agent using the shared conversation context. Do not re‑plan; follow the given steps and constraints. Respect repository rules and permissions. Be concise: state what you did, the result, and whether anything is blocked. Ask only when a blocker prevents progress. Acknowledge each delegated step after completing it before moving forward.",
@@ -197,7 +214,7 @@ in
             },
             "mcp": {
               "mcphub": {
-                "enabled": true,
+                "enabled": ${builtins.toJSON (!cfg.isWork)},
                 "type": "remote",
                 "url": "http://10.0.0.202:3000/mcp"
               }
