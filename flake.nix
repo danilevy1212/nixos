@@ -114,9 +114,6 @@
           ++ nixos-unstable.lib.optionals (builtins.isList additionalModules) additionalModules;
       };
   in {
-    imports = [
-      ./cachix.nix
-    ];
     # Refactor to use flake-parts or flake-utils
     nixosConfigurations = {
       nyx15v2 = addHostConfiguration "nyx15v2" [] defaultSpecialArgs;
