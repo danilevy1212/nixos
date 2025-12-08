@@ -13,6 +13,7 @@ in {
     ./hardware-configuration.nix
     ../../common/sunshine.nix
     ../../common/gaming.nix
+    ../../common/ollama.nix
   ];
   # Only works with closed-source drivers
   boot.kernelParams =
@@ -146,12 +147,6 @@ in {
   services.displayManager.autoLogin = {
     enable = true;
     user = userConfig.username;
-  };
-
-  # AI Hype
-  services.ollama = {
-    enable = true;
-    acceleration = "cuda";
   };
 
   # Kill hanging processes after 3 mins

@@ -66,6 +66,7 @@ in {
     ./hardware-configuration.nix
     ../../common/sunshine.nix
     ../../common/gaming.nix
+    ../../common/ollama.nix
   ];
 
   # Kernel parameters tuned for ASUS GZ302 stability
@@ -388,20 +389,6 @@ in {
         '';
       };
     };
-  };
-
-  # LLMs interface
-  services.ollama = {
-    # TODO  I've given up, let's do lmstudio with vulkan backend instead. When ROCm 7 lands on nixos, I'll try again.
-    enable = false;
-    acceleration = "rocm";
-    environmentVariables = {
-      # NOTE  See https://www.amplenote.com/plugins/WykvBZZSXReMcVFRrjrhk4mS
-      OLLAMA_ORIGINS = "amplenote-handler://*,https://plugins.amplenote.com";
-      OLLAMA_FLASH_ATTENTION = "true";
-      OLLAMA_KV_CACHE_TYPE = "q5_0";
-    };
-    rocmOverrideGfx = "11.5.1";
   };
 
   # Use latest mainline kernel (6.17+) on this host for newest AMD/ASUS fixes
