@@ -154,12 +154,12 @@ in
               "opencode": {
                 "models": {
                   "gpt-5.1-codex": {
-                     "reasoningEffort": "high",
-                     "reasoningSummary": "auto",
-                     "textVerbosity": "medium",
-                     "include": [
-                       "reasoning.encrypted_content"
-                     ]
+                    "reasoningEffort": "high",
+                    "reasoningSummary": "auto",
+                    "textVerbosity": "medium",
+                    "include": [
+                      "reasoning.encrypted_content"
+                    ]
                   }
                 }
               },
@@ -208,6 +208,8 @@ in
                 "git log*": "allow",
                 "git diff*": "allow",
                 "git rev-parse*": "allow",
+                "grep*": "allow",
+                "rg*": "allow",
                 "*": "ask"
               },
               "webfetch": "allow"
