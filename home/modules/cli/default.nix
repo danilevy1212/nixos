@@ -251,6 +251,7 @@ in
         xq-xml
         ueberzugpp
         bc
+        xxd
 
         # Docker Management
         lazydocker
