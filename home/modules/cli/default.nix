@@ -148,7 +148,8 @@ in
             "theme": "nord",
             "plugin": [],
             "keybinds": {
-              "session_interrupt": "<leader>esc"
+              // TODO Wait for resolution of https://github.com/sst/opencode/issues/5752
+              // "session_interrupt": "<leader>esc"
             },
             "provider": {
               "opencode": {
