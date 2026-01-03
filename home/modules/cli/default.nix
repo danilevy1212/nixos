@@ -129,6 +129,9 @@ in
       # github cli program
       programs.gh = {
         enable = true;
+        settings = {
+          git_protocol = "ssh";
+        };
         extensions = with pkgs;
           lib.optionals cfg.agents.enable [
             gh-copilot
