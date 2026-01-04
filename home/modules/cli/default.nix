@@ -157,7 +157,7 @@ in
             "provider": {
               "opencode": {
                 "models": {
-                  "gpt-5.1-codex": {
+                  "gpt-5.2-codex": {
                     "reasoningEffort": "high",
                     "reasoningSummary": "auto",
                     "textVerbosity": "medium",
@@ -188,14 +188,14 @@ in
                 "model": "${
             if cfg.isWork
             then "github-copilot/claude-sonnet-4.5"
-            else "opencode/glm-4.6"
+            else "opencode/glm-4.7"
           }"
               },
               "execute": {
                 "model": "${
             if cfg.isWork
             then "github-copilot/claude-haiku-4.5"
-            else "opencode/glm-4.6"
+            else "opencode/glm-4.7"
           }",
                 "mode": "subagent",
                 "description": "Executes the plans layed out by the plan agent.",
