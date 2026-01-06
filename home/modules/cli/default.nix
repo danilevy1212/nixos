@@ -188,14 +188,14 @@ in
                 "model": "${
             if cfg.isWork
             then "github-copilot/claude-sonnet-4.5"
-            else "opencode/glm-4.7"
+            else "opencode/glm-4.7-free"
           }"
               },
               "execute": {
                 "model": "${
             if cfg.isWork
             then "github-copilot/claude-haiku-4.5"
-            else "opencode/glm-4.7"
+            else "opencode/glm-4.7-free"
           }",
                 "mode": "subagent",
                 "description": "Executes the plans layed out by the plan agent.",
@@ -214,6 +214,11 @@ in
                 "git rev-parse*": "allow",
                 "grep*": "allow",
                 "rg*": "allow",
+                "head*": "allow",
+                "gh issue view*": "allow",
+                "gh search*": "allow",
+                "go list*": "allow",
+                "which*": "allow",
                 "*": "ask"
               },
               "webfetch": "allow"
