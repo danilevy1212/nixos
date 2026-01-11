@@ -2,7 +2,6 @@
   config,
   pkgs,
   userConfig,
-  stable,
   lib,
   ...
 }: let
@@ -478,9 +477,7 @@ in {
     remotes = {
       flathub = "https://flathub.org/repo/flathub.flatpakrepo";
     };
-    packages = [
-      "flathub:app/com.mattermost.Desktop//stable"
-    ];
+    packages = [];
   };
 
   # Common memory management settings

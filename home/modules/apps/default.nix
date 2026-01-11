@@ -40,7 +40,6 @@ in {
 
       # Social closeness
       telegram-desktop
-      mattermost
 
       # Browser
       chromium
