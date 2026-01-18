@@ -208,6 +208,7 @@ in
             "permission": {
               "edit": "ask",
               "bash": {
+                 "*": "ask",
                 "git status*": "allow",
                 "git log*": "allow",
                 "git diff*": "allow",
@@ -218,8 +219,7 @@ in
                 "gh issue view*": "allow",
                 "gh search*": "allow",
                 "go list*": "allow",
-                "which*": "allow",
-                "*": "ask"
+                "which*": "allow"
               },
               "webfetch": "allow"
             },
@@ -261,6 +261,10 @@ in
         ueberzugpp
         bc
         xxd
+
+        # PDF processing
+        poppler-utils
+        ghostscript
 
         # Docker Management
         lazydocker
