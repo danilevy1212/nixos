@@ -265,6 +265,11 @@ in
         # PDF processing
         poppler-utils
         ghostscript
+        pdftk
+        pdfgrep
+        qpdf
+        ocrmypdf
+        unpaper
 
         # Docker Management
         lazydocker
