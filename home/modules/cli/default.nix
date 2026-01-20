@@ -149,6 +149,11 @@ in
           {
             "$schema": "https://opencode.ai/config.json",
             "theme": "nord",
+            "small_model": "${
+            if cfg.isWork
+            then "github-copilot/claude-haiku-4.5"
+            else "opencode/kimi-k2"
+          }",
             "plugin": [],
             "keybinds": {
               // TODO Wait for resolution of https://github.com/sst/opencode/issues/5752
