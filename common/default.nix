@@ -78,12 +78,14 @@ in {
       extraGroups = [
         # Docker
         "docker"
-        # Enable ‘sudo’ for the user.
+        # Enable 'sudo' for the user.
         "wheel"
         # Can use network-manager
         "networkmanager"
         # Pulse Audio
         "audio"
+        # libvirt
+        "libvirtd"
       ];
     };
   };
@@ -279,6 +281,9 @@ in {
         # k8s (client + local dev)
         minikube
         kubectl
+        # virtualization
+        virt-viewer
+        guestfs-tools
       ]
       # Basic network
       ++ (with pkgs.unixtools; [netstat nmap ifconfig])
@@ -391,6 +396,18 @@ in {
     # Enables --memory limits to work
     MemoryAccounting = "yes";
   };
+
+  # libvirt/KVM
+  virtualisation.libvirtd = {
+    enable = true;
+    qemu = {
+      package = pkgs.qemu_kvm;
+      runAsRoot = false;
+      swtpm.enable = true;
+      vhostUserPackages = [ pkgs.virtiofsd ];
+    };
+  };
+  programs.virt-manager.enable = true;
 
   # Some programs need SUID wrappers, can be configured further or are started in user sessions.
   programs.gnupg.agent = {
