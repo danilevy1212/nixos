@@ -6,6 +6,10 @@
 }: let
   ZDOTDIR = "${config.xdg.configHome}/zsh";
   cfg = config.userConfig.modules.cli;
+  small_model =
+    if cfg.isWork
+    then "github-copilot/claude-haiku-4.5"
+    else "opencode/kimi-k2";
 in
   with lib; {
     options.userConfig.modules.cli = {
@@ -104,10 +108,11 @@ in
           ls = "ls --color=auto";
           # The only way to use rsync
           rsync = "rsync -azvhP --info=progress2";
-          "??" = "ghce";
-          "???" = "ghcs -t shell";
-          "git?" = "ghcs -t git";
-          "gh?" = "ghcs -t gh";
+          "??" = "oce";
+          "???" = "ocs";
+          "git?" = "ocs -t git";
+          "gh?" = "ocs -t gh";
+          "docker?" = "ocs -t docker";
         };
       };
 
@@ -124,6 +129,7 @@ in
         HISTFILE = "${config.xdg.dataHome}/history";
         USER_CUSTOM_AUTOLOAD = "${ZDOTDIR}/autoload";
         ATAC_KEY_BINDINGS = "${pkgs.atac.src}/share/atac/key-bindings.zsh";
+        SMALL_MODEL = "${small_model}";
       };
 
       # github cli program
@@ -132,10 +138,6 @@ in
         settings = {
           git_protocol = "ssh";
         };
-        extensions = with pkgs;
-          lib.optionals cfg.agents.enable [
-            gh-copilot
-          ];
       };
 
       # Vibing and coding
@@ -149,11 +151,7 @@ in
           {
             "$schema": "https://opencode.ai/config.json",
             "theme": "nord",
-            "small_model": "${
-            if cfg.isWork
-            then "github-copilot/claude-haiku-4.5"
-            else "opencode/kimi-k2"
-          }",
+            "small_model": "${small_model}",
             "plugin": [],
             "keybinds": {
               // TODO Wait for resolution of https://github.com/sst/opencode/issues/5752
@@ -197,11 +195,7 @@ in
           }"
               },
               "execute": {
-                "model": "${
-            if cfg.isWork
-            then "github-copilot/claude-haiku-4.5"
-            else "opencode/glm-4.7"
-          }",
+                "model": "${small_model}",
                 "mode": "subagent",
                 "description": "Executes the plans layed out by the plan agent.",
                 "prompt": "You are the Execute subagent. Carry out concrete actions delegated by the Plan agent using the shared conversation context. Do not re‑plan; follow the given steps and constraints. Respect repository rules and permissions. Be concise: state what you did, the result, and whether anything is blocked. Ask only when a blocker prevents progress. Acknowledge each delegated step after completing it before moving forward.",

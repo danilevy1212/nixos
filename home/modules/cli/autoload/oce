@@ -1,0 +1,40 @@
+# vim: set ft=zsh:
+
+oce() {
+    FUNCNAME="$funcstack[1]"
+
+    read -r -d '' __USAGE <<-EOF
+Wrapper around OpenCode to explain commands in natural language.
+
+USAGE
+  $FUNCNAME [flags] <command>
+
+FLAGS
+  -h, --help    Display help usage
+
+EXAMPLES
+  $ $FUNCNAME 'du -sh | sort -h'
+  $ $FUNCNAME 'git log --oneline --graph --decorate --all'
+EOF
+
+    local OPT OPTARG OPTIND
+    while getopts "h-:" OPT; do
+        if [ "$OPT" = "-" ]; then
+            OPT="${OPTARG%%=*}"
+            OPTARG="${OPTARG#"$OPT"}"
+            OPTARG="${OPTARG#=}"
+        fi
+
+        case "$OPT" in
+            help | h)
+                echo "$__USAGE"
+                return 0
+                ;;
+        esac
+    done
+
+    shift "$((OPTIND-1))"
+
+    local PROMPT="You are a command explanation agent. Explain the given shell command in clear, natural language. Describe what the command does, its purpose, and how its components work together. Be concise but thorough. Explain this command: $*"
+    opencode run --model "$SMALL_MODEL" "$PROMPT"
+}

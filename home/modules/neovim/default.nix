@@ -47,11 +47,6 @@ in {
       defaultEditor = true;
       vimdiffAlias = true;
       vimAlias = true;
-      # For CopilotChat
-      extraLuaPackages = ps:
-        with ps; [
-          tiktoken_core
-        ];
     };
 
     # "auto" install nvim

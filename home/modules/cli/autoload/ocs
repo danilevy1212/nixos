@@ -1,0 +1,60 @@
+# vim: set ft=zsh:
+
+ocs() {
+    FUNCNAME="$funcstack[1]"
+    TARGET="shell"
+
+    read -r -d '' __USAGE <<-EOF
+Wrapper around OpenCode to suggest commands based on natural language.
+
+USAGE
+  $FUNCNAME [flags] <prompt>
+
+FLAGS
+  -h, --help               Display help usage
+  -t, --target target      Target for suggestion; must be shell, gh, git
+                           default: "$TARGET"
+
+EXAMPLES
+  - Git use cases
+    $ $FUNCNAME -t git "Undo the most recent local commits"
+  
+  - Working with the GitHub CLI via ocs -t gh
+    $ $FUNCNAME -t gh "Create pull request"
+  
+  - General shell use cases
+    $ $FUNCNAME "Kill processes holding onto deleted files"
+EOF
+
+    local OPT OPTARG OPTIND
+    while getopts "ht:-:" OPT; do
+        if [ "$OPT" = "-" ]; then
+            OPT="${OPTARG%%=*}"
+            OPTARG="${OPTARG#"$OPT"}"
+            OPTARG="${OPTARG#=}"
+        fi
+
+        case "$OPT" in
+            help | h)
+                echo "$__USAGE"
+                return 0
+                ;;
+            target | t)
+                TARGET="$OPTARG"
+                ;;
+        esac
+    done
+
+    shift "$((OPTIND-1))"
+
+    local PROMPT="You are a command suggestion agent. Based on the user's natural language request, suggest appropriate shell, git, or GitHub CLI (gh) commands. Be concise and focus on practical, usable commands. When the target is specified (shell, git, or gh), tailor your suggestions accordingly. Provide the exact command that would accomplish the requested task. Suggest a $TARGET command to: $*"
+    local RESULT
+    RESULT="$(opencode run "$PROMPT")"
+    
+    if [ -n "$RESULT" ]; then
+        echo "$RESULT"
+    else
+        echo "No suggestion generated" >&2
+        return 1
+    fi
+}
