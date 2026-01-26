@@ -177,7 +177,21 @@ in
                   "baseURL": "http://127.0.0.1:1234/v1",
                   "max_tokens": 64000
                 }
+              }${if cfg.isWork then '',
+              "ollama-studio": {
+                "npm": "@ai-sdk/openai-compatible",
+                "name": "Ollama (Studio)",
+                "options": {
+                  "baseURL": "http://10.254.3.199:11434/v1",
+                  "num_ctx": 64000
+                },
+                "models": {
+                  "glm-4.7-flash:q4_K_M": {
+                    "name": "GLM 4.7 Flash"
+                  }
+                }
               }
+              '' else ""}
             },
             "agent": {
               "plan": {
