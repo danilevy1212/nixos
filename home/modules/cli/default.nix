@@ -246,6 +246,8 @@ in
                 "git log*": "allow",
                 "git diff*": "allow",
                 "git rev-parse*": "allow",
+                "git remote -v": "allow",
+                "git branch -a": "allow",
                 "grep*": "allow",
                 "rg*": "allow",
                 "head*": "allow",
@@ -285,6 +287,9 @@ in
         rsync
         fasd
         cloc
+
+        # Github actions
+        act
 
         # Video Archiver
         yt-dlp
