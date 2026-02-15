@@ -217,14 +217,14 @@ in
               "plan": {
                 "model": "${
             if cfg.isWork
-            then "github-copilot/claude-opus-4.5"
-            else "opencode/claude-opus-4-5"
+            then "github-copilot/claude-opus-4.6"
+            else "opencode/kimi-k2.5"
           }"
               },
               "build": {
                 "model": "${
             if cfg.isWork
-            then "github-copilot/claude-sonnet-4.5"
+            then "github-copilot/claude-opus-4.6"
             else "opencode/glm-4.7"
           }"
               },
