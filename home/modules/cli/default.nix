@@ -225,7 +225,7 @@ in
                 "model": "${
             if cfg.isWork
             then "github-copilot/claude-opus-4.6"
-            else "opencode/glm-4.7"
+            else "opencode/glm-5"
           }"
               },
               "execute": {
