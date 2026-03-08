@@ -86,8 +86,8 @@ in {
         # everywhere
         xclip
         xdotool
-        xorg.xprop
-        xorg.xwininfo
+        xprop
+        xwininfo
       ]
       ++ [
         # telega

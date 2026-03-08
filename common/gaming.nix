@@ -31,7 +31,7 @@
       extraPkgs = pkgs:
         with pkgs; [
           winetricks
-          wineWowPackages.waylandFull
+          wineWow64Packages.waylandFull
         ];
     })
     vulkan-loader

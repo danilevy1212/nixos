@@ -34,6 +34,8 @@ in {
 
         # Sunshine client for remote desktop
         moonlight-qt
+
+        iosevka-bin
       ];
 
       sessionVariables = {
@@ -87,82 +89,55 @@ in {
       };
     };
 
-    # TODO  Switch to wezterm
-    # A pretty, modern, terminal emulator.
-    programs.alacritty = {
+    # Batteries included terminal emulator
+    programs.ghostty = {
       enable = true;
       settings = {
-        # TODO  Switch to Ioveska Nerd Font + Sarasa Mono J backup (I need to switch to Kitty, alacritty doesn't support font fallback), see https://github.com/alacritty/alacritty/issues/957
-        font = {
-          normal = {family = "Sarasa Mono J";};
-          bold = {family = "Sarasa Mono J";};
-          italic = {family = "Sarasa Mono J";};
-          bold_italic = {family = "Sarasa Mono J";};
-          size = 10.0;
-        };
-        window = {
-          decorations_theme_variant = "Dark";
-          opacity = 0.9;
-        };
-        colors = {
-          primary = {
-            background = "#2e3440";
-            foreground = "#d8dee9";
-            dim_foreground = "#a5abb6";
-          };
-          cursor = {
-            text = "#2e3440";
-            cursor = "#d8dee9";
-          };
-          vi_mode_cursor = {
-            text = "#2e3440";
-            cursor = "#d8dee9";
-          };
-          selection = {
-            text = "CellForeground";
-            background = "#4c566a";
-          };
-          search = {
-            matches = {
-              foreground = "CellBackground";
-              background = "#88c0d0";
-            };
-          };
-          normal = {
-            black = "#3b4252";
-            red = "#bf616a";
-            green = "#a3be8c";
-            yellow = "#ebcb8b";
-            blue = "#81a1c1";
-            magenta = "#b48ead";
-            cyan = "#88c0d0";
-            white = "#e5e9f0";
-          };
-          bright = {
-            black = "#4c566a";
-            red = "#bf616a";
-            green = "#a3be8c";
-            yellow = "#ebcb8b";
-            blue = "#81a1c1";
-            magenta = "#b48ead";
-            cyan = "#8fbcbb";
-            white = "#eceff4";
-          };
-          dim = {
-            black = "#373e4d";
-            red = "#94545d";
-            green = "#809575";
-            yellow = "#b29e75";
-            blue = "#68809a";
-            magenta = "#8c738c";
-            cyan = "#6d96a5";
-            white = "#aeb3bb";
-          };
-          footer_bar = {
-            background = "#434c5e";
-            foreground = "#d8dee9";
-          };
-        };
+        # Iosevka Nerd Font primary, Sarasa Mono J fallback for CJK
+        font-family = [
+          "Iosevka"
+          "Sarasa Mono J"
+        ];
+        font-size = 10;
+        theme = "Nord";
+        window-theme = "dark";
+        background-opacity = 0.9;
+
+        keybind = [
+          # Split creation (ctrl+a leader, tmux-style)
+          "ctrl+a>v=new_split:right"
+          "ctrl+a>s=new_split:down"
+          "ctrl+a>x=close_surface"
+          "ctrl+a>z=toggle_split_zoom"
+          "ctrl+a>equal=equalize_splits"
+
+          # Split navigation (alt+hjkl, fast & conflict-free)
+          "ctrl+a>h=goto_split:left"
+          "ctrl+a>j=goto_split:bottom"
+          "ctrl+a>k=goto_split:top"
+          "ctrl+a>l=goto_split:right"
+
+          # Split resize
+          "ctrl+a>alt+h=resize_split:left,10"
+          "ctrl+a>alt+l=resize_split:right,10"
+          "ctrl+a>alt+k=resize_split:up,10"
+          "ctrl+a>alt+j=resize_split:down,10"
+
+          # Tab management
+          "ctrl+a>c=new_tab"
+          "ctrl+a>n=next_tab"
+          "ctrl+a>p=previous_tab"
+          "ctrl+a>1=goto_tab:1"
+          "ctrl+a>2=goto_tab:2"
+          "ctrl+a>3=goto_tab:3"
+          "ctrl+a>4=goto_tab:4"
+          "ctrl+a>5=goto_tab:5"
+          "ctrl+a>comma=prompt_surface_title"
+
+          # Prompt jumping (requires shell integration)
+          "ctrl+a>bracket_left=jump_to_prompt:-1"
+          "ctrl+a>bracket_right=jump_to_prompt:1"
+        ];
       };
     };
 

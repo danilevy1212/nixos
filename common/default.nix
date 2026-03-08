@@ -291,7 +291,7 @@ in {
       ++ [nix-prefetch nix-prefetch-git cachix nix-tree]
       ++ # Windows compatibility, just in case
       [
-        wineWowPackages.staging
+        wineWow64Packages.staging
         winetricks
       ];
   };

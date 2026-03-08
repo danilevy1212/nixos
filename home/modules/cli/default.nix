@@ -225,7 +225,7 @@ in
                 "model": "${
             if cfg.isWork
             then "github-copilot/claude-opus-4.6"
-            else "opencode/glm-5-free"
+            else "opencode/glm-5"
           }"
               },
               "execute": {
@@ -281,6 +281,9 @@ in
 
       # General utilities
       home.packages = with pkgs; [
+        # Build tools
+        gnumake
+        go-task
         # System
         fastfetch
         file
