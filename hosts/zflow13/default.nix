@@ -289,10 +289,7 @@ in {
 
   # ASUS userspace stack: asusd for keyboard/fan/profile control; supergfxd for GPU switching
   # See https://asus-linux.org/guides/nixos/
-  services.asusd = {
-    enable = true;
-    enableUserService = true;
-  };
+  services.asusd.enable = true;
   services.supergfxd = {
     enable = true;
   };

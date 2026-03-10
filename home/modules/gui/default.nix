@@ -17,7 +17,7 @@ in {
         pavucontrol
         playerctl
         easyeffects
-        helvum
+        crosspipe
 
         # xXxScReeN_SH0TSxXx
         flameshot

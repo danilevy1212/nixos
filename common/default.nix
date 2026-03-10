@@ -119,20 +119,20 @@ in {
     resolvconf.dnsExtensionMechanism = false;
   };
 
-  # Backlight control
-  programs.light.enable = true;
+  # Backlight control - brightnessctl works out of the box via systemd-logind
+  # See: https://wiki.nixos.org/wiki/Backlight#brightnessctl
   services.actkbd = {
     enable = true;
     bindings = [
       {
         keys = [224];
         events = ["key"];
-        command = "/run/current-system/sw/bin/light -U 5";
+        command = "${pkgs.brightnessctl}/bin/brightnessctl set 5%-";
       }
       {
         keys = [225];
         events = ["key"];
-        command = "/run/current-system/sw/bin/light -A 5";
+        command = "${pkgs.brightnessctl}/bin/brightnessctl set +5%";
       }
     ];
   };
@@ -258,6 +258,8 @@ in {
         unixtools.fdisk
         # Audio (pulseaudio under pipewire)
         pulseaudio
+        # Backlight control
+        brightnessctl
         # KDE extras
         ocs-url
         discover-wrapped
@@ -380,7 +382,7 @@ in {
   # Documentation
   documentation.man = {
     enable = true;
-    generateCaches = true;
+    cache.enable = true;
   };
 
   # Docker

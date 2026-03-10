@@ -11,18 +11,6 @@
   # - Installs common gaming tools and launchers
   # - Improves peripheral compatibility (udev rules + uinput)
 
-  # Minimum requirements for Steam and common extras
-  nixpkgs.config.packageOverrides = pkgs: {
-    steam = pkgs.steam.override {
-      extraPkgs = pkgs:
-        with pkgs; [
-          unstable.gamescope
-          unstable.gamescope-wsi
-          vulkan-loader
-        ];
-    };
-  };
-
   # Gaming applications and helpers (GPU-agnostic)
   environment.systemPackages = with pkgs; [
     drm_info
@@ -32,6 +20,10 @@
         with pkgs; [
           winetricks
           wineWow64Packages.waylandFull
+          freetype
+          pkgsi686Linux.freetype
+          fontconfig
+          pkgsi686Linux.fontconfig
         ];
     })
     vulkan-loader
@@ -41,6 +33,10 @@
         unstable.gamescope
         unstable.gamescope-wsi
         gamemode
+        freetype
+        pkgsi686Linux.freetype
+        fontconfig
+        pkgsi686Linux.fontconfig
       ];
     })
   ];
@@ -65,6 +61,38 @@
     dedicatedServer.openFirewall = true;
     protontricks.enable = true;
     extraCompatPackages = with pkgs; [proton-ge-bin];
+
+    # Use the native module option to inject extra packages into the Steam FHS
+    package = pkgs.steam.override {
+      extraPkgs = pkgs:
+        with pkgs; [
+          unstable.gamescope
+          unstable.gamescope-wsi
+          vulkan-loader
+          # Ensure Steam and Proton can see FreeType libraries
+          freetype
+          fontconfig
+          pkgsi686Linux.freetype
+          pkgsi686Linux.fontconfig
+        ];
+    };
+  };
+
+  # Override protontricks to use a custom steam-run with freetype
+  # This fixes the "Wine cannot find the FreeType font library" error
+  # See: https://github.com/NixOS/nixpkgs/issues/479497
+  nixpkgs.config.packageOverrides = pkgs: {
+    protontricks = pkgs.protontricks.override {
+      steam-run-free = (pkgs.steam.override {
+        extraPkgs = pkgs:
+          with pkgs; [
+            freetype
+            fontconfig
+            pkgsi686Linux.freetype
+            pkgsi686Linux.fontconfig
+          ];
+      }).run-free;
+    };
   };
 
   # Better compatibility with peripherals
