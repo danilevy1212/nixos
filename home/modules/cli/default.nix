@@ -203,10 +203,10 @@ in
                 "name": "Ollama (Studio)",
                 "options": {
                   "baseURL": "http://10.254.3.199:11434/v1",
-                  "num_ctx": 64000
+                  "num_ctx": 128000
                 },
                 "models": {
-                  "glm-4.7-flash:q4_K_M": {
+                  "glm-4.7-flash:q8_0": {
                     "name": "GLM 4.7 Flash"
                   }
                 }

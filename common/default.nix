@@ -57,7 +57,7 @@ in {
     supportedFilesystems = ["ntfs"];
 
     # Keep things stable, mirror FEDORA
-    kernelPackages = lib.mkDefault pkgs.linuxPackages_6_17;
+    kernelPackages = lib.mkDefault pkgs.linuxPackages_6_19;
 
     # Clean /tmp on boot
     tmp.cleanOnBoot = true;
