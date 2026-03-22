@@ -114,7 +114,11 @@ in {
       enable = true;
     };
     # Give me those sweet interwebs
-    networkmanager = {enable = true;};
+    networkmanager = {
+      enable = true;
+      # Use iwd backend – better WiFi 6E/7 (6GHz) and WPA3 support than wpa_supplicant
+      wifi.backend = "iwd";
+    };
     # No stupid DNS shennanigans
     resolvconf.dnsExtensionMechanism = false;
   };
@@ -151,6 +155,9 @@ in {
     backupFileExtension = "backup";
   };
   hardware.enableAllFirmware = true;
+  # Explicit linux-firmware fixes MT7925 WiFi association failures
+  # See: https://github.com/NixOS/nixpkgs/issues/477924#issuecomment-4055416702
+  hardware.firmware = with pkgs; [ linux-firmware ];
 
   # HW Acceleration for video
   hardware.graphics = {

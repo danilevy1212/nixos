@@ -103,8 +103,11 @@ in {
     # Prevent Bluetooth from disconnecting
     options btusb enable_autosuspend=0
 
-    # MediaTek MT7925E – disable ASPM to stop random disconnects
-    options mt7925e disable_aspm=1
+    # MediaTek MT7925E – disable ASPM and power save for stability
+    options mt7925e disable_aspm=1 power_save=0
+
+    # Disable CLC (Country Location Code) – fixes 6GHz band stability
+    options mt7925-common disable_clc=1
 
     # Audio quirks for GZ302 (ALSA + ACP70 platform)
     options snd-hda-intel probe_mask=1 model=asus-zenbook
@@ -152,7 +155,6 @@ in {
     settings = {
       device = {
         "wifi.scan-rand-mac-address" = false;
-        "wifi.backend" = "wpa_supplicant";
       };
       connection = {
         # 2 = disabled

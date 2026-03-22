@@ -27,8 +27,15 @@
   # Use latest kernel.
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
-  # Enable networking
-  networking.networkmanager.enable = true;
+  # MT7925 WiFi stability fixes
+  # See: https://github.com/NixOS/nixos-hardware/blob/master/common/wifi/mediatek/mt7925/default.nix
+  boot.extraModprobeConfig = ''
+    options mt7925e disable_aspm=1 power_save=0
+    options mt7925-common disable_clc=1
+  '';
+
+  # Disable WiFi power saving (MT7925 stability)
+  networking.networkmanager.wifi.powersave = false;
 
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
