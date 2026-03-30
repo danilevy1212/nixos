@@ -58,6 +58,7 @@ in {
 
     # Link for the LSP
     xdg = {
+      configFile."mimeapps.list".force = true;
       mimeApps = {
         defaultApplications = {
           # Make firefox default browser
