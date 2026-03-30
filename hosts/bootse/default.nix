@@ -5,9 +5,7 @@
   config,
   userConfig,
   ...
-}: let
-  openDrivers = true;
-in {
+}:{
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
@@ -16,12 +14,17 @@ in {
     ../../common/ollama.nix
   ];
   # Only works with closed-source drivers
-  boot.kernelParams =
-    (lib.optional (!openDrivers) "nvidia.NVreg_EnableGpuFirmware=0")
-    ++ [
-      "pci=nomsi"
-      "pcie_aspm=off"
-    ];
+  boot.kernelParams = [
+    "pci=nomsi"
+    "pcie_aspm=off"
+    "panic=30"
+    "oops=panic"
+    "ignore_loglevel"
+    "debug"
+  ];
+
+  # Enable crashdump (kdump) for kernel panics
+  boot.crashDump.enable = true;
 
   # Prevent system from waking up on PCI devices, except for  ethernet
   services.udev.extraRules = ''
@@ -51,7 +54,7 @@ in {
     ];
   };
   hardware.nvidia = {
-    open = openDrivers;
+    open = true;
     package = config.boot.kernelPackages.nvidiaPackages.latest;
     modesetting.enable = true;
     # Fixes graphical glitches after suspend
