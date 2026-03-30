@@ -147,7 +147,7 @@ in
         commands = {
           commit_message = ''
             # Commit Message
-            
+
             Analyze the staged (cached) changes and create an appropriate commit message. Follow this process:
 
             1. First, examine the staged changes using `git diff --staged` to understand what will be committed
@@ -197,21 +197,25 @@ in
                   "baseURL": "http://127.0.0.1:1234/v1",
                   "max_tokens": 64000
                 }
-              }${if cfg.isWork then '',
-              "ollama-studio": {
-                "npm": "@ai-sdk/openai-compatible",
-                "name": "Ollama (Studio)",
-                "options": {
-                  "baseURL": "http://10.254.3.199:11434/v1",
-                  "num_ctx": 128000
-                },
-                "models": {
-                  "glm-4.7-flash:q8_0": {
-                    "name": "GLM 4.7 Flash"
-                  }
+              }${
+            if cfg.isWork
+            then '',
+            "ollama-studio": {
+              "npm": "@ai-sdk/openai-compatible",
+              "name": "Ollama (Studio)",
+              "options": {
+                "baseURL": "http://10.254.3.199:11434/v1",
+                "num_ctx": 128000
+              },
+              "models": {
+                "glm-4.7-flash:q8_0": {
+                  "name": "GLM 4.7 Flash"
                 }
               }
-              '' else ""}
+            }
+            ''
+            else ""
+          }
             },
             "agent": {
               "plan": {
@@ -224,8 +228,8 @@ in
               "build": {
                 "model": "${
             if cfg.isWork
-            then "github-copilot/claude-opus-4.6"
-            else "opencode/glm-5"
+            then "github-copilot/claude-sonnet-4.6"
+            else "minimax-m2.5"
           }"
               },
               "execute": {

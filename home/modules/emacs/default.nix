@@ -91,7 +91,7 @@ in {
       ]
       ++ [
         # telega
-        ffmpeg-full
+        ffmpeg
         libnotify
         libwebp
 
