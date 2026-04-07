@@ -83,15 +83,16 @@
   # See: https://github.com/NixOS/nixpkgs/issues/479497
   nixpkgs.config.packageOverrides = pkgs: {
     protontricks = pkgs.protontricks.override {
-      steam-run-free = (pkgs.steam.override {
-        extraPkgs = pkgs:
-          with pkgs; [
-            freetype
-            fontconfig
-            pkgsi686Linux.freetype
-            pkgsi686Linux.fontconfig
-          ];
-      }).run-free;
+      steam-run-free =
+        (pkgs.steam.override {
+          extraPkgs = pkgs:
+            with pkgs; [
+              freetype
+              fontconfig
+              pkgsi686Linux.freetype
+              pkgsi686Linux.fontconfig
+            ];
+        }).run-free;
     };
   };
 

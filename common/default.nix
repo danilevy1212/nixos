@@ -157,7 +157,7 @@ in {
   hardware.enableAllFirmware = true;
   # Explicit linux-firmware fixes MT7925 WiFi association failures
   # See: https://github.com/NixOS/nixpkgs/issues/477924#issuecomment-4055416702
-  hardware.firmware = with pkgs; [ linux-firmware ];
+  hardware.firmware = with pkgs; [linux-firmware];
 
   # HW Acceleration for video
   hardware.graphics = {
@@ -413,7 +413,7 @@ in {
       package = pkgs.qemu_kvm;
       runAsRoot = false;
       swtpm.enable = true;
-      vhostUserPackages = [ pkgs.virtiofsd ];
+      vhostUserPackages = [pkgs.virtiofsd];
     };
   };
   programs.virt-manager.enable = true;
