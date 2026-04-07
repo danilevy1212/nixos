@@ -173,10 +173,7 @@ in
             "theme": "nord",
             "small_model": "${small_model}",
             "plugin": [],
-            "keybinds": {
-              // TODO Wait for resolution of https://github.com/sst/opencode/issues/5752
-              // "session_interrupt": "<leader>esc"
-            },
+            "keybinds": {},
             "provider": {
               "opencode": {
                 "models": {
@@ -199,20 +196,20 @@ in
                 }
               }${
             if cfg.isWork
-            then '',
-            "ollama-studio": {
-              "npm": "@ai-sdk/openai-compatible",
-              "name": "Ollama (Studio)",
-              "options": {
-                "baseURL": "http://10.254.3.199:11434/v1",
-                "num_ctx": 128000
-              },
-              "models": {
-                "glm-4.7-flash:q8_0": {
-                  "name": "GLM 4.7 Flash"
-                }
-              }
-            }
+            then ''              ,
+                          "ollama-studio": {
+                            "npm": "@ai-sdk/openai-compatible",
+                            "name": "Ollama (Studio)",
+                            "options": {
+                              "baseURL": "http://10.254.3.199:11434/v1",
+                              "num_ctx": 128000
+                            },
+                            "models": {
+                              "glm-4.7-flash:q8_0": {
+                                "name": "GLM 4.7 Flash"
+                              }
+                            }
+                          }
             ''
             else ""
           }
@@ -226,6 +223,7 @@ in
           }"
               },
               "build": {
+                "disable": true,
                 "model": "${
             if cfg.isWork
             then "github-copilot/claude-sonnet-4.6"
