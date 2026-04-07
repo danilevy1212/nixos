@@ -175,17 +175,23 @@ in
             "plugin": [],
             "keybinds": {},
             "provider": {
-              "opencode": {
+              "github-copilot": {
                 "models": {
-                  "gpt-5.2-codex": {
-                    "reasoningEffort": "high",
-                    "reasoningSummary": "auto",
-                    "textVerbosity": "medium",
-                    "include": [
-                      "reasoning.encrypted_content"
-                    ]
+                  "claude-opus-4.6": {
+                    "variants": {
+                      "thinking": {
+                        "thinking_budget": 16000,
+                        "reasoningEffort": "max"
+                      },
+                      "proofreader": {
+                       "reasoningEffort": "low"
+                      }
+                    }
                   }
                 }
+              },
+              "opencode": {
+                "models": {}
               },
               "lmstudio": {
                 "npm": "@ai-sdk/openai-compatible",
