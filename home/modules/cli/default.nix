@@ -2,6 +2,7 @@
   config,
   pkgs,
   lib,
+  stable,
   ...
 }: let
   ZDOTDIR = "${config.xdg.configHome}/zsh";
@@ -318,7 +319,7 @@ in
         pdftk
         pdfgrep
         qpdf
-        ocrmypdf
+        stable.ocrmypdf
         unpaper
 
         # Docker Management

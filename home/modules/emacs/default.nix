@@ -38,7 +38,7 @@ in {
       ++ [
         # :editor
         # format
-        nodePackages.prettier
+        prettier
 
         # nix
         alejandra
