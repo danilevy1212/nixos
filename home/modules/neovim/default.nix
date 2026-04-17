@@ -37,9 +37,7 @@ in {
       # For mason
       ## languages
       ## rust
-      ++ lib.optional (!userConfig.modules.rust.enable) cargo
-      # GUI for neovim
-      ++ lib.optional userConfig.modules.gui.enable neovide;
+      ++ lib.optional (!userConfig.modules.rust.enable) cargo;
 
     # Basic settings for neovim + terminal integration
     programs.neovim = {
