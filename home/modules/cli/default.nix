@@ -225,7 +225,7 @@ in
               "plan": {
                 "model": "${
             if cfg.isWork
-            then "github-copilot/claude-opus-4.6"
+            then "github-copilot/gemini-3.1-pro-preview"
             else "opencode/kimi-k2.5"
           }"
               },
