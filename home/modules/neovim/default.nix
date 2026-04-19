@@ -1,7 +1,6 @@
 {
   pkgs,
   lib,
-  stable,
   userConfig,
   config,
   ...
@@ -39,9 +38,10 @@ in {
       ## rust
       ++ lib.optional (!userConfig.modules.rust.enable) cargo;
 
-    # Basic settings for neovim + terminal integration
+    # # Basic settings for neovim + terminal integration
     programs.neovim = {
       enable = true;
+      sideloadInitLua = true;
       defaultEditor = true;
       vimdiffAlias = true;
       vimAlias = true;

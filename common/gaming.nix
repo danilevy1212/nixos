@@ -78,24 +78,6 @@
     };
   };
 
-  # Override protontricks to use a custom steam-run with freetype
-  # This fixes the "Wine cannot find the FreeType font library" error
-  # See: https://github.com/NixOS/nixpkgs/issues/479497
-  nixpkgs.config.packageOverrides = pkgs: {
-    protontricks = pkgs.protontricks.override {
-      steam-run-free =
-        (pkgs.steam.override {
-          extraPkgs = pkgs:
-            with pkgs; [
-              freetype
-              fontconfig
-              pkgsi686Linux.freetype
-              pkgsi686Linux.fontconfig
-            ];
-        }).run-free;
-    };
-  };
-
   # Better compatibility with peripherals
   services.udev.packages = [pkgs.game-devices-udev-rules];
   hardware.uinput.enable = true;

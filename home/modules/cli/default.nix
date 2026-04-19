@@ -144,7 +144,7 @@ in
       # Vibing and coding
       programs.opencode = lib.mkIf cfg.agents.enable {
         enable = true;
-        rules = builtins.readFile ./opencode/RULES.md;
+        context = builtins.readFile ./opencode/RULES.md;
         commands = {
           commit_message = ''
             # Commit Message
