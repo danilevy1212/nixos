@@ -141,19 +141,6 @@ in {
     ];
   };
 
-  # My user environment.
-  home-manager = {
-    # Home manager has access to system level dependencies.
-    useGlobalPkgs = true;
-    # Unclutter $HOME.
-    useUserPackages = true;
-    # Load my home-manager configuration.
-    users."${username}" = import ./../home;
-    # Easier debugging
-    verbose = true;
-    # In case of collision, use a .backup file.
-    backupFileExtension = "backup";
-  };
   hardware.enableAllFirmware = true;
   # Explicit linux-firmware fixes MT7925 WiFi association failures
   # See: https://github.com/NixOS/nixpkgs/issues/477924#issuecomment-4055416702

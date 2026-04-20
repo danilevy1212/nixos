@@ -7,7 +7,7 @@
 }:
 with lib; let
   cfg = config.userConfig;
-  # NOTE Force bruno to use X11
+  # Force bruno to use X11 in linux
   brunoWrapped = pkgs.buildEnv {
     name = "bruno-wrapped";
 
@@ -25,35 +25,42 @@ with lib; let
   };
 in {
   config = {
-    home.packages = with pkgs; [
-      # Mount anything, anywhere, all at once
-      rclone
+    home.packages = with pkgs;
+      [
+        # Mount anything, anywhere, all at once
+        rclone
 
-      # Sync with anything, anywhere, all at once
-      mutagen
+        # Sync with anything, anywhere, all at once
+        mutagen
 
-      # REST Client
-      brunoWrapped
-      atac
+        # REST Client
+        atac
 
-      # e2e file transfer
-      portal
+        # e2e file transfer
+        portal
 
-      # Database client
-      dbeaver-bin
+        # Database client
+        dbeaver-bin
 
-      # Redis cli client
-      redis
-    ];
+        # Redis cli client
+        redis
+      ]
+      ++ (
+        if stdenv.isLinux
+        then [brunoWrapped]
+        else [bruno]
+      );
 
     # File sharing, p2p style
-    services.syncthing = {
-      enable = true;
-      tray = {
+    services.syncthing = with pkgs;
+    # We get syncthing through brew on macos
+      lib.mkIf stdenv.isLinux {
         enable = true;
-        command = "syncthingtray --wait";
+        tray = {
+          enable = true;
+          command = "syncthingtray --wait";
+        };
       };
-    };
 
     # Reuse an already-established connection when creating a new SSH session
     programs.ssh.extraConfig = ''
@@ -62,13 +69,14 @@ in {
       ControlPersist 600
     '';
 
+    ## Linux networking quirks
     # I 💙 bluetooth.
-    services.blueman-applet.enable = true;
+    services.blueman-applet.enable = stable.stdenv.isLinux;
 
     # Bluetooth remote control
-    services.mpris-proxy.enable = true;
+    services.mpris-proxy.enable = stable.stdenv.isLinux;
 
     # I ❤ Internet
-    services.network-manager-applet.enable = true;
+    services.network-manager-applet.enable = stable.stdenv.isLinux;
   };
 }

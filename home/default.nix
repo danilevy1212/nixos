@@ -2,13 +2,11 @@
   lib,
   config,
   userConfig ? null,
+  stable,
   ...
 }: let
   modules = [
-    # I cannot live without you, my one true love...
-    "emacs"
-
-    # My guilty pleasure
+    # Editor
     "neovim"
 
     # My Shell configuration.
@@ -53,17 +51,26 @@ in
               example = "dlevym";
               description = "User account name.";
             };
+            isWork = mkOption {
+              type = types.bool;
+              default = false;
+              description = "Whether this is a work machine";
+            };
           };
         };
     };
     config = {
       home = rec {
         username = cfg.username;
-        homeDirectory = "/home/${username}";
+        homeDirectory =
+          if stable.stdenv.isLinux
+          then "/home/${username}"
+          else "/Users/${username}";
         stateVersion = config.home.version.release;
-        # Make XDG Base Dir. compliant
+        # Make XDG Base Dir compliant
         sessionPath = [
           "$HOME/.local/bin"
+          "/etc/profiles/per-user/${username}/bin"
         ];
       };
 
@@ -74,7 +81,7 @@ in
       xdg = {
         enable = true;
         mimeApps = {
-          enable = true;
+          enable = stable.stdenv.isLinux;
         };
       };
     };

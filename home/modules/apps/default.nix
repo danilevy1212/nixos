@@ -1,8 +1,6 @@
 {
   pkgs,
   config,
-  unstable,
-  stable,
   lib,
   ...
 }: let
@@ -31,36 +29,37 @@ in {
     home.shellAliases.zathura = "zathura --fork";
 
     # default browser
-    home.sessionVariables = {BROWSER = "firefox";};
+    home.sessionVariables = with pkgs; {
+      BROWSER =
+        if stdenv.isLinux
+        then "firefox"
+        else "chrome";
+    };
 
     # Apps
-    home.packages = with pkgs; [
-      # Proprietary musicality
-      spotify
-
-      # Social closeness
-      telegram-desktop
-
-      # Browser
-      chromium
-
-      # Keep my passwords safe
-      keepassxc
-
-      # I only use this to download Linux ISO images I super promise
-      qbittorrent
-
-      # Conferences
-      zoom-us
-
-      # Memorize
-      anki
-
-      # Pseudo-office
-      libreoffice
-
-      # raspi
-      rpi-imager
-    ];
+    home.packages = with pkgs;
+      [
+        # Keep my passwords safe
+        keepassxc
+      ]
+      ++ lib.optional cfg.isWork bitwarden-desktop
+      ++ lib.optionals stdenv.isLinux [
+        # Browser
+        chromium
+        # Pseudo-office
+        libreoffice
+        # raspi
+        rpi-imager
+        # I only use this to download Linux ISO images I super promise
+        qbittorrent
+        # Conferences
+        zoom-us
+        # Memorize
+        anki
+        # Proprietary musicality
+        spotify
+        # Social closeness
+        telegram-desktop
+      ];
   };
 }

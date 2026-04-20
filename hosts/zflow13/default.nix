@@ -62,11 +62,11 @@
   };
 in {
   imports = [
-    # Include the results of the hardware scan.
     ./hardware-configuration.nix
     ../../common/sunshine.nix
     ../../common/gaming.nix
     ../../common/ollama.nix
+    ../../common/home-manager.nix
   ];
 
   # Kernel parameters tuned for ASUS GZ302 stability

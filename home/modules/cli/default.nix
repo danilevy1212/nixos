@@ -7,19 +7,16 @@
 }: let
   ZDOTDIR = "${config.xdg.configHome}/zsh";
   cfg = config.userConfig.modules.cli;
+  isWork = config.userConfig.isWork;
   small_model =
-    if cfg.isWork
+    if isWork
     then "github-copilot/claude-haiku-4.5"
     else "opencode/kimi-k2";
 in
   with lib; {
+    # TODO  Refactor this to be top level instead
     options.userConfig.modules.cli = {
       enable = mkEnableOption "Enable home-manager to take over the CLI environment";
-      isWork = mkOption {
-        type = types.bool;
-        default = false;
-        description = "Whether this is a work machine";
-      };
       agents = mkOption {
         type = types.submodule {
           options = {
@@ -91,6 +88,13 @@ in
         enableCompletion = true;
         # NOTE This is just for easier debugging.
         dotDir = ZDOTDIR;
+        profileExtra = with pkgs;
+          lib.mkIf stdenv.isDarwin ''
+            # Homebrew environment
+            if [[ -x /opt/homebrew/bin/brew ]]; then
+              eval "$(/opt/homebrew/bin/brew shellenv)"
+            fi
+          '';
         initContent = builtins.readFile ./zshrc;
         # NOTE  Have custom functions available throughout subshells
         envExtra = ''
@@ -202,7 +206,7 @@ in
                   "max_tokens": 64000
                 }
               }${
-            if cfg.isWork
+            if isWork
             then ''              ,
                           "ollama-studio": {
                             "npm": "@ai-sdk/openai-compatible",
@@ -224,7 +228,7 @@ in
             "agent": {
               "plan": {
                 "model": "${
-            if cfg.isWork
+            if isWork
             then "github-copilot/gemini-3.1-pro-preview"
             else "opencode/kimi-k2.5"
           }"
@@ -232,7 +236,7 @@ in
               "build": {
                 "disable": true,
                 "model": "${
-            if cfg.isWork
+            if isWork
             then "github-copilot/claude-sonnet-4.6"
             else "minimax-m2.5"
           }"
@@ -264,13 +268,16 @@ in
                 "gh search*": "allow",
                 "gh pr view*": "allow",
                 "go list*": "allow",
-                "which*": "allow"
+                "which*": "allow",
+                "cat*": "allow",
+                "ls*": "allow",
+                "nix flake show*": "allow"
               },
               "webfetch": "allow"
             },
             "mcp": {
               "mcphub": {
-                "enabled": ${builtins.toJSON (!cfg.isWork)},
+                "enabled": ${builtins.toJSON (!isWork)},
                 "type": "remote",
                 "url": "http://10.0.0.202:3000/mcp"
               }
@@ -284,27 +291,35 @@ in
         enable = true;
         nix-direnv.enable = true;
       };
-      services.lorri = {
+      services.lorri = lib.mkIf stable.stdenv.isLinux {
         enable = true;
       };
 
       # General utilities
       home.packages = with pkgs; [
         # Build tools
+        coreutils
         gnumake
         go-task
+
         # System
         fastfetch
         file
         rsync
         fasd
         cloc
+        unzip
+        zip
 
         # Github actions
         act
 
         # Video Archiver
         yt-dlp
+        imagemagick
+        ffmpeg
+        libwebp
+        sqlite
 
         # output processing
         jq
@@ -312,6 +327,8 @@ in
         ueberzugpp
         bc
         xxd
+        fd
+        (ripgrep.override {withPCRE2 = true;})
 
         # PDF processing
         poppler-utils
@@ -321,6 +338,10 @@ in
         qpdf
         stable.ocrmypdf
         unpaper
+        pandoc
+        languagetool
+        (aspellWithDicts (d: with d; [es en en-computers en-science]))
+        wordnet
 
         # Docker Management
         lazydocker
@@ -342,6 +363,18 @@ in
 
         # TUI Browser
         browsh
+
+        # For REPL sake
+        rlwrap
+
+        # Fonts
+        iosevka-bin
+        sarasa-gothic
+        dejavu_fonts
+        symbola
+        noto-fonts
+        noto-fonts-color-emoji
+        (import ./quivera.nix {inherit pkgs;})
       ];
 
       # A tldr client

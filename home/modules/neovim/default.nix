@@ -22,6 +22,10 @@ in {
         # For nix
         alejandra
 
+        # sh
+        shellcheck
+        shfmt
+
         # For tree-sitter
         zig
         gcc
@@ -32,6 +36,9 @@ in {
 
         # Nix language server
         nixd
+
+        # editor-config
+        editorconfig-core-c
       ]
       # For mason
       ## languages

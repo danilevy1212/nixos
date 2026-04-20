@@ -28,11 +28,8 @@ in
         env.GOPATH = cfg.goPath;
       };
 
-      home.packages = with pkgs; [
-        # Pretend golang is an interpreted language
-        yaegi
-        rlwrap
-      ];
+      # yaegi is broken on mac?
+      home.packages = with pkgs; lib.optional stdenv.isLinux yaegi;
 
       # Make yaegi easier to use
       home.shellAliases = {

@@ -11,32 +11,36 @@ in {
   };
   config = lib.mkIf cfg.enable {
     home = {
-      packages = with pkgs; [
-        # Let there be control over the sound!
-        pulsemixer
-        pavucontrol
-        playerctl
-        easyeffects
-        crosspipe
+      packages = with pkgs;
+        lib.optionals stdenv.isLinux [
+          # Let there be control over the sound!
+          pulsemixer
+          pavucontrol
+          playerctl
+          easyeffects
+          crosspipe
 
-        # xXxScReeN_SH0TSxXx
-        flameshot
-        simplescreenrecorder
+          # xXxScReeN_SH0TSxXx
+          flameshot
+          simplescreenrecorder
+          xclip
 
-        # Drag and Drop convenience
-        dragon-drop
+          # notifications
+          libnotify
 
-        # For REPL sake
-        rlwrap
+          # Drag and Drop convenience
+          dragon-drop
 
-        # battery indicator
-        acpi
+          # battery indicator
+          acpi
 
-        # Sunshine client for remote desktop
-        moonlight-qt
-
-        iosevka-bin
-      ];
+          # Fonts
+          sarasa-gothic
+        ]
+        ++ [
+          # Sunshine client for remote desktop
+          moonlight-qt
+        ];
 
       sessionVariables = {
         # Default theme.
@@ -51,13 +55,13 @@ in {
       keyboard = null;
     };
 
-    home.pointerCursor = {
+    home.pointerCursor = pkgs.lib.mkIf pkgs.stdenv.isLinux {
       name = "Numix-Cursor";
       package = pkgs.numix-cursor-theme;
     };
 
     # Link for the LSP
-    xdg = {
+    xdg = pkgs.lib.mkIf pkgs.stdenv.isLinux {
       configFile."mimeapps.list".force = true;
       mimeApps = {
         defaultApplications = {
@@ -73,33 +77,39 @@ in {
     };
 
     # Make me pretty!
-    gtk = with pkgs; {
-      enable = true;
-      iconTheme = {
-        name = "Papirus-Dark";
-        package = papirus-icon-theme;
+    gtk = with pkgs;
+      lib.mkIf stdenv.isLinux {
+        enable = true;
+        iconTheme = {
+          name = "Papirus-Dark";
+          package = papirus-icon-theme;
+        };
+        theme = {
+          name = "Nordic";
+          package = nordic;
+        };
+        font = {
+          name = "Sarasa UI J";
+          size = 10;
+          package = sarasa-gothic;
+        };
       };
-      theme = {
-        name = "Nordic";
-        package = nordic;
-      };
-      font = {
-        name = "Sarasa UI J";
-        size = 10;
-        package = sarasa-gothic;
-      };
-    };
 
     # Batteries included terminal emulator
     programs.ghostty = {
       enable = true;
+      # We get ghostty through the AppStore in macos
+      package = with pkgs;
+        if stdenv.isDarwin
+        then null
+        else ghostty;
       settings = {
         # Iosevka Nerd Font primary, Sarasa Mono J fallback for CJK
         font-family = [
           "Iosevka"
           "Sarasa Mono J"
         ];
-        font-size = 10;
+        font-size = with pkgs; lib.mkIf stdenv.isLinux 10;
         theme = "Nord";
         window-theme = "dark";
         background-opacity = 0.9;
@@ -150,7 +160,7 @@ in {
       + "/src/nord");
 
     programs.rofi = {
-      enable = true;
+      enable = pkgs.stdenv.isLinux;
     };
   };
 }
