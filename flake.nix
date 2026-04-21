@@ -96,9 +96,23 @@
       userConfig = lib.recursiveUpdate defaultHomeManagerUserConfig customUserConfig;
     };
 
+    # Common module shared between Linux and Darwin hosts
+    mkCommonModule = sys: specialArgs: {
+      environment.systemPackages = [
+        colortest.packages."${sys}".colortest
+      ];
+      home-manager.extraSpecialArgs = specialArgs;
+      nix.nixPath = [
+        "nixpkgs=${nixos-unstable}"
+      ];
+      nixpkgs.config.packageOverrides = pkgs: {
+        opencode = llm-agents.packages."${sys}".opencode;
+      };
+    };
+
     defaultSpecialArgsLinux = mkSpecialArgs stable unstable {};
 
-    addHostConfiguration = sys: hostname: additionalModules: specialArgs:
+    addLinuxHostConfiguration = sys: hostname: additionalModules: specialArgs:
       nixos-unstable.lib.nixosSystem {
         system = sys;
         inherit specialArgs;
@@ -106,39 +120,42 @@
           [
             home-manager-unstable.nixosModules.home-manager
             ./hosts/${hostname}
-            ./common
+            ./common/home-manager.nix
+            ./common/linux.nix
+            ./common/shared.nix
             ./cachix.nix
+            (mkCommonModule sys specialArgs)
             {
-              # Declarative flatpaks
-              imports = [
-                flatpaks.nixosModules.default
-              ];
-              # Colortest, for testing terminal colors
-              environment.systemPackages = [
-                colortest.packages."${sys}".colortest
-              ];
+              imports = [flatpaks.nixosModules.default];
               networking.hostName = hostname;
-              home-manager.extraSpecialArgs = specialArgs;
-              # Common NIX_PATH, by default we are on unstable
-              nix.nixPath = [
-                "nixpkgs=${nixos-unstable}"
-              ];
-              # llm-agents tends to be more up-to-date
-              nixpkgs.config.packageOverrides = pkgs: {
-                opencode = llm-agents.packages."${sys}".opencode;
-              };
             }
           ]
           ++ nixos-unstable.lib.optionals (builtins.isList additionalModules) additionalModules;
       };
+
+    addDarwinHostConfiguration = sys: hostname: additionalModules: specialArgs:
+      nix-darwin.lib.darwinSystem {
+        system = sys;
+        inherit specialArgs;
+        modules =
+          [
+            home-manager-unstable.darwinModules.home-manager
+            ./hosts/${hostname}
+            ./common/home-manager.nix
+            ./common/shared.nix
+            ./cachix.nix
+            (mkCommonModule sys specialArgs)
+          ]
+          ++ nixpkgs-unstable.lib.optionals (builtins.isList additionalModules) additionalModules;
+      };
   in {
     # Refactor to use flake-parts or flake-utils
     nixosConfigurations = {
-      nyx15v2 = addHostConfiguration "x86_64-linux" "nyx15v2" [] defaultSpecialArgsLinux;
-      bootse = addHostConfiguration "x86_64-linux" "bootse" [] defaultSpecialArgsLinux;
-      zflow13 = addHostConfiguration "x86_64-linux" "zflow13" [] defaultSpecialArgsLinux;
+      nyx15v2 = addLinuxHostConfiguration "x86_64-linux" "nyx15v2" [] defaultSpecialArgsLinux;
+      bootse = addLinuxHostConfiguration "x86_64-linux" "bootse" [] defaultSpecialArgsLinux;
+      zflow13 = addLinuxHostConfiguration "x86_64-linux" "zflow13" [] defaultSpecialArgsLinux;
       thinkpadP14s =
-        addHostConfiguration "x86_64-linux" "thinkpadP14s" [
+        addLinuxHostConfiguration "x86_64-linux" "thinkpadP14s" [
           {
             imports = [
               # add your model from this list: https://github.com/NixOS/nixos-hardware/blob/master/flake.nix
@@ -152,23 +169,13 @@
           modules.cli.git.userEmail = "daniel.moreno.levy@gravwell.io";
         });
     };
-    darwinConfigurations."Daniels-MacBook-Pro" = nix-darwin.lib.darwinSystem rec {
-      system = "aarch64-darwin";
-      specialArgs = mkSpecialArgs stable-darwin unstable-darwin {
+    darwinConfigurations."Daniels-MacBook-Pro" =
+      addDarwinHostConfiguration "aarch64-darwin" "Daniels-MacBook-Pro" []
+      (mkSpecialArgs stable-darwin unstable-darwin {
         username = "daniel.moreno.levy";
         isWork = true;
         modules.cli.git.userEmail = "daniel.moreno.levy@gravwell.io";
-      };
-      modules = [
-        home-manager-unstable.darwinModules.home-manager
-        ./hosts/Daniels-MacBook-Pro
-        {
-          # Re-allow unfree packages for the core nix-darwin system
-          nixpkgs.config.allowUnfree = true;
-          home-manager.extraSpecialArgs = specialArgs;
-        }
-      ];
-    };
+      });
     # Have a configuration that is only `home-manager`, meant for systems that may or may not be `NIXOS`
     homeConfigurations."generic" = home-manager-unstable.lib.homeManagerConfiguration {
       pkgs = unstable;
@@ -178,12 +185,12 @@
       nixpkgs = {
         config = {
           allowUnfree = true;
-          allowUnfreePredicate = _: true;
         };
       };
 
       modules = [
         ./home
+        ./cachix.nix
       ];
     };
   };

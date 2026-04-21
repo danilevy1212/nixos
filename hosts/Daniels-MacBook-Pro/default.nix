@@ -3,10 +3,6 @@
   userConfig,
   ...
 }: {
-  imports = [
-    ../../common/home-manager.nix
-  ];
-
   environment.systemPackages = with pkgs; [
     neovim
   ];
@@ -15,18 +11,12 @@
   nix.enable = true;
   nix.package = pkgs.nix;
 
-  # Necessary for using flakes on this system.
-  nix.settings.experimental-features = "nix-command flakes";
-
   # Create /etc/zshrc that loads the nix-darwin environment.
-  # default shell on catalina
-  programs.zsh.enable = true;
-
   # Used for backwards compatibility, please read the changelog before changing.
   # $ darwin-rebuild changelog
   system.stateVersion = 5;
 
-  # --- Homebrew Integration ---
+  # Homebrew Integration
   homebrew = {
     enable = true;
     # Uninstalls anything not listed here
@@ -36,13 +26,16 @@
     casks = ["syncthing-app"];
   };
 
+  # Point darwin-rebuild at our flake so we don't need --flake <path>
+  environment.etc."nix-darwin/flake.nix".source = "/Users/${userConfig.username}/.config/nix-darwin/flake.nix";
+
   # Define the user so Home Manager knows where the home directory is
   users.users."${userConfig.username}" = {
     name = userConfig.username;
     home = "/Users/${userConfig.username}";
   };
 
-  # --- macOS System Defaults ---
+  # macOS System Defaults
   system.primaryUser = userConfig.username;
   system.defaults = {
     dock = {
@@ -59,5 +52,11 @@
       AppleInterfaceStyle = "Dark"; # Dark mode
       KeyRepeat = 2;
     };
+  };
+
+  # Use sudo with touchID
+  security.pam.services.sudo_local = {
+    enable = true;
+    touchIdAuth = true;
   };
 }

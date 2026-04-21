@@ -12,9 +12,12 @@
     if isWork
     then "github-copilot/claude-haiku-4.5"
     else "opencode/kimi-k2";
+  thinking_model =
+    if isWork
+    then "github-copilot/claude-opus-4.6"
+    else "opencode/kimi-k2.6";
 in
   with lib; {
-    # TODO  Refactor this to be top level instead
     options.userConfig.modules.cli = {
       enable = mkEnableOption "Enable home-manager to take over the CLI environment";
       agents = mkOption {
@@ -227,11 +230,7 @@ in
             },
             "agent": {
               "plan": {
-                "model": "${
-            if isWork
-            then "github-copilot/gemini-3.1-pro-preview"
-            else "opencode/kimi-k2.5"
-          }"
+                "model": "${thinking_model}"
               },
               "build": {
                 "disable": true,

@@ -22,35 +22,6 @@ in {
   # Set your time zone.
   time.timeZone = "America/New_York";
 
-  nix = {
-    settings = {
-      trusted-users = ["root" username];
-      # Protect disk space
-      auto-optimise-store = true;
-    };
-    gc = {
-      automatic = true;
-      persistent = true;
-      randomizedDelaySec = "15m";
-      options = "--delete-older-than 15d";
-    };
-    optimise = {
-      automatic = true;
-      persistent = true;
-    };
-    package = pkgs.nixVersions.stable;
-    extraOptions = ''
-      experimental-features = nix-command flakes
-    '';
-  };
-
-  nixpkgs = {
-    config = {
-      # Sorry, Stallman
-      allowUnfree = true;
-    };
-  };
-
   # Booting
   boot = {
     # NixOS uses NTFS-3G for NTFS support.
@@ -189,17 +160,6 @@ in {
       konsole
     ];
     variables = {
-      # These are the defaults, and xdg.enable does set them, but due to load
-      # order, they're not set before environment.variables are set, which could
-      # cause race conditions.
-      XDG_CACHE_HOME = "$HOME/.cache";
-      XDG_CONFIG_HOME = "$HOME/.config";
-      XDG_DATA_HOME = "$HOME/.local/share";
-      XDG_BIN_HOME = "$HOME/.local/bin";
-
-      # EDITOR
-      EDITOR = "nvim";
-
       # Prefer wayland when available
       NIXOS_OZONE_WL = "1";
       ELECTRON_OZONE_PLATFORM_HINT = "auto";
@@ -212,17 +172,12 @@ in {
       GTK_IM_MODULE = "fcitx";
       QT_IM_MODULE = "fcitx";
     };
-    # Just as good.
+    # Linux-specific aliases
     shellAliases = {
-      vim = "nvim";
-      vi = "nvim";
       wine = "WINEPREFIX=~/.local/share/wine wine";
-      k = "kubectl";
       suspend = "systemctl suspend";
       poweroff = "systemctl poweroff";
     };
-    # Ensure all downloaded packages have auto completion info
-    pathsToLink = ["/share/zsh"];
     # List packages installed in system profile. To search, run:
     # $ nix search ...
     systemPackages = with pkgs;
@@ -416,9 +371,6 @@ in {
   # NOTE https://www.reddit.com/r/NixOS/comments/b255k5/comment/i8jpqum/?utm_source=share&utm_medium=web2x&context=3
   # Gnome craziness.
   programs.dconf.enable = true;
-
-  # Default shell
-  programs.zsh = {enable = true;};
 
   # See https://github.com/Mic92/nix-ld#how-does-nix-ld-work
   programs.nix-ld.enable = true;

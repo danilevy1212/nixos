@@ -3,14 +3,12 @@
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 {
   config,
-  stable,
   pkgs,
   lib,
   ...
 }: {
   imports = [
     ./hardware-configuration.nix
-    ../../common/home-manager.nix
   ];
 
   # Use the systemd-boot EFI boot loader.

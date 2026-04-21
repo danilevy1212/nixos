@@ -11,7 +11,6 @@
     ../../common/sunshine.nix
     ../../common/gaming.nix
     ../../common/ollama.nix
-    ../../common/home-manager.nix
   ];
   # Only works with closed-source drivers
   boot.kernelParams = [

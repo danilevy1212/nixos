@@ -66,7 +66,6 @@ in {
     ../../common/sunshine.nix
     ../../common/gaming.nix
     ../../common/ollama.nix
-    ../../common/home-manager.nix
   ];
 
   # Kernel parameters tuned for ASUS GZ302 stability
