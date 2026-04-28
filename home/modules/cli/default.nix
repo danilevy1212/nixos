@@ -91,13 +91,6 @@ in
         enableCompletion = true;
         # NOTE This is just for easier debugging.
         dotDir = ZDOTDIR;
-        profileExtra = with pkgs;
-          lib.mkIf stdenv.isDarwin ''
-            # Homebrew environment
-            if [[ -x /opt/homebrew/bin/brew ]]; then
-              eval "$(/opt/homebrew/bin/brew shellenv)"
-            fi
-          '';
         initContent = builtins.readFile ./zshrc;
         # NOTE  Have custom functions available throughout subshells
         envExtra = ''
@@ -189,7 +182,7 @@ in
                     "variants": {
                       "thinking": {
                         "thinking_budget": 16000,
-                        "reasoningEffort": "max"
+                        "reasoningEffort": "high"
                       },
                       "proofreader": {
                        "reasoningEffort": "low"

@@ -3,10 +3,6 @@
   userConfig,
   ...
 }: {
-  environment.systemPackages = with pkgs; [
-    neovim
-  ];
-
   # Auto upgrade nix package and the daemon service.
   nix.enable = true;
   nix.package = pkgs.nix;
@@ -22,12 +18,41 @@
     # Uninstalls anything not listed here
     onActivation.cleanup = "zap";
     taps = [];
-    brews = ["mas"];
+    brews = [
+      "mas"
+      "docker-completion"
+      "docker-compose-completion"
+    ];
     casks = ["syncthing-app"];
   };
 
+  # Generate brew shellenv at activation time
+  system.activationScripts.postActivation.text = ''
+    if [[ -x /opt/homebrew/bin/brew ]]; then
+      /opt/homebrew/bin/brew shellenv > /etc/brew-shellenv.sh
+    fi
+  '';
+  # Make sure cli session load it up
+  programs.zsh.loginShellInit = ''
+    if [[ -f /etc/brew-shellenv.sh ]]; then
+      source /etc/brew-shellenv.sh
+    fi
+  '';
+
   # Point darwin-rebuild at our flake so we don't need --flake <path>
   environment.etc."nix-darwin/flake.nix".source = "/Users/${userConfig.username}/.config/nix-darwin/flake.nix";
+
+  environment.systemPackages = with pkgs; [
+    # main editor
+    neovim
+
+    # Use gnu utils and not the freebsd ones
+    coreutils-full
+    gnugrep
+    gnused
+    gnutar
+    findutils
+  ];
 
   # Define the user so Home Manager knows where the home directory is
   users.users."${userConfig.username}" = {
