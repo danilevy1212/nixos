@@ -376,5 +376,10 @@ in
         enable = true;
         settings.updates.auto_update = true;
       };
+
+      # Agents that I have to test for work
+      programs.github-copilot-cli.enable = isWork;
+      programs.claude-code.enable = isWork;
+      programs.codex.enable = isWork;
     };
   }
