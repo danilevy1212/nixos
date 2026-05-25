@@ -2,6 +2,7 @@
   pkgs,
   config,
   lib,
+  stable,
   ...
 }: let
   cfg = config.userConfig;
@@ -19,7 +20,7 @@ in {
 
     # Nerdy PDF reader
     programs.zathura = {
-      enable = true;
+      enable = pkgs.stdenv.isLinux;
       options = {
         selection-clipboard = "clipboard";
       };
@@ -42,7 +43,7 @@ in {
         # Keep my passwords safe
         keepassxc
       ]
-      ++ lib.optional cfg.isWork bitwarden-desktop
+      ++ lib.optional cfg.isWork stable.bitwarden-desktop
       ++ lib.optionals stdenv.isLinux [
         # Browser
         chromium

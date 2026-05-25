@@ -1,7 +1,4 @@
-{
-  userConfig,
-  ...
-}: let
+{userConfig, ...}: let
   username = userConfig.username;
 in {
   # My user environment.
