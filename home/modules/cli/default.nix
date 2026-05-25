@@ -58,6 +58,8 @@ in
     config = lib.mkIf cfg.enable {
       programs.git = {
         enable = true;
+        package = pkgs.gitFull;
+        lfs.enable = true;
         settings = {
           user = {
             name = cfg.git.userName;

@@ -21,7 +21,6 @@
     brews = [
       "mas"
       "docker-completion"
-      "docker-compose-completion"
     ];
     casks = ["syncthing-app"];
   };
