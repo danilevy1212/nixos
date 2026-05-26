@@ -51,7 +51,8 @@
   programs.gamescope = {
     enable = true;
     package = unstable.gamescope;
-    capSysNice = true;
+    # Until https://github.com/NixOS/nixpkgs/issues/523427 is fixed
+    capSysNice = false;
   };
 
   # Steam (no gamescope session here)
