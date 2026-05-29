@@ -11,10 +11,14 @@
   small_model =
     if isWork
     then "github-copilot/claude-haiku-4.5"
-    else "opencode/kimi-k2";
+    else "opencode/kimi-k2.6";
   thinking_model =
     if isWork
-    then "github-copilot/claude-opus-4.6"
+    then "github-copilot/claude-sonnet-4.6"
+    else "opencode/kimi-k2.6";
+  building_model =
+    if isWork
+    then "dev-slop/qwen3-coder-next:q8_0"
     else "opencode/kimi-k2.6";
 in
   with lib; {
@@ -180,7 +184,7 @@ in
             "provider": {
               "github-copilot": {
                 "models": {
-                  "claude-opus-4.6": {
+                  "claude-sonnet-4.6": {
                     "variants": {
                       "thinking": {
                         "thinking_budget": 16000,
@@ -218,6 +222,18 @@ in
                                 "name": "GLM 4.7 Flash"
                               }
                             }
+                          },
+                          "dev-slop": {
+                            "npm": "@ai-sdk/openai-compatible",
+                            "name": "Dev (SLOP)",
+                            "options": {
+                              "baseURL": "https://dev.slop.chaska1.gravwell.space/v1",
+                            },
+                            "models": {
+                              "qwen3-coder-next:q8_0": {
+                                "name": "Qwen 3 Coder"
+                              }
+                            }
                           }
             ''
             else ""
@@ -228,12 +244,7 @@ in
                 "model": "${thinking_model}"
               },
               "build": {
-                "disable": true,
-                "model": "${
-            if isWork
-            then "github-copilot/claude-sonnet-4.6"
-            else "minimax-m2.5"
-          }"
+                "model": "${building_model}"
               },
               "execute": {
                 "model": "${small_model}",
