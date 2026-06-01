@@ -285,6 +285,10 @@ in
                 "enabled": ${builtins.toJSON (!isWork)},
                 "type": "remote",
                 "url": "http://10.0.0.202:3000/mcp"
+              },
+              "godoc": {
+                "type": "local",
+                "command": ["docker","run", "-i", "--rm", "--pull=missing", "ghcr.io/mrjoshuak/godoc-mcp:1.1.0"]
               }
             }
           }
