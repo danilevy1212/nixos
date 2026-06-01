@@ -78,5 +78,15 @@ in {
 
     # I ❤ Internet
     services.network-manager-applet.enable = stable.stdenv.isLinux;
+
+    # Load SSH keys from macOS Keychain at login
+    launchd.agents.ssh-add-keychain = lib.mkIf pkgs.stdenv.isDarwin {
+      enable = true;
+      config = {
+        ProgramArguments = [ "/usr/bin/ssh-add" "--apple-load-keychain" ];
+        RunAtLoad = true;
+        KeepAlive = false;
+      };
+    };
   };
 }
