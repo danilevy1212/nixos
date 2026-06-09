@@ -18,7 +18,7 @@
     else "opencode/kimi-k2.6";
   building_model =
     if isWork
-    then "dev-slop/qwen3-coder-next:q8_0"
+    then "dev-slop/qwen3.6:35b"
     else "opencode/kimi-k2.6";
 in
   with lib; {
@@ -232,6 +232,12 @@ in
                             "models": {
                               "qwen3-coder-next:q8_0": {
                                 "name": "Qwen 3 Coder"
+                              },
+                              "devstral-2:123b": {
+                                "name": "Devstral 2"
+                              },
+                              "qwen3.6:35b": {
+                                "name": "Qwen 3.6 (small)"
                               }
                             }
                           }
