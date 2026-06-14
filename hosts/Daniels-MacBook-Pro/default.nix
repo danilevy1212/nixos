@@ -76,6 +76,13 @@
       AppleInterfaceStyle = "Dark"; # Dark mode
       KeyRepeat = 2;
     };
+    # Disable 'Select the previous input source' (Ctrl+Space) so we can use
+    # it in the terminal (e.g. telescope.nvim's to_fuzzy_refine binding)
+    CustomUserPreferences."com.apple.symbolichotkeys" = {
+      AppleSymbolicHotKeys."60" = {
+        enabled = false;
+      };
+    };
   };
 
   # Use sudo with touchID

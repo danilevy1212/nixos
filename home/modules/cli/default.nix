@@ -11,15 +11,17 @@
   small_model =
     if isWork
     then "github-copilot/claude-haiku-4.5"
-    else "opencode/kimi-k2.6";
+    else "opencode/claude-haiku-4.5";
   thinking_model =
     if isWork
     then "github-copilot/claude-sonnet-4.6"
-    else "opencode/kimi-k2.6";
+    else "opencode/qwen3.6-plus
+";
   building_model =
     if isWork
     then "dev-slop/qwen3.6:35b"
-    else "opencode/kimi-k2.6";
+    else "opencode/qwen3.6-plus
+";
 in
   with lib; {
     options.userConfig.modules.cli = {
@@ -282,7 +284,8 @@ in
                 "which*": "allow",
                 "cat*": "allow",
                 "ls*": "allow",
-                "nix flake show*": "allow"
+                "nix flake show*": "allow",
+                "echo*": "allow"
               },
               "webfetch": "allow"
             },
