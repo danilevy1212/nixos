@@ -43,7 +43,7 @@ in {
         # Keep my passwords safe
         keepassxc
       ]
-      ++ lib.optional cfg.isWork stable.bitwarden-desktop
+      ++ lib.optional (cfg.isWork && stdenv.isLinux) stable.bitwarden-desktop
       ++ lib.optionals stdenv.isLinux [
         # Browser
         chromium

@@ -22,7 +22,7 @@
       "mas"
       "docker-completion"
     ];
-    casks = ["syncthing-app"];
+    casks = ["syncthing-app" "bitwarden"];
   };
 
   # Generate brew shellenv at activation time
