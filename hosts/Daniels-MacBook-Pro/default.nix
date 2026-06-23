@@ -16,7 +16,8 @@
   homebrew = {
     enable = true;
     # Uninstalls anything not listed here
-    onActivation.cleanup = "zap";
+    # TODO  Pending on https://github.com/nix-darwin/nix-darwin/pull/1805
+    # onActivation.cleanup = "zap";
     taps = [];
     brews = [
       "mas"
