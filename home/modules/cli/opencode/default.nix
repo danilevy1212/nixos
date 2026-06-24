@@ -181,6 +181,10 @@ in {
     };
     home.sessionVariables = {
       SMALL_MODEL = "${small_model}";
+      # Allow opencode to do websearches using exa
+      OPENCODE_ENABLE_EXA = "1";
+      # Allow opencode to run lsp servers
+      OPENCODE_EXPERIMENTAL_LSP_TOOL = "1";
     };
   };
 }

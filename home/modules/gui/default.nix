@@ -47,8 +47,6 @@ in {
         GTK_THEME = "Nordic";
         # default file-browser
         FILEMANAGER = "dolphin";
-        # Allow opencode to do websearches using exa
-        OPENCODE_ENABLE_EXA = "1";
       };
 
       # Don't manage the keyboard layout.
