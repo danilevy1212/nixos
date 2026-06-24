@@ -45,6 +45,18 @@ in {
       };
     };
 
+    xdg.configFile."opencode/tui.jsonc" = {
+      text = ''
+        {
+          "$schema": "https://opencode.ai/tui.json",
+          "theme": "nord",
+          "keybinds": {
+            "leader": "ctrl+x"
+          }
+        }
+      '';
+    };
+
     xdg.configFile."opencode/opencode.jsonc" = {
       text = ''
         {
@@ -156,7 +168,17 @@ in {
               "nix flake show*": "allow",
               "echo*": "allow"
             },
-            "webfetch": "allow"
+            "webfetch": "allow",
+            "amplenote_*": "ask",
+            "amplenote_getNoteMetadata": "allow",
+            "amplenote_getNoteContent": "allow",
+            "amplenote_getNoteAttachments": "allow",
+            "amplenote_getNoteImages": "allow",
+            "amplenote_getAttachmentURL": "allow",
+            "amplenote_getMoodRatings": "allow",
+            "amplenote_getCompletedTasks": "allow",
+            "amplenote_filterNotes": "allow",
+            "amplenote_searchNotes": "allow"
           },
           "mcp": {
             "mcphub": {
@@ -165,6 +187,7 @@ in {
               "url": "http://10.0.0.202:3000/mcp"
             },
             "amplenote": {
+              "enabled": true,
               "type": "local",
               "command": [
                   "npx",
