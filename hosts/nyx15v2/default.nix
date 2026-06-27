@@ -9,6 +9,7 @@
 }: {
   imports = [
     ./hardware-configuration.nix
+    ../../common/bluetooth.nix
   ];
 
   # Use the systemd-boot EFI boot loader.
@@ -19,9 +20,6 @@
   # Per-interface useDHCP will be mandatory in the future, so this generated config
   # replicates the default behaviour.
   networking.useDHCP = lib.mkDefault true;
-
-  # Enable bluetooth
-  hardware.bluetooth.enable = true;
 
   # Screen control
   environment.systemPackages = lib.mkIf (config.services.xserver.enable) [
@@ -36,9 +34,6 @@
             --output DisplayPort-1 --off
     '')
   ];
-
-  # Enable blueman.
-  services.blueman.enable = true;
 
   # Tell me the power!
   systemd.services.upower.enable = true;

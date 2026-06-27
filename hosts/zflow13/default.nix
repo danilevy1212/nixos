@@ -66,6 +66,7 @@ in {
     ../../common/sunshine.nix
     ../../common/gaming.nix
     ../../common/ollama.nix
+    ../../common/bluetooth.nix
   ];
 
   # Kernel parameters tuned for ASUS GZ302 stability
@@ -77,8 +78,6 @@ in {
   boot.kernelParams = [
     # Use deep sleep by default — avoids EC/HID quirks on ASUS laptops.
     "mem_sleep_default=deep"
-    # Bluetooth quirks
-    "usbcore.quirks=13d3:3608:k"
     # Enable AMD P-State driver for better power management
     "amd_pstate=guided"
     # Silence ACPI spam from broken firmware
@@ -102,8 +101,8 @@ in {
     # Prevent Bluetooth from disconnecting
     options btusb enable_autosuspend=0
 
-    # MediaTek MT7925E – disable ASPM and power save for stability
-    options mt7925e disable_aspm=1 power_save=0
+    # MediaTek MT7925E – disable ASPM for stability
+    options mt7925e disable_aspm=1
 
     # Disable CLC (Country Location Code) – fixes 6GHz band stability
     options mt7925-common disable_clc=1
@@ -284,9 +283,6 @@ in {
   # ROCm support for GPU compute (currently disabled in favor of Vulkan/lmstudio)
   # Kept for when ROCm 7 lands in nixpkgs and ollama becomes viable again
   nixpkgs.config.rocmSupport = false;
-
-  # Enable bluetooth
-  hardware.bluetooth.enable = true;
 
   # ASUS userspace stack: asusd for keyboard/fan/profile control; supergfxd for GPU switching
   # See https://asus-linux.org/guides/nixos/

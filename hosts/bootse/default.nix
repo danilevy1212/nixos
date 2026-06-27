@@ -11,6 +11,7 @@
     ../../common/sunshine.nix
     ../../common/gaming.nix
     ../../common/ollama.nix
+    ../../common/bluetooth.nix
   ];
   # Only works with closed-source drivers
   boot.kernelParams = [
@@ -135,9 +136,6 @@
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
-
-  # List services that you want to enable:
-  hardware.bluetooth.enable = true;
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;

@@ -69,10 +69,6 @@ in {
       ControlPersist 600
     '';
 
-    ## Linux networking quirks
-    # I 💙 bluetooth.
-    services.blueman-applet.enable = stable.stdenv.isLinux;
-
     # Bluetooth remote control
     services.mpris-proxy.enable = stable.stdenv.isLinux;
 
@@ -83,7 +79,7 @@ in {
     launchd.agents.ssh-add-keychain = lib.mkIf pkgs.stdenv.isDarwin {
       enable = true;
       config = {
-        ProgramArguments = [ "/usr/bin/ssh-add" "--apple-load-keychain" ];
+        ProgramArguments = ["/usr/bin/ssh-add" "--apple-load-keychain"];
         RunAtLoad = true;
         KeepAlive = false;
       };

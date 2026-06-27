@@ -10,6 +10,7 @@
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
+    ../../common/bluetooth.nix
   ];
 
   # Bootloader.
@@ -30,7 +31,7 @@
   # MT7925 WiFi stability fixes
   # See: https://github.com/NixOS/nixos-hardware/blob/master/common/wifi/mediatek/mt7925/default.nix
   boot.extraModprobeConfig = ''
-    options mt7925e disable_aspm=1 power_save=0
+    options mt7925e disable_aspm=1
     options mt7925-common disable_clc=1
   '';
 
@@ -64,9 +65,6 @@
 
   # Enable touchpad support (enabled default in most desktopManager).
   services.libinput.enable = true;
-
-  # Enable bluetooth
-  hardware.bluetooth.enable = true;
 
   # Enable AMD CPU microcode and all redistributable firmware (WiFi, BT, GPU)
   hardware.enableRedistributableFirmware = true;
