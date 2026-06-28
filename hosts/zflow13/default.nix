@@ -84,6 +84,9 @@ in {
     "acpi_osi=!"
     "acpi_osi=\"Windows 2020\""
     "acpi_enforce_resources=lax"
+    # Disable AMDGPU PSR to prevent HUBP power-gating from masking flip interrupts,
+    # which causes flip_done timeouts and frozen external HDMI monitors on DCN 3.5
+    "amdgpu.dcdebugmask=0x10"
   ];
 
   # ASUS HID modules required for touchpad, keyboard backlight, and function keys
@@ -381,10 +384,6 @@ in {
       };
     };
   };
-
-  # Use latest mainline kernel (6.17+) on this host for newest AMD/ASUS fixes
-  # Common config pins 6.16; this override is zflow13-specific for testing newer kernels
-  boot.kernelPackages = lib.mkForce pkgs.linuxPackages_latest;
 
   hardware.graphics = {
     enable = true;
