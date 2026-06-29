@@ -147,6 +147,10 @@ in {
           },
           "permission": {
             "edit": "ask",
+            "external_directory": {
+              "*": "ask",
+              "~/Projects/workspace/**": "allow"
+            },
             "bash": {
                "*": "ask",
               "git status*": "allow",
@@ -166,7 +170,8 @@ in {
               "cat*": "allow",
               "ls*": "allow",
               "nix flake show*": "allow",
-              "echo*": "allow"
+              "echo*": "allow",
+              "sed -n*": "allow"
             },
             "webfetch": "allow",
             "amplenote_*": "ask",
