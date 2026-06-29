@@ -223,7 +223,7 @@ in
         dejavu_fonts
         symbola
         noto-fonts
-        noto-fonts-color-emoji
+        stable.noto-fonts-color-emoji
         (import ./quivera.nix {inherit pkgs;})
       ];
 
