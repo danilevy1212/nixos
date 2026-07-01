@@ -10,7 +10,7 @@
     else "opencode/claude-haiku-4.5";
   thinking_model =
     if isWork
-    then "github-copilot/claude-sonnet-4.6"
+    then "github-copilot/claude-sonnet-5"
     else "opencode/qwen3.6-plus";
   building_model =
     if isWork
@@ -67,12 +67,7 @@ in {
           "provider": {
             "github-copilot": {
               "models": {
-                "claude-sonnet-4.6": {
-                  "variants": {
-                    "thinking": {
-                      "thinking_budget": 16000,
-                      "reasoningEffort": "high"
-                    },
+                "claude-sonnet-5": {
                     "proofreader": {
                      "reasoningEffort": "low"
                     }
