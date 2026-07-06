@@ -6,6 +6,7 @@
 }: let
   username = userConfig.username;
   isLinux = pkgs.stdenv.isLinux;
+  isDarwin = pkgs.stdenv.isDarwin;
 in {
   # Sorry, Stallman
   nixpkgs.config.allowUnfree = true;
@@ -69,4 +70,13 @@ in {
     # Ensure all downloaded packages have auto completion info
     pathsToLink = ["/share/zsh"];
   };
+
+  # TODO See https://github.com/nix-darwin/nix-darwin/pull/1818, remove when merged
+  # nested under `system`'s value (not the module's top level) so evaluating
+  # it doesn't need `pkgs` before `pkgs` itself is resolved, and so it's a
+  # no-op key on NixOS instead of "option does not exist"
+  system = lib.optionalAttrs isDarwin {
+    tools.darwin-uninstaller.enable = false;
+  };
+  documentation.enable = !isDarwin;
 }
