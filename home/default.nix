@@ -21,6 +21,9 @@
     # Rust
     "rust"
 
+    # Zig
+    "zig"
+
     # Golang
     "golang"
 

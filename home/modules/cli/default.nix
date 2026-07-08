@@ -160,6 +160,7 @@ in
         cloc
         unzip
         zip
+        xz
 
         # Github actions
         act

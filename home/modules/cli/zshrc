@@ -179,5 +179,9 @@ zinit light g-plane/zsh-yarn-autocompletions
 zinit ice wait lucid id-as"mutagen-completion" atclone'mutagen completion zsh > _mutagen' atpull'%atclone' as"completion" nocompile'!' 
 zinit load zdharma-continuum/null
 
+# Zig completions
+zinit ice wait lucid from"codeberg.org"
+zinit light ziglang/shell-completions
+
 # Enable fuzzy sorting
 export MCFLY_FUZZY=2

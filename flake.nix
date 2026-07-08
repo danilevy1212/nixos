@@ -77,6 +77,7 @@
         nodejs = {enable = true;};
         golang = {enable = true;};
         rust = {enable = true;};
+        zig = {enable = true;};
         cli = {
           enable = true;
           agents.enable = true;
