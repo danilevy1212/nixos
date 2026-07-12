@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }: let
   isWork = config.userConfig.isWork;
@@ -208,5 +209,7 @@ in {
       # Allow opencode to run lsp servers
       OPENCODE_EXPERIMENTAL_LSP_TOOL = "1";
     };
+    # TODO  Testing for now, I can always add an auto-installer later
+    home.packages = with pkgs; [openspec];
   };
 }

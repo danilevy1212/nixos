@@ -108,6 +108,7 @@
       ];
       nixpkgs.config.packageOverrides = pkgs: {
         opencode = llm-agents.packages."${sys}".opencode;
+        openspec = llm-agents.packages."${sys}".openspec;
       };
     };
 
