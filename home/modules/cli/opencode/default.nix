@@ -5,6 +5,7 @@
   ...
 }: let
   isWork = config.userConfig.isWork;
+  agents = import ../agents/shared.nix {inherit lib pkgs;};
   small_model =
     if isWork
     then "github-copilot/claude-haiku-4.5"
@@ -23,7 +24,7 @@ in {
     # Vibing and coding
     programs.opencode = {
       enable = true;
-      context = builtins.readFile ./RULES.md;
+      context = agents.rulesText;
       commands = {
         commit_message = ''
           # Commit Message
@@ -129,15 +130,6 @@ in {
             },
             "build": {
               "model": "${building_model}"
-            },
-            "execute": {
-              "model": "${small_model}",
-              "mode": "subagent",
-              "description": "Executes the plans layed out by the plan agent.",
-              "prompt": "You are the Execute subagent. Carry out concrete actions delegated by the Plan agent using the shared conversation context. Do not re‑plan; follow the given steps and constraints. Respect repository rules and permissions. Be concise: state what you did, the result, and whether anything is blocked. Ask only when a blocker prevents progress. Acknowledge each delegated step after completing it before moving forward.",
-              "tools": {
-                "*": true
-              }
             }
           },
           "permission": {
@@ -146,28 +138,7 @@ in {
               "*": "ask",
               "~/Projects/workspace/**": "allow"
             },
-            "bash": {
-               "*": "ask",
-              "git status*": "allow",
-              "git log*": "allow",
-              "git diff*": "allow",
-              "git rev-parse*": "allow",
-              "git remote -v": "allow",
-              "git branch -a": "allow",
-              "grep*": "allow",
-              "rg*": "allow",
-              "head*": "allow",
-              "gh issue view*": "allow",
-              "gh search*": "allow",
-              "gh pr view*": "allow",
-              "go list*": "allow",
-              "which*": "allow",
-              "cat*": "allow",
-              "ls*": "allow",
-              "nix flake show*": "allow",
-              "echo*": "allow",
-              "sed -n*": "allow"
-            },
+            "bash": ${agents.opencodeBashBlock},
             "webfetch": "allow",
             "amplenote_*": "ask",
             "amplenote_getNoteMetadata": "allow",

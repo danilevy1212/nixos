@@ -10,7 +10,7 @@
   isWork = config.userConfig.isWork;
 in
   with lib; {
-    imports = [./opencode];
+    imports = [./opencode ./claude-code];
 
     options.userConfig.modules.cli = {
       enable = mkEnableOption "Enable home-manager to take over the CLI environment";
@@ -236,7 +236,6 @@ in
 
       # Agents that I have to test for work
       programs.github-copilot-cli.enable = isWork;
-      programs.claude-code.enable = isWork;
       programs.codex.enable = isWork;
     };
   }

@@ -12,6 +12,24 @@
   # $ darwin-rebuild changelog
   system.stateVersion = 5;
 
+  # HACK  Workaround for ld64 linker crash (Trace/BPT trap 5) on macOS 26 aarch64,
+  # fixed by root PR https://github.com/NixOS/nixpkgs/pull/536365.
+  # Safe to remove when these Hydra jobs are green (= fix reached our channel):
+  #   https://hydra.nixos.org/job/nixpkgs/trunk/moonlight-qt.aarch64-darwin
+  #   https://hydra.nixos.org/job/nixpkgs/trunk/keepassxc.aarch64-darwin
+  nixpkgs.overlays = [
+    (final: prev: let
+      useLld = pkg:
+        pkg.overrideAttrs (old: {
+          nativeBuildInputs = (old.nativeBuildInputs or []) ++ [final.llvmPackages.lld];
+          NIX_CFLAGS_LINK = (old.NIX_CFLAGS_LINK or "") + " -fuse-ld=lld";
+        });
+    in {
+      moonlight-qt = useLld prev.moonlight-qt;
+      keepassxc = useLld prev.keepassxc;
+    })
+  ];
+
   # Homebrew Integration
   homebrew = {
     enable = true;
@@ -72,6 +90,7 @@
     finder = {
       AppleShowAllExtensions = true;
       FXPreferredViewStyle = "clmb"; # Column view
+      AppleShowAllFiles = true;
     };
     NSGlobalDomain = {
       AppleInterfaceStyle = "Dark"; # Dark mode
