@@ -21,6 +21,8 @@ in {
           ask = ["Edit" "Write" "NotebookEdit" "Bash(dangerouslyDisableSandbox:true)"];
           allow = agents.claudeBashAllow ++ ["WebFetch"] ++ agents.claudeAmplenoteAllow;
           deny = ["Read(./.env)" "Read(./secrets/**)"];
+          disableBypassPermissionsMode = "disable";
+          disableAutoMode = "disable";
         };
         includeCoAuthoredBy = false;
 
