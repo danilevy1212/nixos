@@ -49,6 +49,18 @@
     "nix flake metadata"
     "nix eval"
   ];
+  # Read-only amplenote MCP tools safe to auto-allow for BOTH assistants.
+  amplenoteReadonly = [
+    "getNoteMetadata"
+    "getNoteContent"
+    "getNoteAttachments"
+    "getNoteImages"
+    "getAttachmentURL"
+    "getMoodRatings"
+    "getCompletedTasks"
+    "filterNotes"
+    "searchNotes"
+  ];
 in rec {
   inherit readonlyBash;
 
@@ -65,4 +77,19 @@ in rec {
 
   # Claude Code `permissions.allow` is a JSON ARRAY — order is preserved natively.
   claudeBashAllow = map (c: "Bash(${c}:*)") readonlyBash;
+
+  # opencode names MCP tools `<server>_<tool>`. Same ordering constraint as
+  # opencodeBashBlock — "*" catch-all first — so render ordered JSONC entries,
+  # spliced in as siblings under `permission`.
+  opencodeAmplenotePerms = let
+    entries =
+      [''"amplenote_*": "ask"'']
+      ++ map (t: ''"amplenote_${t}": "allow"'') amplenoteReadonly;
+  in
+    lib.concatStringsSep ",\n            " entries;
+
+  # Claude Code names them `mcp__<server>__<tool>`; home-manager ships mcpServers
+  # as a generated plugin, so the server segment carries a plugin prefix.
+  claudeAmplenoteAllow =
+    map (t: "mcp__plugin_claude-code-home-manager_amplenote__${t}") amplenoteReadonly;
 }

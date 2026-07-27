@@ -140,16 +140,7 @@ in {
             },
             "bash": ${agents.opencodeBashBlock},
             "webfetch": "allow",
-            "amplenote_*": "ask",
-            "amplenote_getNoteMetadata": "allow",
-            "amplenote_getNoteContent": "allow",
-            "amplenote_getNoteAttachments": "allow",
-            "amplenote_getNoteImages": "allow",
-            "amplenote_getAttachmentURL": "allow",
-            "amplenote_getMoodRatings": "allow",
-            "amplenote_getCompletedTasks": "allow",
-            "amplenote_filterNotes": "allow",
-            "amplenote_searchNotes": "allow"
+            ${agents.opencodeAmplenotePerms}
           },
           "mcp": {
             "mcphub": {

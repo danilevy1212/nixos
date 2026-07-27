@@ -18,11 +18,18 @@ in {
       # ~/.claude/settings.json
       settings = {
         permissions = {
-          ask = ["Edit" "Write" "NotebookEdit"];
-          allow = agents.claudeBashAllow ++ ["WebFetch"];
+          ask = ["Edit" "Write" "NotebookEdit" "Bash(dangerouslyDisableSandbox:true)"];
+          allow = agents.claudeBashAllow ++ ["WebFetch"] ++ agents.claudeAmplenoteAllow;
           deny = ["Read(./.env)" "Read(./secrets/**)"];
         };
         includeCoAuthoredBy = false;
+
+        # OS-level (Seatbelt) sandbox for Bash. Escape hatch stays on by
+        # default, so a sandbox-incompatible command falls to a permission
+        # prompt rather than failing.
+        sandbox = {
+          enabled = true;
+        };
 
         # git source; the `marketplaces` option only emits local dir sources.
         extraKnownMarketplaces = {
@@ -48,7 +55,7 @@ in {
         '';
       };
 
-      # ~/.claude/.mcp.json
+      # ~/.claude/skills/claude-code-home-manager/.mcp.json
       mcpServers = {
         mcphub = {
           type = "http";
@@ -65,6 +72,19 @@ in {
             "-c"
             ''npx -y mcp-remote@0.1.38 http://127.0.0.1:39377/mcp --header "$(cat ~/.config/opencode/secrets/amplenote-mcp.txt)"''
           ];
+        };
+      };
+
+      # ~/.claude/skills/claude-code-home-manager/.lsp.json
+      lspServers = {
+        go = {
+          command = lib.getExe pkgs.gopls;
+          args = [
+            "serve"
+          ];
+          extensionToLanguage = {
+            ".go" = "go";
+          };
         };
       };
     };
