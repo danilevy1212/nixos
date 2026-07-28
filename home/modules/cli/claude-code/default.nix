@@ -7,6 +7,7 @@
   cfg = config.userConfig.modules.cli;
   isWork = config.userConfig.isWork;
   agents = import ../agents/shared.nix {inherit lib pkgs;};
+  isDarwin = pkgs.stdenv.isDarwin;
 in {
   config = lib.mkIf (cfg.enable && cfg.agents.enable) {
     programs.claude-code = {
@@ -42,6 +43,24 @@ in {
             };
           };
         };
+
+        # macOS: without this the sandbox blocks com.apple.trustd.agent, so every
+        # TLS handshake fails cert validation (OSStatus -26276) — breaks gh, go, curl.
+        enableWeakerNetworkIsolation = isDarwin;
+
+        filesystem.allowWrite = [
+          "~/Library/Caches/go-build" # GOCACHE (darwin)
+          "~/.cache/go-build" # GOCACHE (linux/XDG)
+          "~/.cache/go" # GOPATH → GOMODCACHE
+        ];
+
+        network.allowedDomains = [
+          "api.github.com"
+          "github.com"
+          "*.githubusercontent.com"
+          "proxy.golang.org"
+          "sum.golang.org"
+        ];
       };
 
       # ~/.claude/commands/commit.md
