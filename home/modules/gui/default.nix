@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  stable,
   ...
 }: let
   cfg = config.userConfig.modules.gui;
@@ -84,7 +85,7 @@ in {
         };
         theme = {
           name = "Nordic";
-          package = nordic;
+          package = stable.nordic;
         };
         font = {
           name = "Sarasa UI J";
