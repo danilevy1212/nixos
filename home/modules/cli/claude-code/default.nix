@@ -108,6 +108,9 @@ in {
           };
         };
       };
+
+      # ~/.claude/skills/plain-english/
+      inherit (agents) skills;
     };
   };
 }

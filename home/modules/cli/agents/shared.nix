@@ -61,6 +61,14 @@
     "filterNotes"
     "searchNotes"
   ];
+  # Plain-English skill: strips AI tics, applies Orwell/Gowers rules.
+  # Repo root is the skill dir (SKILL.md + the REFERENCE.md it loads).
+  plainEnglishSkill = pkgs.fetchFromGitHub {
+    owner = "b1rdmania";
+    repo = "claude-plain-english-skill";
+    rev = "92090976c7d3ef8f7e655155b8c53520c1ac38f0";
+    hash = "sha256-TxWjnoOunSBeMyc+xFj1Rx/1mrk4IZDKhwDGoBav7II=";
+  };
 in rec {
   inherit readonlyBash;
 
@@ -92,4 +100,9 @@ in rec {
   # as a generated plugin, so the server segment carries a plugin prefix.
   claudeAmplenoteAllow =
     map (t: "mcp__plugin_claude-code-home-manager_amplenote__${t}") amplenoteReadonly;
+
+  # Skills shared by both assistants; same attrset shape in either module.
+  skills = {
+    plain-english = plainEnglishSkill;
+  };
 }

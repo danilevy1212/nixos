@@ -45,6 +45,8 @@ in {
           - Conventional commit patterns (if used)
         '';
       };
+      # ~/.config/opencode/skills/plain-english/
+      inherit (agents) skills;
     };
 
     xdg.configFile."opencode/tui.jsonc" = {
