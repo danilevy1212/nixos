@@ -34,6 +34,7 @@
     "ls"
     "find"
     "which"
+    "uuidgen"
     "sort"
     "sed -n"
     "echo"
