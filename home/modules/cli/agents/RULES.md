@@ -132,6 +132,8 @@ so much that a senior rolls his eyes.
 - You run inside a sandbox. On network, TLS, certificate, or permission weirdness, suspect the
   sandbox first (retry with it disabled) before blaming the environment. A cert failure has
   looked like "corporate TLS interception" and been the sandbox.
+- Read files with the Read tool, even mid-investigation when a `grep -n` just handed you line
+  numbers. `sed`/`cat` in Bash are for pipelines that transform output, not for reading files.
 
 ## Edit
 

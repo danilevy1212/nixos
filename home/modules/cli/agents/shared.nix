@@ -19,6 +19,8 @@
     '';
 
   # Read-only command prefixes safe to auto-allow for BOTH assistants.
+  # Anything that can execute code stays out: go build/vet/test (cgo runs at
+  # build time), bash, docker, python, awk (system()), gh api (can POST).
   readonlyBash = [
     "git status"
     "git log"
@@ -27,28 +29,54 @@
     "git rev-parse"
     "git remote -v"
     "git branch -a"
+    "git branch --show-current"
+    "git rev-list"
+    "git cat-file"
+    "git ls-remote"
+    "git merge-tree" # read-only conflict preview
+    "git fetch" # refs only, never the worktree
     "grep"
     "rg"
     "head"
+    "tail"
     "cat"
     "ls"
     "find"
     "which"
     "uuidgen"
     "sort"
-    "sed -n"
+    "uniq"
+    "cut"
+    "wc"
+    "jq"
+    "diff"
+    "test"
+    "pwd"
+    "cd"
     "echo"
     "gh issue view"
     "gh issue list"
     "gh pr view"
     "gh pr diff"
     "gh pr list"
+    "gh pr checks"
+    "gh run view"
     "gh search"
     "gh repo view"
     "go list"
+    "gofmt -l" # -w stays prompted
     "nix flake show"
     "nix flake metadata"
     "nix eval"
+    "nix-instantiate --parse"
+  ];
+  # Exec-capable variants of allowed prefixes, escalated back to a prompt
+  # (ask outranks allow in both assistants; a single * spans spaces).
+  escalateBash = [
+    "find * -exec*" # also -execdir
+    "find * -ok*" # also -okdir
+    "rg --pre*" # --pre executes a preprocessor
+    "rg * --pre*"
   ];
   # Read-only amplenote MCP tools safe to auto-allow for BOTH assistants.
   amplenoteReadonly = [
@@ -90,16 +118,22 @@ in rec {
     line; do not manufacture findings.
   '';
 
-  # opencode `permission.bash` requires "*" FIRST. `builtins.toJSON` sorts keys
-  # (Nix attrsets are unordered), so it can't be used here. Nix LISTS preserve
-  # order — render an ordered JSONC object string with "*" prepended.
+  # opencode `permission.bash` requires "*" FIRST and escalate entries LAST
+  # (later entries win). `builtins.toJSON` sorts keys, so render an ordered
+  # JSONC object string from Nix lists instead.
   opencodeBashBlock = let
-    entries = [''"*": "ask"''] ++ map (c: ''"${c}*": "allow"'') readonlyBash;
+    entries =
+      [''"*": "ask"'']
+      ++ map (c: ''"${c}*": "allow"'') readonlyBash
+      ++ map (c: ''"${c}": "ask"'') escalateBash;
   in
     "{ " + lib.concatStringsSep ", " entries + " }";
 
   # Claude Code `permissions.allow` is a JSON ARRAY — order is preserved natively.
   claudeBashAllow = map (c: "Bash(${c}:*)") readonlyBash;
+
+  # Claude Code `permissions.ask` entries; ask outranks allow regardless of order.
+  claudeBashAsk = map (c: "Bash(${c})") escalateBash;
 
   # opencode names MCP tools `<server>_<tool>`. Same ordering constraint as
   # opencodeBashBlock — "*" catch-all first — so render ordered JSONC entries,

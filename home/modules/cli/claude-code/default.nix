@@ -19,7 +19,9 @@ in {
       # ~/.claude/settings.json
       settings = {
         permissions = {
-          ask = ["Edit" "Write" "NotebookEdit" "Bash(dangerouslyDisableSandbox:true)"];
+          ask =
+            ["Edit" "Write" "NotebookEdit" "Bash(dangerouslyDisableSandbox:true)"]
+            ++ agents.claudeBashAsk;
           allow = agents.claudeBashAllow ++ ["WebFetch"] ++ agents.claudeAmplenoteAllow;
           deny = ["Read(./.env)" "Read(./secrets/**)"];
           disableBypassPermissionsMode = "disable";
