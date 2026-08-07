@@ -75,22 +75,15 @@ in {
           follows those conventions.
         '';
 
-        # ~/.claude/commands/review.md — signal-only PR review (see RULES.md writing mechanics)
-        review = ''
-          ---
-          allowed-tools: Bash(gh pr view:*), Bash(gh pr diff:*), Bash(gh api:*), Read, Grep, Glob
-          description: Review a PR — severity-ranked, actionable-only findings
-          ---
-          Review the pull request in $ARGUMENTS (number or URL). Fetch it with the gh CLI; read
-          the surrounding local code when the diff alone isn't enough to judge.
-
-          Report findings ranked by severity: correctness > data loss > security > performance >
-          design. For each: what breaks, where (file:line), and the concrete fix, in three
-          sentences or fewer. Mark each finding CONFIRMED (you traced the failure path) or
-          SPECULATIVE (the author must check). A finding with no actionable is noise: drop it.
-          Say nothing about style or formatting unless asked. If the PR is sound, say so in one
-          line; do not manufacture findings.
-        '';
+        # ~/.claude/commands/review.md — shared prose lives in agents/shared.nix
+        review =
+          ''
+            ---
+            allowed-tools: Bash(gh pr view:*), Bash(gh pr diff:*), Bash(gh api:*), Read, Grep, Glob
+            description: Review a PR — severity-ranked, actionable-only findings
+            ---
+          ''
+          + agents.reviewCommandProse;
       };
 
       # ~/.claude/skills/claude-code-home-manager/.mcp.json

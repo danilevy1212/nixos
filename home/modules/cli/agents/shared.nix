@@ -76,6 +76,20 @@ in rec {
   # Shared rules prose + the platform-specific privilege rule.
   rulesText = builtins.readFile ./RULES.md + "\n" + platformNote;
 
+  # Shared /review command prose; each assistant wraps it with its own
+  # frontmatter (Claude Code needs allowed-tools; opencode a markdown heading).
+  reviewCommandProse = ''
+    Review the pull request in $ARGUMENTS (number or URL). Fetch it with the gh CLI; read
+    the surrounding local code when the diff alone isn't enough to judge.
+
+    Report findings ranked by severity: correctness > data loss > security > performance >
+    design. For each: what breaks, where (file:line), and the concrete fix, in three
+    sentences or fewer. Mark each finding CONFIRMED (you traced the failure path) or
+    SPECULATIVE (the author must check). A finding with no actionable is noise: drop it.
+    Say nothing about style or formatting unless asked. If the PR is sound, say so in one
+    line; do not manufacture findings.
+  '';
+
   # opencode `permission.bash` requires "*" FIRST. `builtins.toJSON` sorts keys
   # (Nix attrsets are unordered), so it can't be used here. Nix LISTS preserve
   # order — render an ordered JSONC object string with "*" prepended.

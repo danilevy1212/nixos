@@ -44,6 +44,14 @@ in {
           - Multi-line format when appropriate
           - Conventional commit patterns (if used)
         '';
+
+        # ~/.config/opencode/command/review.md — shared prose lives in agents/shared.nix
+        review =
+          ''
+            # Review
+
+          ''
+          + agents.reviewCommandProse;
       };
       # ~/.config/opencode/skills/plain-english/
       inherit (agents) skills;
