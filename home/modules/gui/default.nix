@@ -55,6 +55,7 @@ in {
     };
 
     home.pointerCursor = pkgs.lib.mkIf pkgs.stdenv.isLinux {
+      enable = true;
       name = "Numix-Cursor";
       package = pkgs.numix-cursor-theme;
     };
