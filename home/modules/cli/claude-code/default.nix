@@ -121,7 +121,7 @@ in {
         };
       };
 
-      # ~/.claude/skills/plain-english/
+      # ~/.claude/skills/*
       inherit (agents) skills;
     };
   };

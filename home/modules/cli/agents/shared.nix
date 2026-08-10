@@ -95,9 +95,18 @@
   plainEnglishSkill = pkgs.fetchFromGitHub {
     owner = "b1rdmania";
     repo = "claude-plain-english-skill";
-    rev = "92090976c7d3ef8f7e655155b8c53520c1ac38f0";
-    hash = "sha256-TxWjnoOunSBeMyc+xFj1Rx/1mrk4IZDKhwDGoBav7II=";
+    rev = "43af25e6b03ea7356648b48ae2a2280502e6594f"; # v0.3.0
+    hash = "sha256-VnwmsWLqP5yKjEXBruoT3JwT6/hxuk3dbtKAu/8rAGs=";
   };
+
+  # Plain-English STE skill: enforces ASD-STE100 Simplified Technical English.
+  # SKILL.md lives under skills/simple-english/, not the repo root.
+  plainEnglishSteSkill = "${pkgs.fetchFromGitHub {
+    owner = "AminBlg";
+    repo = "SimpleEnglish";
+    rev = "eaa7fded155ad47e5baa072ebae4c70d1254e9e2"; # v1.2.0
+    hash = "sha256-62IdviEpLgMXYzJwjdM6G7VVJtyaAHGhQGHw2oFCAHE=";
+  }}/skills/simple-english";
 in rec {
   inherit readonlyBash;
 
@@ -153,5 +162,6 @@ in rec {
   # Skills shared by both assistants; same attrset shape in either module.
   skills = {
     plain-english = plainEnglishSkill;
+    plain-english-STE = plainEnglishSteSkill;
   };
 }

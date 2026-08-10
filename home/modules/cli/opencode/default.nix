@@ -53,7 +53,7 @@ in {
           ''
           + agents.reviewCommandProse;
       };
-      # ~/.config/opencode/skills/plain-english/
+      # ~/.config/opencode/skills/*
       inherit (agents) skills;
     };
 
