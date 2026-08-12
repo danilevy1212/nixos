@@ -23,20 +23,59 @@ in {
             ["Edit" "Write" "NotebookEdit" "Bash(dangerouslyDisableSandbox:true)"]
             ++ agents.claudeBashAsk;
           allow = agents.claudeBashAllow ++ ["WebFetch"] ++ agents.claudeAmplenoteAllow;
-          deny = ["Read(./.env)" "Read(./secrets/**)"];
+          deny = ["Read(**/.env)" "Read(./secrets/**)"];
           disableBypassPermissionsMode = "disable";
           disableAutoMode = "disable";
         };
         includeCoAuthoredBy = false;
+        model = "opus[1m]";
+        effortLevel = "xhigh";
 
-        # OS-level (Seatbelt) sandbox for Bash. Escape hatch stays on by
-        # default, so a sandbox-incompatible command falls to a permission
-        # prompt rather than failing.
+        # Push notifications reach the phone from any client: terminal, Desktop, ACP.
+        # preferredNotifChannel is left unset because it works only in a terminal.
+        remoteControlAtStartup = true;
+        inputNeededNotifEnabled = true;
+        agentPushNotifEnabled = true;
+
+        # OS-level (seatbelt or bubblewrap) sandbox for Bash.
+        # CAUTION: Keep these keys nested. At the top level of `settings`, Claude
+        # Code drops them without warning.
         sandbox = {
           enabled = true;
+
+          # If the sandbox cannot start, stop the session. The escape hatch is
+          # separate: allowUnsandboxedCommands defaults true, so those still prompt.
+          failIfUnavailable = true;
+
+          # macOS only. Without it the sandbox blocks com.apple.trustd.agent, so TLS
+          # certificate validation fails (OSStatus -26276). Breaks gh, go, and curl.
+          enableWeakerNetworkIsolation = isDarwin;
+
+          filesystem.allowWrite = [
+            "~/Library/Caches/go-build" # GOCACHE (darwin)
+            "~/.cache/go-build" # GOCACHE (linux/XDG)
+            "~/.cache/go" # GOPATH → GOMODCACHE
+            "~/.cache/nix" # nix fetcher/eval caches; XDG on darwin too, so no split
+          ];
+
+          network.allowedDomains = [
+            "api.github.com"
+            "github.com"
+            "*.githubusercontent.com"
+            "proxy.golang.org"
+            "sum.golang.org"
+          ];
+
+          # Deny rules for Read and Edit do not reach subprocesses. These rules do.
+          credentials.files = [
+            {
+              path = "~/.ssh";
+              mode = "deny";
+            }
+          ];
         };
 
-        # git source; the `marketplaces` option only emits local dir sources.
+        # Uses a git source. The `marketplaces` option emits local dirs only.
         extraKnownMarketplaces = {
           claude-plugins-official = {
             source = {
@@ -45,24 +84,6 @@ in {
             };
           };
         };
-
-        # macOS: without this the sandbox blocks com.apple.trustd.agent, so every
-        # TLS handshake fails cert validation (OSStatus -26276) — breaks gh, go, curl.
-        enableWeakerNetworkIsolation = isDarwin;
-
-        filesystem.allowWrite = [
-          "~/Library/Caches/go-build" # GOCACHE (darwin)
-          "~/.cache/go-build" # GOCACHE (linux/XDG)
-          "~/.cache/go" # GOPATH → GOMODCACHE
-        ];
-
-        network.allowedDomains = [
-          "api.github.com"
-          "github.com"
-          "*.githubusercontent.com"
-          "proxy.golang.org"
-          "sum.golang.org"
-        ];
       };
 
       # ~/.claude/commands/commit.md
@@ -124,5 +145,12 @@ in {
       # ~/.claude/skills/*
       inherit (agents) skills;
     };
+
+    # Sandbox backend on Linux. Claude Code needs both on PATH, and
+    # failIfUnavailable makes a missing one a hard startup failure.
+    home.packages = lib.optionals (!isDarwin) [
+      pkgs.bubblewrap
+      pkgs.socat # network proxying for network.allowedDomains
+    ];
   };
 }
