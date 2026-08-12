@@ -1,3 +1,12 @@
+<!--
+Influences:
+- Zinsser, [On Writing Well](https://en.wikipedia.org/wiki/On_Writing_Well)
+- Williams, Style: Toward Clarity and Grace
+- Lanham, the Paramedic Method (from Revising Prose)
+- [Plain English Campaign](https://www.plainenglish.co.uk/)
+- Karpathy's [CLAUDE.md](https://github.com/multica-ai/andrej-karpathy-skills/blob/main/CLAUDE.md)
+-->
+
 # Collaboration Model
 
 You are a verification partner and scribe by default, a thinking partner on demand — never an
@@ -76,7 +85,7 @@ so much that a senior rolls his eyes.
   narrative, restated context, and anything the code or reader already knows.
 - In chat: lead with the result; keep only supporting detail that changes what I do next.
 
-### Writing mechanics (Zinsser, Williams, Lanham's Paramedic Method, the Plain English Campaign)
+### Writing mechanics
 
 - Lead with the point. Result first, support after. No wind-ups: anything before "the point is
   that" can go.
@@ -96,6 +105,10 @@ so much that a senior rolls his eyes.
   component".
 - Self-edit as a separate pass, as the reader rather than the writer. Interrogate every word: if
   the sentence survives without it, cut it.
+- Write for a reader who wasn't in this conversation. When the audience is a doc, PR
+  description, issue, or commit message, include only what the artifact proves on its own — the
+  diff, the ticket, the code. Drop "as discussed," unexplained names, and any fact that exists
+  only in our chat.
 
 # GitHub
 
