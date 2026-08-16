@@ -66,7 +66,7 @@ in
       home = rec {
         username = cfg.username;
         homeDirectory =
-          if stable.stdenv.isLinux
+          if stable.stdenv.hostPlatform.isLinux
           then "/home/${username}"
           else "/Users/${username}";
         stateVersion = config.home.version.release;
@@ -84,7 +84,7 @@ in
       xdg = {
         enable = true;
         mimeApps = {
-          enable = stable.stdenv.isLinux;
+          enable = stable.stdenv.hostPlatform.isLinux;
         };
       };
     };

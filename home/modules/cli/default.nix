@@ -141,7 +141,7 @@ in
         enable = true;
         nix-direnv.enable = true;
       };
-      services.lorri = lib.mkIf stable.stdenv.isLinux {
+      services.lorri = lib.mkIf stable.stdenv.hostPlatform.isLinux {
         enable = true;
       };
 
@@ -156,7 +156,10 @@ in
         fastfetch
         file
         rsync
-        fasd
+        # TODO  fasd is archived... Gotta find an alternative
+        # I should consider my own derivation from https://github.com/whjvenyl/fasd
+        # Another alternative: https://github.com/skywind3000/z.lua , but it requires more work.
+        stable.fasd
         cloc
         unzip
         zip

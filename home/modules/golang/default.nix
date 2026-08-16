@@ -29,7 +29,7 @@ in
       };
 
       # yaegi is broken on mac?
-      home.packages = with pkgs; lib.optional stdenv.isLinux yaegi;
+      home.packages = with pkgs; lib.optional stdenv.hostPlatform.isLinux yaegi;
 
       # Make yaegi easier to use
       home.shellAliases = {

@@ -46,7 +46,7 @@ in {
         redis
       ]
       ++ (
-        if stdenv.isLinux
+        if stdenv.hostPlatform.isLinux
         then [brunoWrapped]
         else [bruno]
       );
@@ -54,7 +54,7 @@ in {
     # File sharing, p2p style
     services.syncthing = with pkgs;
     # We get syncthing through brew on macos
-      lib.mkIf stdenv.isLinux {
+      lib.mkIf stdenv.hostPlatform.isLinux {
         enable = true;
         tray = {
           enable = true;
@@ -70,13 +70,13 @@ in {
     '';
 
     # Bluetooth remote control
-    services.mpris-proxy.enable = stable.stdenv.isLinux;
+    services.mpris-proxy.enable = stable.stdenv.hostPlatform.isLinux;
 
     # I ❤ Internet
-    services.network-manager-applet.enable = stable.stdenv.isLinux;
+    services.network-manager-applet.enable = stable.stdenv.hostPlatform.isLinux;
 
     # Load SSH keys from macOS Keychain at login
-    launchd.agents.ssh-add-keychain = lib.mkIf pkgs.stdenv.isDarwin {
+    launchd.agents.ssh-add-keychain = lib.mkIf pkgs.stdenv.hostPlatform.isDarwin {
       enable = true;
       config = {
         ProgramArguments = ["/usr/bin/ssh-add" "--apple-load-keychain"];

@@ -2,7 +2,7 @@
   lib,
   pkgs,
 }: let
-  isDarwin = pkgs.stdenv.isDarwin;
+  isDarwin = pkgs.stdenv.hostPlatform.isDarwin;
 
   # OS-specific privilege-escalation rule, appended to the shared prose.
   platformNote =

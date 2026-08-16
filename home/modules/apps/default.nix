@@ -20,7 +20,7 @@ in {
 
     # Nerdy PDF reader
     programs.zathura = {
-      enable = pkgs.stdenv.isLinux;
+      enable = pkgs.stdenv.hostPlatform.isLinux;
       options = {
         selection-clipboard = "clipboard";
       };
@@ -32,7 +32,7 @@ in {
     # default browser
     home.sessionVariables = with pkgs; {
       BROWSER =
-        if stdenv.isLinux
+        if stdenv.hostPlatform.isLinux
         then "firefox"
         else "chrome";
     };
@@ -43,8 +43,8 @@ in {
         # Keep my passwords safe
         keepassxc
       ]
-      ++ lib.optional (cfg.isWork && stdenv.isLinux) stable.bitwarden-desktop
-      ++ lib.optionals stdenv.isLinux [
+      ++ lib.optional (cfg.isWork && stdenv.hostPlatform.isLinux) stable.bitwarden-desktop
+      ++ lib.optionals stdenv.hostPlatform.isLinux [
         # Browser
         chromium
         # Pseudo-office

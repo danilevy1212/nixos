@@ -7,7 +7,7 @@
   cfg = config.userConfig.modules.cli;
   isWork = config.userConfig.isWork;
   agents = import ../agents/shared.nix {inherit lib pkgs;};
-  isDarwin = pkgs.stdenv.isDarwin;
+  isDarwin = pkgs.stdenv.hostPlatform.isDarwin;
 in {
   config = lib.mkIf (cfg.enable && cfg.agents.enable) {
     programs.claude-code = {

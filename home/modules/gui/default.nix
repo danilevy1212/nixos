@@ -13,18 +13,13 @@ in {
   config = lib.mkIf cfg.enable {
     home = {
       packages = with pkgs;
-        lib.optionals stdenv.isLinux [
+        lib.optionals stdenv.hostPlatform.isLinux [
           # Let there be control over the sound!
           pulsemixer
           pavucontrol
           playerctl
           easyeffects
           crosspipe
-
-          # xXxScReeN_SH0TSxXx
-          flameshot
-          simplescreenrecorder
-          xclip
 
           # notifications
           libnotify
@@ -54,14 +49,14 @@ in {
       keyboard = null;
     };
 
-    home.pointerCursor = pkgs.lib.mkIf pkgs.stdenv.isLinux {
+    home.pointerCursor = pkgs.lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
       enable = true;
       name = "Numix-Cursor";
       package = pkgs.numix-cursor-theme;
     };
 
     # Link for the LSP
-    xdg = pkgs.lib.mkIf pkgs.stdenv.isLinux {
+    xdg = pkgs.lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
       configFile."mimeapps.list".force = true;
       mimeApps = {
         defaultApplications = {
@@ -78,7 +73,7 @@ in {
 
     # Make me pretty!
     gtk = with pkgs;
-      lib.mkIf stdenv.isLinux {
+      lib.mkIf stdenv.hostPlatform.isLinux {
         enable = true;
         iconTheme = {
           name = "Papirus-Dark";
@@ -100,7 +95,7 @@ in {
       enable = true;
       # We get ghostty through the AppStore in macos
       package = with pkgs;
-        if stdenv.isDarwin
+        if stdenv.hostPlatform.isDarwin
         then null
         else ghostty;
       settings = {
@@ -109,7 +104,7 @@ in {
           "Iosevka"
           "Sarasa Mono J"
         ];
-        font-size = with pkgs; lib.mkIf stdenv.isLinux 10;
+        font-size = with pkgs; lib.mkIf stdenv.hostPlatform.isLinux 10;
         theme = "Nord";
         window-theme = "dark";
         background-opacity = 0.9;
@@ -160,7 +155,7 @@ in {
       + "/src/nord");
 
     programs.rofi = {
-      enable = pkgs.stdenv.isLinux;
+      enable = pkgs.stdenv.hostPlatform.isLinux;
     };
   };
 }
