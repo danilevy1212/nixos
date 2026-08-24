@@ -73,55 +73,38 @@ A plan document has three layers, top to bottom. Keep each in its lane.
   detail. Preserve source quotes and exact proposals here: conclusions compress, quotes preserve
   discrepancies.
 
-On every plan edit, true up the whole document; stale checkboxes and superseded notes make it
-untrustworthy. Heuristic for the actionable layers: enough for a junior to know where to look, not
-so much that a senior rolls his eyes.
+On every plan edit, true up the whole document; stale checkboxes and superseded notes make it untrustworthy. Heuristic for the actionable layers: enough for a junior to know where to look, not so much that a senior rolls his eyes.
 
 # Output & Comments
 
 - The verbosity budget is per artifact, not global: actionables, summaries, and drafts are tight;
   logs capture much but say each thing tightly; a debate may run long when it carries an argument.
-- Comments are usually 1–3 lines: purpose + a link/constraint if relevant. Drop background
-  narrative, restated context, and anything the code or reader already knows.
+- Comments are usually 1–3 lines: purpose + a link/constraint if relevant. Drop background narrative, restated context, and anything the code or reader already knows.
 - In chat: lead with the result; keep only supporting detail that changes what I do next.
 
 ### Writing mechanics
 
-- Lead with the point. Result first, support after. No wind-ups: anything before "the point is
-  that" can go.
-- Put the action in the verb and the actor in the subject. Aim for ~90% active voice; passive
-  only when the actor is unknown or beside the point.
-- Hunt the lard where it hides: nominalizations ("we investigated", not "an investigation was
-  conducted"), "there is / it is" openers, and chains of prepositional phrases.
-- Cut throat-clearing ("it's worth noting"), hedges ("quite", "somewhat"), and intensifiers
-  ("very", "really").
-- Give instructions as imperatives: "drop the replace line", not "the replace line should be
-  dropped".
-- Prefer the short, concrete, everyday word, but keep jargon the reader shares. Precision beats
-  vagueness: "$100 per unit", not "prohibitively expensive".
-- One main idea per sentence, 15–20 words on average. Then vary the rhythm: uniform sentences
-  drone.
-- Repeat the term; don't cycle synonyms. A renderer is a renderer, not "the visualization
-  component".
-- Self-edit as a separate pass, as the reader rather than the writer. Interrogate every word: if
-  the sentence survives without it, cut it.
-- Write for a reader who wasn't in this conversation. When the audience is a doc, PR
-  description, issue, or commit message, include only what the artifact proves on its own — the
-  diff, the ticket, the code. Drop "as discussed," unexplained names, and any fact that exists
-  only in our chat.
+- Lead with the point. Result first, support after. No wind-ups: anything before "the point is that" can go.
+- Put the action in the verb and the actor in the subject. Aim for ~90% active voice; passive only when the actor is unknown or beside the point.
+- Hunt the lard where it hides: nominalizations ("we investigated", not "an investigation was conducted"), "there is / it is" openers, and chains of prepositional phrases.
+- Cut throat-clearing ("it's worth noting"), hedges ("quite", "somewhat"), and intensifiers ("very", "really").
+- Give instructions as imperatives: "drop the replace line", not "the replace line should be dropped".
+- Prefer the short, concrete, everyday word, but keep jargon the reader shares. Precision beats vagueness: "$100 per unit", not "prohibitively expensive".
+- One main idea per sentence, 15–20 words on average. Then vary the rhythm: uniform sentences drone.
+- Repeat the term; don't cycle synonyms. A renderer is a renderer, not "the visualization component".
+- Self-edit as a separate pass, as the reader rather than the writer. Interrogate every word: if the sentence survives without it, cut it.
+- Write for a reader who wasn't in this conversation. When the audience is a doc, PR description, issue, or commit message, include only what the artifact proves on its own — the diff, the ticket, the code. Drop "as discussed," unexplained names, and any fact that exists only in our chat.
 
 # GitHub
 
 - Prefer the `gh` CLI over web requests for anything on github.com — issues, PRs, repos, Actions,
   releases, and API reads. It's authenticated and returns structured data.
-- Use `gh issue view`, `gh pr view` / `gh pr diff`, `gh search`, `gh repo view`, or `gh api` (for
-  GET requests) instead of fetching github.com URLs.
+- Use `gh issue view`, `gh pr view` / `gh pr diff`, `gh search`, `gh repo view`, or `gh api` (for GET requests) instead of fetching github.com URLs.
 
 # General Project Rules
 
 1. **File Read Restrictions**
-   - Within a git repository, never read files ignored by git (`.gitignore`, `.git/info/exclude`),
-     including `.env`, credentials, and key files.
+   - Within a git repository, never read files ignored by git (`.gitignore`, `.git/info/exclude`), including `.env`, credentials, and key files.
    - Outside a git repository, be cautious with sensitive files and ask when uncertain.
 
 2. **File Access Outside CWD**
@@ -142,11 +125,8 @@ so much that a senior rolls his eyes.
   non-interactive alternatives (`git add .`, redirection instead of an editor).
 - Prefer explicit paths when the working directory might be ambiguous.
 - Run commands directly; don't wrap them in an extra shell (`bash -lc`).
-- You run inside a sandbox. On network, TLS, certificate, or permission weirdness, suspect the
-  sandbox first (retry with it disabled) before blaming the environment. A cert failure has
-  looked like "corporate TLS interception" and been the sandbox.
-- Read files with the Read tool, even mid-investigation when a `grep -n` just handed you line
-  numbers. `sed`/`cat` in Bash are for pipelines that transform output, not for reading files.
+- You run inside a sandbox. On network, TLS, certificate, or permission weirdness, suspect the sandbox first (retry with it disabled) before blaming the environment. A cert failure has looked like "corporate TLS interception" and been the sandbox.
+- Read files with the Read tool, even mid-investigation when a `grep -n` just handed you line numbers. `sed`/`cat` in Bash are for pipelines that transform output, not for reading files.
 
 ## Edit
 

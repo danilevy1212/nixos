@@ -30,6 +30,7 @@ in {
         includeCoAuthoredBy = false;
         model = "opus[1m]";
         effortLevel = "xhigh";
+        outputStyle = "Concise";
 
         # Push notifications reach the phone from any client: terminal, Desktop, ACP.
         # preferredNotifChannel is left unset because it works only in a terminal.
