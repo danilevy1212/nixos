@@ -22,7 +22,11 @@ in {
           ask =
             ["Edit" "Write" "NotebookEdit" "Bash(dangerouslyDisableSandbox:true)"]
             ++ agents.claudeBashAsk;
-          allow = agents.claudeBashAllow ++ ["WebFetch"] ++ agents.claudeAmplenoteAllow;
+          allow =
+            agents.claudeBashAllow
+            ++ ["WebFetch"]
+            ++ agents.claudeAmplenoteAllow
+            ++ agents.claudeSkillAllow;
           deny = ["Read(**/.env)" "Read(./secrets/**)"];
           disableBypassPermissionsMode = "disable";
           disableAutoMode = "disable";
@@ -33,7 +37,7 @@ in {
         outputStyle = "Concise";
 
         # Push notifications reach the phone from any client: terminal, Desktop, ACP.
-        # preferredNotifChannel is left unset because it works only in a terminal.
+        # preferredNotifChannel stays unset because it works only in a terminal.
         remoteControlAtStartup = true;
         inputNeededNotifEnabled = true;
         agentPushNotifEnabled = true;
@@ -44,8 +48,8 @@ in {
         sandbox = {
           enabled = true;
 
-          # If the sandbox cannot start, stop the session. The escape hatch is
-          # separate: allowUnsandboxedCommands defaults true, so those still prompt.
+          # If the sandbox cannot start, stop the session. allowUnsandboxedCommands
+          # is separate: it defaults true, so those commands still prompt.
           failIfUnavailable = true;
 
           # macOS only. Without it the sandbox blocks com.apple.trustd.agent, so TLS
@@ -56,7 +60,7 @@ in {
             "~/Library/Caches/go-build" # GOCACHE (darwin)
             "~/.cache/go-build" # GOCACHE (linux/XDG)
             "~/.cache/go" # GOPATH → GOMODCACHE
-            "~/.cache/nix" # nix fetcher/eval caches; XDG on darwin too, so no split
+            "~/.cache/nix" # nix fetcher/eval caches. XDG on darwin too, so no split
           ];
 
           network.allowedDomains = [
@@ -118,7 +122,7 @@ in {
           enabled = !isWork;
         };
 
-        # no `{file:}` in claude; shell out to read the header from opencode's secret at launch.
+        # claude has no `{file:}`. This shells out to read the header from the opencode secret.
         # native command-based headers: https://code.claude.com/docs/en/mcp#use-dynamic-headers-for-custom-authentication
         amplenote = {
           type = "stdio";

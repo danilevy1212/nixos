@@ -146,7 +146,8 @@ in {
             "edit": "ask",
             "external_directory": {
               "*": "ask",
-              "~/Projects/workspace/**": "allow"
+              "~/Projects/workspace/**": "allow",
+              ${agents.opencodeSkillPerms}
             },
             "bash": ${agents.opencodeBashBlock},
             "webfetch": "allow",

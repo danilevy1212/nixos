@@ -4,7 +4,7 @@
 }: let
   isDarwin = pkgs.stdenv.hostPlatform.isDarwin;
 
-  # OS-specific privilege-escalation rule, appended to the shared prose.
+  # Privilege-escalation rule for the host OS. rulesText appends it.
   platformNote =
     if isDarwin
     then ''
@@ -18,9 +18,9 @@
       - This machine is Linux. Do not use `sudo`; when elevation is needed, use `pkexec` instead.
     '';
 
-  # Read-only command prefixes safe to auto-allow for BOTH assistants.
-  # Anything that can execute code stays out: go build/vet/test (cgo runs at
-  # build time), bash, docker, python, awk (system()), gh api (can POST).
+  # Auto-allowed for BOTH assistants. Anything that can execute code stays out:
+  # go build/vet/test (cgo runs at build time), bash, docker, python,
+  # awk (system()), gh api (can POST).
   readonlyBash = [
     "git status"
     "git log"
@@ -70,15 +70,15 @@
     "nix eval"
     "nix-instantiate --parse"
   ];
-  # Exec-capable variants of allowed prefixes, escalated back to a prompt
-  # (ask outranks allow in both assistants; a single * spans spaces).
+  # Exec-capable variants of the allowed prefixes. ask outranks allow in both
+  # assistants. A single * spans spaces.
   escalateBash = [
     "find * -exec*" # also -execdir
     "find * -ok*" # also -okdir
     "rg --pre*" # --pre executes a preprocessor
     "rg * --pre*"
   ];
-  # Read-only amplenote MCP tools safe to auto-allow for BOTH assistants.
+  # MCP tools auto-allowed for BOTH assistants.
   amplenoteReadonly = [
     "getNoteMetadata"
     "getNoteContent"
@@ -90,8 +90,8 @@
     "filterNotes"
     "searchNotes"
   ];
-  # Plain-English skill: strips AI tics, applies Orwell/Gowers rules.
-  # Repo root is the skill dir (SKILL.md + the REFERENCE.md it loads).
+  # Strips AI tics with Orwell/Gowers rules. The repo root is the skill dir:
+  # SKILL.md and the REFERENCE.md it loads.
   plainEnglishSkill = pkgs.fetchFromGitHub {
     owner = "b1rdmania";
     repo = "claude-plain-english-skill";
@@ -99,22 +99,31 @@
     hash = "sha256-VnwmsWLqP5yKjEXBruoT3JwT6/hxuk3dbtKAu/8rAGs=";
   };
 
-  # Plain-English STE skill: enforces ASD-STE100 Simplified Technical English.
-  # SKILL.md lives under skills/simple-english/, not the repo root.
-  plainEnglishSteSkill = "${pkgs.fetchFromGitHub {
+  # Enforces ASD-STE100 (Simplified Technical English).
+  plainEnglishSteSkillSrc = pkgs.fetchFromGitHub {
     owner = "AminBlg";
     repo = "SimpleEnglish";
     rev = "eaa7fded155ad47e5baa072ebae4c70d1254e9e2"; # v1.2.0
     hash = "sha256-62IdviEpLgMXYzJwjdM6G7VVJtyaAHGhQGHw2oFCAHE=";
-  }}/skills/simple-english";
+  };
+
+  # SKILL.md is under skills/simple-english/, not at the repo root.
+  plainEnglishSteSkill = "${plainEnglishSteSkillSrc}/skills/simple-english";
+
+  # Skill files read during a run (REFERENCE.md, references/). Both assistants
+  # symlink these out of the store, and the read resolves the link first.
+  # So the resolved path needs a rule of its own.
+  skillStoreDirs = [
+    "${plainEnglishSkill}"
+    plainEnglishSteSkill
+  ];
 in rec {
   inherit readonlyBash;
 
-  # Shared rules prose + the platform-specific privilege rule.
   rulesText = builtins.readFile ./RULES.md + "\n" + platformNote;
 
-  # Shared /review command prose; each assistant wraps it with its own
-  # frontmatter (Claude Code needs allowed-tools; opencode a markdown heading).
+  # Each assistant adds its own frontmatter: allowed-tools for Claude Code, a
+  # markdown heading for opencode.
   reviewCommandProse = ''
     Review the pull request in $ARGUMENTS (number or URL). Fetch it with the gh CLI; read
     the surrounding local code when the diff alone isn't enough to judge.
@@ -127,9 +136,9 @@ in rec {
     line; do not manufacture findings.
   '';
 
-  # opencode `permission.bash` requires "*" FIRST and escalate entries LAST
-  # (later entries win). `builtins.toJSON` sorts keys, so render an ordered
-  # JSONC object string from Nix lists instead.
+  # opencode `permission.bash` needs "*" FIRST and escalate entries LAST,
+  # because later entries win. `builtins.toJSON` sorts keys, so this renders an
+  # ordered JSONC string from Nix lists instead.
   opencodeBashBlock = let
     entries =
       [''"*": "ask"'']
@@ -138,15 +147,14 @@ in rec {
   in
     "{ " + lib.concatStringsSep ", " entries + " }";
 
-  # Claude Code `permissions.allow` is a JSON ARRAY — order is preserved natively.
+  # Claude Code `permissions.allow` is a JSON ARRAY, so it keeps this order.
   claudeBashAllow = map (c: "Bash(${c}:*)") readonlyBash;
 
-  # Claude Code `permissions.ask` entries; ask outranks allow regardless of order.
   claudeBashAsk = map (c: "Bash(${c})") escalateBash;
 
   # opencode names MCP tools `<server>_<tool>`. Same ordering constraint as
-  # opencodeBashBlock — "*" catch-all first — so render ordered JSONC entries,
-  # spliced in as siblings under `permission`.
+  # opencodeBashBlock, so these render as ordered JSONC siblings under
+  # `permission`.
   opencodeAmplenotePerms = let
     entries =
       [''"amplenote_*": "ask"'']
@@ -154,12 +162,24 @@ in rec {
   in
     lib.concatStringsSep ",\n            " entries;
 
-  # Claude Code names them `mcp__<server>__<tool>`; home-manager ships mcpServers
+  # Claude Code names them `mcp__<server>__<tool>`. home-manager ships mcpServers
   # as a generated plugin, so the server segment carries a plugin prefix.
   claudeAmplenoteAllow =
     map (t: "mcp__plugin_claude-code-home-manager_amplenote__${t}") amplenoteReadonly;
 
-  # Skills shared by both assistants; same attrset shape in either module.
+  # Claude Code takes gitignore-style path rules. "//" prefixes an absolute path.
+  claudeSkillAllow =
+    ["Read(~/.claude/skills/**)"]
+    ++ map (d: "Read(/${d}/**)") skillStoreDirs;
+
+  # opencode gates the same reads through `external_directory`, per directory.
+  # The consuming block keeps its "*" catch-all first, so these render after it.
+  opencodeSkillPerms =
+    lib.concatStringsSep ",\n              "
+    (map (d: ''"${d}/**": "allow"'')
+      (["~/.config/opencode/skills"] ++ skillStoreDirs));
+
+  # The same attrset shape works in either module.
   skills = {
     plain-english = plainEnglishSkill;
     plain-english-STE = plainEnglishSteSkill;
