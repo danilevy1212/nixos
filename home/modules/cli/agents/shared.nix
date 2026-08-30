@@ -90,33 +90,26 @@
     "filterNotes"
     "searchNotes"
   ];
-  # Strips AI tics with Orwell/Gowers rules. The repo root is the skill dir:
-  # SKILL.md and the REFERENCE.md it loads.
-  plainEnglishSkill = pkgs.fetchFromGitHub {
+  # Two writing skills from one repo.
+  plainEnglishSrc = pkgs.fetchFromGitHub {
     owner = "b1rdmania";
     repo = "claude-plain-english-skill";
-    rev = "43af25e6b03ea7356648b48ae2a2280502e6594f"; # v0.3.0
-    hash = "sha256-VnwmsWLqP5yKjEXBruoT3JwT6/hxuk3dbtKAu/8rAGs=";
+    rev = "567dac51a047c81e9314542023baaa2d5ff650f0"; # v0.5.0
+    hash = "sha256-xTh54ktLGvQTP4Ew28uDbiIQsirJpwCiC6GI4Zx6y90=";
   };
 
-  # Enforces ASD-STE100 (Simplified Technical English).
-  plainEnglishSteSkillSrc = pkgs.fetchFromGitHub {
-    owner = "AminBlg";
-    repo = "SimpleEnglish";
-    rev = "eaa7fded155ad47e5baa072ebae4c70d1254e9e2"; # v1.2.0
-    hash = "sha256-62IdviEpLgMXYzJwjdM6G7VVJtyaAHGhQGHw2oFCAHE=";
+  # Each subdir is a self-contained skill: SKILL.md plus the files it loads.
+  skills = {
+    # Strips AI tics with Orwell/Gowers rules.
+    plain-english = "${plainEnglishSrc}/skills/plain-english";
+    # Enforces ASD-STE100 (Simplified Technical English).
+    simple-english = "${plainEnglishSrc}/skills/simple-english";
   };
-
-  # SKILL.md is under skills/simple-english/, not at the repo root.
-  plainEnglishSteSkill = "${plainEnglishSteSkillSrc}/skills/simple-english";
 
   # Skill files read during a run (REFERENCE.md, references/). Both assistants
   # symlink these out of the store, and the read resolves the link first.
   # So the resolved path needs a rule of its own.
-  skillStoreDirs = [
-    "${plainEnglishSkill}"
-    plainEnglishSteSkill
-  ];
+  skillStoreDirs = lib.attrValues skills;
 in rec {
   inherit readonlyBash;
 
@@ -180,8 +173,5 @@ in rec {
       (["~/.config/opencode/skills"] ++ skillStoreDirs));
 
   # The same attrset shape works in either module.
-  skills = {
-    plain-english = plainEnglishSkill;
-    plain-english-STE = plainEnglishSteSkill;
-  };
+  inherit skills;
 }
