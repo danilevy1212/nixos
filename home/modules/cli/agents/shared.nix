@@ -94,8 +94,8 @@
   plainEnglishSrc = pkgs.fetchFromGitHub {
     owner = "b1rdmania";
     repo = "claude-plain-english-skill";
-    rev = "567dac51a047c81e9314542023baaa2d5ff650f0"; # v0.5.0
-    hash = "sha256-xTh54ktLGvQTP4Ew28uDbiIQsirJpwCiC6GI4Zx6y90=";
+    rev = "b2cf993746bb66214d91952cc7bf9cae0694ab4a"; # v0.5.1
+    hash = "sha256-bLgEsj2R9OGlG3f5QUKz1Me3+XPB4RfQOzeqZK8ytVM=";
   };
 
   # Each subdir is a self-contained skill: SKILL.md plus the files it loads.
