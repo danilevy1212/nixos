@@ -91,8 +91,8 @@ in
         # NOTE  Have custom functions available throughout subshells
         envExtra = ''
           # Add all files from the autoload directory to the fpath array
-          fpath+=("$USER_CUSTOM_AUTOLOAD")
-          for file in "$USER_CUSTOM_AUTOLOAD"/*; do
+          fpath+=("${ZDOTDIR}/autoload")
+          for file in "${ZDOTDIR}/autoload"/*; do
               if [[ -f "$file" ]]; then
                   # Autoload the function
                   autoload -Uz `basename "$file"`
@@ -124,7 +124,6 @@ in
       # HISTFILE
       home.sessionVariables = {
         HISTFILE = "${config.xdg.dataHome}/history";
-        USER_CUSTOM_AUTOLOAD = "${ZDOTDIR}/autoload";
         ATAC_KEY_BINDINGS = "${pkgs.atac.src}/share/atac/key-bindings.zsh";
       };
 
