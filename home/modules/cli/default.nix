@@ -161,8 +161,10 @@ in
         stable.fasd
         cloc
         unzip
+        unrar
         zip
         xz
+        innoextract
 
         # Github actions
         act
