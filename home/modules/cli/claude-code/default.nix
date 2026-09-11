@@ -34,7 +34,8 @@ in {
         includeCoAuthoredBy = false;
         model = "opus[1m]";
         effortLevel = "xhigh";
-        outputStyle = "Concise";
+        # Matches the `name:` frontmatter inside plain-english.md, not its filename.
+        outputStyle = "Plain English";
 
         # Push notifications reach the phone from any client: terminal, Desktop, ACP.
         # preferredNotifChannel stays unset because it works only in a terminal.
@@ -149,6 +150,14 @@ in {
 
       # ~/.claude/skills/*
       inherit (agents) skills;
+
+      # ~/.claude/output-styles/plain-english.md
+      # The upstream style exempts code but says nothing about the comments
+      # inside it. comment-scope.md puts them in scope.
+      outputStyles.plain-english = pkgs.concatTextFile {
+        name = "plain-english.md";
+        files = [agents.plainEnglishStyle ./comment-scope.md];
+      };
     };
 
     # Sandbox backend on Linux. Claude Code needs both on PATH, and

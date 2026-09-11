@@ -90,12 +90,12 @@
     "filterNotes"
     "searchNotes"
   ];
-  # Two writing skills from one repo.
+  # Two writing skills and one output style from one repo.
   plainEnglishSrc = pkgs.fetchFromGitHub {
     owner = "b1rdmania";
     repo = "claude-plain-english-skill";
-    rev = "b2cf993746bb66214d91952cc7bf9cae0694ab4a"; # v0.5.1
-    hash = "sha256-bLgEsj2R9OGlG3f5QUKz1Me3+XPB4RfQOzeqZK8ytVM=";
+    rev = "787541823cb3470e07cc7310680c440bdab60b5b"; # v0.6.0
+    hash = "sha256-tlWZuyJbeV3mArWtE8muM2BjpCFc7Dow8Llh+jyp28o=";
   };
 
   # Each subdir is a self-contained skill: SKILL.md plus the files it loads.
@@ -174,4 +174,8 @@ in rec {
 
   # The same attrset shape works in either module.
   inherit skills;
+
+  # Claude Code only. Applies the plain-english rules to every response; the
+  # skill applies them only when invoked. settings.outputStyle selects it.
+  plainEnglishStyle = "${plainEnglishSrc}/output-styles/plain-english.md";
 }
