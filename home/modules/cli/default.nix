@@ -205,7 +205,7 @@ in
         cowsay
         lolcat
         cmatrix
-        fortune
+        stable.fortune
         sl
         toilet
         figlet
