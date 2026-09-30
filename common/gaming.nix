@@ -1,7 +1,6 @@
 {
   pkgs,
   unstable,
-  stable,
   ...
 }: {
   # Core gaming stack shared across hosts (GPU-agnostic)
@@ -17,7 +16,7 @@
   environment.systemPackages = with pkgs; [
     drm_info
     mangohud
-    (stable.lutris.override {
+    (lutris.override {
       extraPkgs = pkgs:
         with pkgs; [
           winetricks
