@@ -26,24 +26,13 @@ in {
       enable = true;
       context = agents.rulesText;
       commands = {
-        commit_message = ''
-          # Commit Message
+        # ~/.config/opencode/command/commit_message.md — shared prose lives in agents/shared.nix
+        commit_message =
+          ''
+            # Commit Message
 
-          Analyze the staged (cached) changes and create an appropriate commit message. Follow this process:
-
-          1. First, examine the staged changes using `git diff --staged` to understand what will be committed
-          2. Review recent commit history to understand the repository's commit message style and scoping conventions
-          3. Analyze the nature of the staged changes (new feature, bug fix, refactor, docs, etc.)
-          4. Draft a commit message that follows the established patterns
-
-          After writing the commit message, automatically execute the commit using the message you created.
-
-          Use the repository's existing commit message format. Pay attention to:
-          - Scoping (if used in this repo)
-          - Line length limits
-          - Multi-line format when appropriate
-          - Conventional commit patterns (if used)
-        '';
+          ''
+          + agents.commitCommandProse;
 
         # ~/.config/opencode/command/review.md — shared prose lives in agents/shared.nix
         review =

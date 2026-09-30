@@ -78,6 +78,23 @@
     "rg --pre*" # --pre executes a preprocessor
     "rg * --pre*"
   ];
+  # Commits, pushes, and GitHub writes. Prompted even where a local allow
+  # would pass them: ask outranks allow.
+  outwardBash = [
+    "git commit"
+    "git push"
+    "gh pr create"
+    "gh pr comment"
+    "gh pr edit"
+    "gh pr review"
+    "gh pr merge"
+    "gh pr ready"
+    "gh pr close"
+    "gh issue create"
+    "gh issue comment"
+    "gh issue edit"
+    "gh issue close"
+  ];
   # MCP tools auto-allowed for BOTH assistants.
   amplenoteReadonly = [
     "getNoteMetadata"
@@ -129,6 +146,12 @@ in rec {
     line; do not manufacture findings.
   '';
 
+  commitCommandProse = ''
+    Analyze the staged changes, review recent history for the repo's commit-message style
+    (scoping, length, conventional-commit patterns), then create a single atomic commit that
+    follows those conventions.
+  '';
+
   # opencode `permission.bash` needs "*" FIRST and escalate entries LAST,
   # because later entries win. `builtins.toJSON` sorts keys, so this renders an
   # ordered JSONC string from Nix lists instead.
@@ -136,14 +159,17 @@ in rec {
     entries =
       [''"*": "ask"'']
       ++ map (c: ''"${c}*": "allow"'') readonlyBash
-      ++ map (c: ''"${c}": "ask"'') escalateBash;
+      ++ map (c: ''"${c}": "ask"'') escalateBash
+      ++ map (c: ''"${c}*": "ask"'') outwardBash;
   in
     "{ " + lib.concatStringsSep ", " entries + " }";
 
   # Claude Code `permissions.allow` is a JSON ARRAY, so it keeps this order.
   claudeBashAllow = map (c: "Bash(${c}:*)") readonlyBash;
 
-  claudeBashAsk = map (c: "Bash(${c})") escalateBash;
+  claudeBashAsk =
+    map (c: "Bash(${c})") escalateBash
+    ++ map (c: "Bash(${c}:*)") outwardBash;
 
   # opencode names MCP tools `<server>_<tool>`. Same ordering constraint as
   # opencodeBashBlock, so these render as ordered JSONC siblings under

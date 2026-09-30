@@ -26,7 +26,10 @@ in {
             agents.claudeBashAllow
             ++ ["WebFetch"]
             ++ agents.claudeAmplenoteAllow
-            ++ agents.claudeSkillAllow;
+            ++ agents.claudeSkillAllow
+            # Skill reads also pass through home-manager's per-skill wrapper.
+            ++ map (n: "Read(/${config.home.file."${config.programs.claude-code.configDir}/skills/${n}".source}/**)")
+            (lib.attrNames agents.skills);
           deny = ["Read(**/.env)" "Read(./secrets/**)"];
           disableBypassPermissionsMode = "disable";
           disableAutoMode = "disable";
@@ -92,17 +95,16 @@ in {
         };
       };
 
-      # ~/.claude/commands/commit.md
+      # ~/.claude/commands/commit.md — shared prose lives in agents/shared.nix
       commands = {
-        commit = ''
-          ---
-          allowed-tools: Bash(git add:*), Bash(git status:*), Bash(git commit:*), Bash(git diff:*), Bash(git log:*)
-          description: Create a git commit matching this repo's conventions
-          ---
-          Analyze the staged changes, review recent history for the repo's commit-message style
-          (scoping, length, conventional-commit patterns), then create a single atomic commit that
-          follows those conventions.
-        '';
+        commit =
+          ''
+            ---
+            allowed-tools: Bash(git add:*), Bash(git status:*), Bash(git commit:*), Bash(git diff:*), Bash(git log:*)
+            description: Create a git commit matching this repo's conventions
+            ---
+          ''
+          + agents.commitCommandProse;
 
         # ~/.claude/commands/review.md — shared prose lives in agents/shared.nix
         review =
