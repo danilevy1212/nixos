@@ -195,7 +195,6 @@ in
         unpaper
         pandoc
         languagetool
-        (aspellWithDicts (d: with d; [es en en-computers en-science]))
         wordnet
 
         # Docker Management
