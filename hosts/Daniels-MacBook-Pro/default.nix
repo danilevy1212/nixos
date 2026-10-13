@@ -38,6 +38,8 @@
     fi
   '';
 
+  programs.gnupg.agent.pinentryPackage = pkgs.pinentry_mac;
+
   # Point darwin-rebuild at our flake so we don't need --flake <path>
   environment.etc."nix-darwin/flake.nix".source = "/Users/${userConfig.username}/.config/nix-darwin/flake.nix";
 

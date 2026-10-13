@@ -107,7 +107,14 @@
         "nixpkgs=${nixos-unstable}"
       ];
       nixpkgs.config.packageOverrides = pkgs: {
-        opencode = llm-agents.packages."${sys}".opencode;
+        # opencode2 ships only bin/opencode2; keep the `opencode` name for scripts
+        opencode = pkgs.symlinkJoin {
+          name = "opencode";
+          paths = [llm-agents.packages."${sys}".opencode2];
+          postBuild = "ln -s $out/bin/opencode2 $out/bin/opencode";
+          meta.mainProgram = "opencode";
+        };
+        opencode-desktop = llm-agents.packages."${sys}".opencode2-desktop;
         openspec = llm-agents.packages."${sys}".openspec;
       };
     };
@@ -167,8 +174,6 @@
         ]
         (mkSpecialArgs stable unstable {
           username = "daniel-moreno-levy";
-          isWork = true;
-          modules.cli.git.userEmail = "daniel.moreno.levy@gravwell.io";
         });
     };
     darwinConfigurations."Daniels-MacBook-Pro" =

@@ -49,6 +49,12 @@ in {
   # Default shell
   programs.zsh.enable = true;
 
+  # Some programs need SUID wrappers, can be configured further or are started in user sessions.
+  programs.gnupg.agent = {
+    enable = true;
+    enableSSHSupport = true;
+  };
+
   environment = {
     variables = {
       # These are the defaults, and xdg.enable does set them, but due to load

@@ -6,7 +6,7 @@
 }: let
   cfg = config.userConfig.modules.cli;
   isWork = config.userConfig.isWork;
-  agents = import ../agents/shared.nix {inherit lib pkgs;};
+  agents = import ../agents/shared.nix {inherit lib pkgs config;};
   isDarwin = pkgs.stdenv.hostPlatform.isDarwin;
 in {
   config = lib.mkIf (cfg.enable && cfg.agents.enable) {

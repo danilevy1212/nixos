@@ -54,6 +54,11 @@ in
         enable = true;
         package = pkgs.gitFull;
         lfs.enable = true;
+        signing = mkIf isWork {
+          key = "64C10DC6028EA38EBD5612A58644BB1A18F0BD26";
+          format = "openpgp";
+          signByDefault = true;
+        };
         settings = {
           user = {
             name = cfg.git.userName;
@@ -238,7 +243,6 @@ in
       };
 
       # Agents that I have to test for work
-      programs.github-copilot-cli.enable = isWork;
       programs.codex.enable = isWork;
     };
   }

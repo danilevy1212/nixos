@@ -360,11 +360,10 @@ in {
   };
   programs.virt-manager.enable = true;
 
-  # Some programs need SUID wrappers, can be configured further or are started in user sessions.
   programs.gnupg.agent = {
-    enable = true;
-    enableSSHSupport = true;
+    # This option is exclusive to nixos
     enableBrowserSocket = true;
+    # Use QT app in linux
     pinentryPackage = pkgs.pinentry-qt;
   };
 

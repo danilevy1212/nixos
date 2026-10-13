@@ -5,19 +5,20 @@
   ...
 }: let
   isWork = config.userConfig.isWork;
-  agents = import ../agents/shared.nix {inherit lib pkgs;};
+  hasGui = config.userConfig.modules.gui.enable;
+  agents = import ../agents/shared.nix {inherit lib pkgs config;};
   small_model =
     if isWork
-    then "github-copilot/claude-haiku-4.5"
-    else "opencode/claude-haiku-4.5";
+    then "ollama-cloud/deepseek-v4.1-flash"
+    else "opencode/deepseek-v4.1-flash";
   thinking_model =
     if isWork
-    then "github-copilot/claude-sonnet-5"
-    else "opencode/qwen3.6-plus";
+    then "ollama-cloud/kimi-k3"
+    else "opencode/kimi-k3";
   building_model =
     if isWork
-    then "dev-slop/qwen3.6:35b"
-    else "opencode/qwen3.6-plus";
+    then "ollama-cloud/kimi-k2.7-code"
+    else "opencode/muse-spark-1.3-contributor-free";
   cfg = config.userConfig.modules.cli;
 in {
   config = lib.mkIf (cfg.enable && cfg.agents.enable) {
@@ -46,11 +47,13 @@ in {
       inherit (agents) skills;
     };
 
-    xdg.configFile."opencode/tui.jsonc" = {
+    xdg.configFile."opencode/cli.json" = {
       text = ''
         {
-          "$schema": "https://opencode.ai/tui.json",
-          "theme": "nord",
+          "$schema": "https://opencode.ai/v2/cli.json",
+          "theme": {
+            "name": "nord"
+          },
           "keybinds": {
             "leader": "ctrl+x"
           }
@@ -62,45 +65,14 @@ in {
       text = ''
         {
           "$schema": "https://opencode.ai/config.json",
-          "lsp": true,
           "small_model": "${small_model}",
           "plugin": [],
           "provider": {
-            "github-copilot": {
-              "models": {
-                "claude-sonnet-5": {
-                    "proofreader": {
-                     "reasoningEffort": "low"
-                    }
-                  }
-                }
-              },
             "opencode": {
               "models": {}
-            },
-            "lmstudio": {
-              "npm": "@ai-sdk/openai-compatible",
-              "name": "LM Studio (local)",
-              "options": {
-                "baseURL": "http://127.0.0.1:1234/v1",
-                "max_tokens": 64000
-              }
             }${
           if isWork
           then ''            ,
-                      "ollama-studio": {
-                        "npm": "@ai-sdk/openai-compatible",
-                        "name": "Ollama (Studio)",
-                        "options": {
-                          "baseURL": "http://10.254.3.199:11434/v1",
-                          "num_ctx": 128000
-                        },
-                        "models": {
-                          "glm-4.7-flash:q8_0": {
-                            "name": "GLM 4.7 Flash"
-                          }
-                        }
-                      },
                       "dev-slop": {
                         "npm": "@ai-sdk/openai-compatible",
                         "name": "Dev (SLOP)",
@@ -108,14 +80,8 @@ in {
                           "baseURL": "https://dev.slop.chaska1.gravwell.space/v1",
                         },
                         "models": {
-                          "qwen3-coder-next:q8_0": {
-                            "name": "Qwen 3 Coder"
-                          },
-                          "devstral-2:123b": {
-                            "name": "Devstral 2"
-                          },
-                          "qwen3.6:35b": {
-                            "name": "Qwen 3.6 (small)"
+                          "qwen3.8:27b": {
+                            "name": "Qwen 3.8 (small)"
                           }
                         }
                       }
@@ -166,12 +132,11 @@ in {
     };
     home.sessionVariables = {
       SMALL_MODEL = "${small_model}";
-      # Allow opencode to do websearches using exa
-      OPENCODE_ENABLE_EXA = "1";
-      # Allow opencode to run lsp servers
-      OPENCODE_EXPERIMENTAL_LSP_TOOL = "1";
     };
-    # TODO  Testing for now, I can always add an auto-installer later
-    home.packages = with pkgs; [openspec];
+    home.packages = with pkgs;
+      [
+        openspec
+      ]
+      ++ lib.optional hasGui opencode-desktop;
   };
 }
