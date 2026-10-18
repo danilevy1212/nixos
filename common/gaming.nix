@@ -1,6 +1,7 @@
 {
   pkgs,
   unstable,
+  userConfig,
   ...
 }: {
   # Core gaming stack shared across hosts (GPU-agnostic)
@@ -8,8 +9,7 @@
   # - Enables Gamemode with a minimal sane setting
   # - Enables Gamescope (no session, no per-host args here)
   # - Installs common gaming tools and launchers
-  # - Enables AntiMicroX for controller-as-mouse on the desktop
-  #   (toggle a button combo to switch between mouse mode and gamepad passthrough)
+  # - Runs sc-controller for Steam Controller trackpad-as-mouse on the desktop
   # - Improves peripheral compatibility (udev rules + uinput)
 
   # Gaming applications and helpers (GPU-agnostic)
@@ -40,15 +40,18 @@
         pkgsi686Linux.fontconfig
       ];
     })
-    # Controller-as-mouse on the desktop (Steam Deck desktop mode-style)
-    # Uses uinput so the cursor moves properly on Wayland (unlike Steam's SDL-based mouse emulation)
-    antimicrox
+    # Steam Controller (2026) user-mode driver; maps the trackpads to a uinput mouse
+    sc-controller
   ];
+
+  # gamemoded changes the CPU governor through polkit; the rule only allows the gamemode group
+  users.users.${userConfig.username}.extraGroups = ["gamemode"];
 
   # Gamemode on with a small, safe tweak
   programs.gamemode = {
     enable = true;
-    settings.general = {inhibit_screensaver = true;};
+    # gamemode.ini takes 0/1; a boolean renders as "true" and is rejected
+    settings.general = {inhibit_screensaver = 1;};
   };
 
   # Basic gamescope enable (no session)
@@ -106,18 +109,16 @@
 
   hardware.uinput.enable = true;
 
-  # Auto-launch AntiMicroX minimized to tray on login so controller-as-mouse
-  # is always available. Configure Set 0 = mouse, Set 1 = empty (passthrough)
-  # and assign a toggle button combo in the AntiMicroX GUI.
-  # Uses last-saved profile; no hardcoded path so first run just opens clean.
-  systemd.user.services.antimicrox = {
-    description = "AntiMicroX gamepad-to-mouse mapper";
+  # sc-controller daemon. Device access comes from Steam's udev rules
+  # (programs.steam) and hardware.uinput. Pick a profile once in the sc-controller GUI.
+  systemd.user.services.scc-daemon = {
+    description = "sc-controller Steam Controller driver";
     wantedBy = ["graphical-session.target"];
     after = ["graphical-session.target"];
     serviceConfig = {
       Type = "simple";
-      ExecStart = "${pkgs.antimicrox}/bin/antimicrox --tray --hidden";
-      Restart = "always";
+      ExecStart = "${pkgs.sc-controller}/bin/scc-daemon start --foreground";
+      Restart = "on-failure";
       RestartSec = "3s";
     };
   };

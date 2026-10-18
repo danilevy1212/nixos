@@ -19,10 +19,18 @@
       - This machine is Linux. Do not use `sudo`; when elevation is needed, use `pkexec` instead.
     '';
 
+  # Adds a `git -C <dir> <sub>` twin for each `git <sub>` entry, since the
+  # prefix match misses the -C form. The * spans spaces, so the outward list
+  # needs the same twins to keep `git -C x push ... status` prompted.
+  withGitC = cmds:
+    cmds
+    ++ map (c: "git -C * ${lib.removePrefix "git " c}")
+    (lib.filter (lib.hasPrefix "git ") cmds);
+
   # Auto-allowed for BOTH assistants. Anything that can execute code stays out:
   # go build/vet/test (cgo runs at build time), bash, docker, python,
   # awk (system()), gh api (can POST).
-  readonlyBash = [
+  readonlyBash = withGitC [
     "git status"
     "git log"
     "git diff"
@@ -81,7 +89,7 @@
   ];
   # Commits, pushes, and GitHub writes. Prompted even where a local allow
   # would pass them: ask outranks allow.
-  outwardBash = [
+  outwardBash = withGitC [
     "git commit"
     "git push"
     "gh pr create"

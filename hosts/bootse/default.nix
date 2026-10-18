@@ -13,18 +13,13 @@
     ../../common/ollama.nix
     ../../common/bluetooth.nix
   ];
-  # Only works with closed-source drivers
+  # Crash capture: an oops panics, pstore records it, the box reboots after 30 s
   boot.kernelParams = [
-    "pci=nomsi"
-    "pcie_aspm=off"
     "panic=30"
     "oops=panic"
     "ignore_loglevel"
     "debug"
   ];
-
-  # Enable crashdump (kdump) for kernel panics
-  boot.crashDump.enable = true;
 
   # Prevent system from waking up on PCI devices, except for  ethernet
   services.udev.extraRules = ''
@@ -157,4 +152,10 @@
   # High-memory system overrides
   zramSwap.memoryPercent = lib.mkForce 5; # 5% is more reasonable for 128GB system
   boot.kernel.sysctl."vm.min_free_kbytes" = lib.mkForce 131072; # 128MB for high-memory system
+  # Ratio-based dirty limits allow 13-27 GB of unwritten data on 128 GB; cap the burst instead
+  boot.kernel.sysctl."vm.dirty_background_bytes" = 268435456; # 256 MB
+  boot.kernel.sysctl."vm.dirty_bytes" = 1073741824; # 1 GB
+
+  # A task blocked for hung_task_timeout_secs (120 s) panics, so an I/O stall leaves a pstore dump
+  boot.kernel.sysctl."kernel.hung_task_panic" = 1;
 }

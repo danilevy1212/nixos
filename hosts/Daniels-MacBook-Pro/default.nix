@@ -38,7 +38,11 @@
     fi
   '';
 
-  programs.gnupg.agent.pinentryPackage = pkgs.pinentry_mac;
+  # nix-darwin's gnupg module has no pinentryPackage option. GnuPG reads this
+  # global file, the same one NixOS's module writes.
+  environment.etc."gnupg/gpg-agent.conf".text = ''
+    pinentry-program ${pkgs.lib.getExe pkgs.pinentry_mac}
+  '';
 
   # Point darwin-rebuild at our flake so we don't need --flake <path>
   environment.etc."nix-darwin/flake.nix".source = "/Users/${userConfig.username}/.config/nix-darwin/flake.nix";

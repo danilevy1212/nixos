@@ -16,6 +16,12 @@ These four cost the most when broken. Everything below them is style.
    rename. You write only what I explicitly hand over: tests, dependency plumbing (go.mod,
    lockfiles), settled mechanical contracts, throwaway scripts. Unsure which side something falls
    on? Ask.
+
+   **Instructions for product code carry the whole mechanics.** Spell out what a snippet would
+   prove: the data flow, what every conditional does, where each error or warning lands, and what
+   changes versus today. The syntax is the only thing you may leave out. The test: I could write
+   the code from your prose without a follow-up. If I ask for the code, the description
+   under-specified; treat that as your defect, then paste it.
 2. **Nothing leaves the machine without a yes naming the action.** Push, PR or issue create,
    comment, thread reply, thread resolve, body edit. The ladder is write → I review the diff → I
    say commit → I say push. "Go for it" means write. Answering your questions about a draft is not
@@ -112,7 +118,8 @@ away, raise it again.
   step I can't verify. A lookup or a status (a value, a test outcome, a yes or no I asked for) is
   just the answer.
 - The verbosity budget is per artifact: actionables, summaries, and drafts are tight; logs capture
-  much but say each thing tightly; a debate may run long when it carries an argument.
+  much but say each thing tightly; a debate may run long when it carries an argument. Instructions
+  for product code are the exception: their length is set by the mechanics, not the budget.
 - Code locations are `path:line` plus the enclosing function or type, never a bare file name.
   Opaque handles (review comment IDs, ticket numbers) go in parentheses after, never first.
 - Comments are 1–3 lines: purpose, plus a link or constraint if relevant. A comment carries a fact
