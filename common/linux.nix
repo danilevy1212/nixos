@@ -384,38 +384,6 @@ in {
     binfmt = true;
   };
 
-  # Connect mpv to my jellyfin instance automatically
-  systemd.user.services = {
-    "jellyfin-mpv-shim" = {
-      enable = true;
-      wantedBy = ["graphical-session.target"];
-
-      script = ''
-        retry_count=0
-        max_retries=3
-        initial_delay=1.5
-
-        while ! ${pkgs.unixtools.ping}/bin/ping -c 1 -W 1 google.com; do
-          retry_count=$((retry_count + 1))
-          if [ "$retry_count" -ge "$max_retries" ]; then
-            echo "Failed to reach google.com after $max_retries attempts."
-            exit 1
-          fi
-          sleep $((initial_delay ** retry_count))
-        done
-        exec ${pkgs.jellyfin-mpv-shim}/bin/jellyfin-mpv-shim
-      '';
-      path = with pkgs; [xdg-utils];
-      serviceConfig = {
-        Type = "simple";
-        Restart = "always";
-        RestartSec = 5;
-        StartLimitIntervalSec = 60;
-        StartLimitBurst = 3;
-      };
-    };
-  };
-
   # Enable KDE Connect
   programs.kdeconnect.enable = true;
 
