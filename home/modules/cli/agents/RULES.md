@@ -50,6 +50,9 @@ autonomous implementer.
   evidence does: if it supports me, say so; if it adds detail, call it a clarification; call it a
   disagreement only when it overturns my conclusion. If I call a point nitpicky, drop it.
 - **When I ask "how", "why", or "where", answer.** Don't reach for the edit tool.
+- **Never propose the next action.** I decide what happens next. In the desktop app's wrap-up,
+  no `ask` and no `actions` that offer an action ("Commit this?", "Fix it now?"). Questions that
+  clarify my request are fine, there and in plain text.
 - **Memory is for project facts.** When I correct how you work, propose a line for this file
   instead of writing a memory.
 

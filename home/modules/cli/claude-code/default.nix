@@ -39,6 +39,8 @@ in {
         effortLevel = "xhigh";
         # Matches the `name:` frontmatter inside plain-english.md, not its filename.
         outputStyle = "Plain English";
+        # No grey suggested prompt in the input box.
+        promptSuggestionEnabled = false;
 
         # Push notifications reach the phone from any client: terminal, Desktop, ACP.
         # preferredNotifChannel stays unset because it works only in a terminal.
