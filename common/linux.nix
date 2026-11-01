@@ -234,7 +234,6 @@ in {
         kubectl
         # virtualization
         virt-viewer
-        guestfs-tools
       ]
       # Basic network
       ++ (with pkgs.unixtools; [netstat nmap ifconfig])

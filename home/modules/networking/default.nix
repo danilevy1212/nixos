@@ -41,9 +41,6 @@ in {
 
         # Database client
         dbeaver-bin
-
-        # Redis cli client
-        redis
       ]
       ++ (
         if stdenv.hostPlatform.isLinux

@@ -9,16 +9,16 @@
   agents = import ../agents/shared.nix {inherit lib pkgs config;};
   small_model =
     if isWork
-    then "ollama-cloud/deepseek-v4.1-flash"
+    then "ollama-cloud/deepseek-v4.1-flash:1017"
     else "opencode/deepseek-v4.1-flash";
   thinking_model =
     if isWork
-    then "ollama-cloud/kimi-k3"
-    else "opencode/kimi-k3";
+    then "ollama-cloud/deepseek-v4.1-flash:1017"
+    else "opencode/deepseek-v4.1-flash";
   building_model =
     if isWork
-    then "ollama-cloud/kimi-k2.7-code"
-    else "opencode/muse-spark-1.3-contributor-free";
+    then "ollama-cloud/deepseek-v4.1-flash:1017"
+    else "opencode/deepseek-v4.1-flash";
   cfg = config.userConfig.modules.cli;
 in {
   config = lib.mkIf (cfg.enable && cfg.agents.enable) {
