@@ -11,14 +11,6 @@
     if isWork
     then "ollama-cloud/deepseek-v4.1-flash:1017"
     else "opencode/deepseek-v4.1-flash";
-  thinking_model =
-    if isWork
-    then "ollama-cloud/deepseek-v4.1-flash:1017"
-    else "opencode/deepseek-v4.1-flash";
-  building_model =
-    if isWork
-    then "ollama-cloud/deepseek-v4.1-flash:1017"
-    else "opencode/deepseek-v4.1-flash";
   cfg = config.userConfig.modules.cli;
 in {
   config = lib.mkIf (cfg.enable && cfg.agents.enable) {
@@ -89,25 +81,9 @@ in {
           else ""
         }
           },
-          "agent": {
-            "plan": {
-              "model": "${thinking_model}"
-            },
-            "build": {
-              "model": "${building_model}"
-            }
-          },
-          "permission": {
-            "edit": "ask",
-            "external_directory": {
-              "*": "ask",
-              "~/Projects/workspace/**": "allow",
-              ${agents.opencodeSkillPerms}
-            },
-            "bash": ${agents.opencodeBashBlock},
-            "webfetch": "allow",
-            ${agents.opencodeAmplenotePerms}
-          },
+          "default_agent": "read",
+          "agents": ${builtins.toJSON agents.opencodeAgents},
+          "permissions": ${builtins.toJSON agents.opencodePermissions},
           "mcp": {
             "mcphub": {
               "enabled": ${builtins.toJSON (!isWork)},

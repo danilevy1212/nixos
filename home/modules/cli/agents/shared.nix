@@ -161,17 +161,52 @@ in rec {
     follows those conventions.
   '';
 
-  # opencode `permission.bash` needs "*" FIRST and escalate entries LAST,
-  # because later entries win. `builtins.toJSON` sorts keys, so this renders an
-  # ordered JSONC string from Nix lists instead.
-  opencodeBashBlock = let
-    entries =
-      [''"*": "ask"'']
-      ++ map (c: ''"${c}*": "allow"'') readonlyBash
-      ++ map (c: ''"${c}": "ask"'') escalateBash
-      ++ map (c: ''"${c}*": "ask"'') outwardBash;
-  in
-    "{ " + lib.concatStringsSep ", " entries + " }";
+  # opencode v2 `permissions` is an ordered list and the last matching rule
+  # wins, so the catch-all comes first and escalations last. The shell action is
+  # `shell`; a resource ending in " *" also matches the bare command. MCP tools
+  # are actions named `<server>_<tool>` with resource "*".
+  opencodeRule = action: resource: effect: {inherit action resource effect;};
+  opencodePermissions =
+    [(opencodeRule "shell" "*" "ask")]
+    ++ map (c: opencodeRule "shell" "${c} *" "allow") readonlyBash
+    ++ map (c: opencodeRule "shell" c "ask") escalateBash
+    ++ map (c: opencodeRule "shell" "${c} *" "ask") outwardBash
+    ++ [
+      (opencodeRule "edit" "*" "ask")
+      (opencodeRule "webfetch" "*" "allow")
+      (opencodeRule "external_directory" "*" "ask")
+      (opencodeRule "external_directory" "~/Projects/*" "allow")
+    ]
+    ++ map (d: opencodeRule "external_directory" "${d}/*" "allow")
+    (["~/.config/opencode/skills"] ++ skillStoreDirs)
+    ++ [(opencodeRule "amplenote_*" "*" "ask")]
+    ++ map (t: opencodeRule "amplenote_${t}" "*" "allow") amplenoteReadonly;
+
+  # 0rwx modes as opencode primary agents; `default_agent` selects `read`.
+  # Agent rules append after the global list, so each restates only `edit`.
+  # opencode has no scratchpad, so READ's throwaway scripts live under /tmp.
+  opencodeAgents = {
+    read = {
+      description = "READ (0rwx): I write the code; the agent reads and verifies. Edits denied except plan files and /tmp.";
+      mode = "primary";
+      permissions = [
+        (opencodeRule "edit" "*" "deny")
+        (opencodeRule "edit" "*.plans/*.md" "allow")
+        (opencodeRule "edit" "/tmp/*" "allow")
+        (opencodeRule "edit" "/private/tmp/*" "allow")
+      ];
+    };
+    write = {
+      description = "WRITE (0rwx): the agent writes; I read the diff. Edits prompt.";
+      mode = "primary";
+      permissions = [(opencodeRule "edit" "*" "ask")];
+    };
+    execute = {
+      description = "EXECUTE (0rwx): the agent takes the request end to end; I curate. Edits run unprompted.";
+      mode = "primary";
+      permissions = [(opencodeRule "edit" "*" "allow")];
+    };
+  };
 
   # Claude Code `permissions.allow` is a JSON ARRAY, so it keeps this order.
   claudeBashAllow = map (c: "Bash(${c}:*)") readonlyBash;
@@ -179,16 +214,6 @@ in rec {
   claudeBashAsk =
     map (c: "Bash(${c})") escalateBash
     ++ map (c: "Bash(${c}:*)") outwardBash;
-
-  # opencode names MCP tools `<server>_<tool>`. Same ordering constraint as
-  # opencodeBashBlock, so these render as ordered JSONC siblings under
-  # `permission`.
-  opencodeAmplenotePerms = let
-    entries =
-      [''"amplenote_*": "ask"'']
-      ++ map (t: ''"amplenote_${t}": "allow"'') amplenoteReadonly;
-  in
-    lib.concatStringsSep ",\n            " entries;
 
   # Claude Code names them `mcp__<server>__<tool>`. home-manager ships mcpServers
   # as a generated plugin, so the server segment carries a plugin prefix.
@@ -199,13 +224,6 @@ in rec {
   claudeSkillAllow =
     ["Read(~/.claude/skills/**)"]
     ++ map (d: "Read(/${d}/**)") skillStoreDirs;
-
-  # opencode gates the same reads through `external_directory`, per directory.
-  # The consuming block keeps its "*" catch-all first, so these render after it.
-  opencodeSkillPerms =
-    lib.concatStringsSep ",\n              "
-    (map (d: ''"${d}/**": "allow"'')
-      (["~/.config/opencode/skills"] ++ skillStoreDirs));
 
   # The same attrset shape works in either module.
   inherit skills;

@@ -8,6 +8,8 @@
   isWork = config.userConfig.isWork;
   agents = import ../agents/shared.nix {inherit lib pkgs config;};
   isDarwin = pkgs.stdenv.hostPlatform.isDarwin;
+  # 0rwx modes: hooks, status line, and the /read /write /execute commands.
+  modes = import ./0rwx {inherit pkgs;};
 in {
   config = lib.mkIf (cfg.enable && cfg.agents.enable) {
     programs.claude-code = {
@@ -41,6 +43,10 @@ in {
         outputStyle = "Plain English";
         # No grey suggested prompt in the input box.
         promptSuggestionEnabled = false;
+
+        # 0rwx modes; see ./0rwx.
+        hooks = modes.hooks;
+        statusLine = modes.statusLine;
 
         # Push notifications reach the phone from any client: terminal, Desktop, ACP.
         # preferredNotifChannel stays unset because it works only in a terminal.
@@ -117,7 +123,8 @@ in {
             ---
           ''
           + agents.reviewCommandProse;
-      };
+      }
+      // modes.commands;
 
       # ~/.claude/skills/claude-code-home-manager/.mcp.json
       mcpServers = {
