@@ -39,27 +39,26 @@ in {
     '';
     write = ''
       ---
-      description: Switch to WRITE mode (0rwx), optionally with a scope. Claude writes; I read the diff.
-      argument-hint: [scope]
+      description: Switch to WRITE mode (0rwx), optionally with a prompt. Claude writes; I read the diff.
+      argument-hint: [prompt]
       disable-model-invocation: true
       ---
       Mode switch: WRITE. $ARGUMENTS
 
-      Write what the request covers, bounded by the scope above when there is one; edits prompt
-      as usual. Rule 2 holds: nothing is committed or pushed without a yes. Modes are defined in
-      CLAUDE.md under Modes.
+      Write what the request covers; edits prompt as usual. Rule 2 holds: nothing is committed or
+      pushed without a yes. Modes are defined in CLAUDE.md under Modes.
     '';
     execute = ''
       ---
-      description: Switch to EXECUTE mode (0rwx), optionally with a scope. Claude takes it end to end; I curate.
-      argument-hint: [scope]
+      description: Switch to EXECUTE mode (0rwx), optionally with a prompt. Claude takes it end to end; I curate.
+      argument-hint: [prompt]
       disable-model-invocation: true
       ---
       Mode switch: EXECUTE. $ARGUMENTS
 
-      Take the request end to end without pausing between steps, bounded by the scope above when
-      there is one; edits inside the working directory run without prompts. Rule 2 holds: nothing
-      is committed or pushed without a yes. Modes are defined in CLAUDE.md under Modes.
+      Take the request end to end without pausing between steps; edits inside the working directory
+      run without prompts. Rule 2 holds: nothing is committed or pushed without a yes. Modes are
+      defined in CLAUDE.md under Modes.
     '';
   };
 }

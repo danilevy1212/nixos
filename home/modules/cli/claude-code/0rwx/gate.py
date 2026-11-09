@@ -1,8 +1,10 @@
-"""PreToolUse hook on Edit|Write|NotebookEdit: deny edits in READ, allow them
-unprompted in EXECUTE, stay silent in WRITE so the normal ask rules apply.
+"""PreToolUse hook on Edit|Write|NotebookEdit: deny edits in READ, prompt in
+WRITE, allow them unprompted in EXECUTE inside the working directory.
 
 Claude Code pipes one JSON object to stdin; no output means no decision:
 https://code.claude.com/docs/en/hooks#pretooluse-decision-control
+This hook is the only authority on edits: an ask rule in settings.json would
+outrank its allow, so none is set for these tools.
 The 0rwx mode (https://0rwx.com) file lives under $XDG_STATE_HOME/claude-mode,
 named by session_id; absent means READ.
 """
@@ -42,13 +44,25 @@ if mode == "READ":
                 "READ mode: name the file, the location and the exact change "
                 "instead; /write lifts this."),
         }
-elif mode == "EXECUTE" and path.startswith(data["cwd"] + "/"):
-    # Inside the working directory edits run unprompted; outside it the
-    # normal prompt stays.
+elif mode == "WRITE":
     decision = {
-        "permissionDecision": "allow",
-        "permissionDecisionReason": "EXECUTE mode",
+        "permissionDecision": "ask",
+        "permissionDecisionReason": "WRITE mode: every edit prompts.",
     }
+elif mode == "EXECUTE":
+    # Inside the working directory edits run unprompted; outside it they
+    # prompt.
+    if path.startswith(data["cwd"] + "/"):
+        decision = {
+            "permissionDecision": "allow",
+            "permissionDecisionReason": "EXECUTE mode",
+        }
+    else:
+        decision = {
+            "permissionDecision": "ask",
+            "permissionDecisionReason": "EXECUTE mode: outside the working "
+                                        "directory.",
+        }
 
 if decision is not None:
     print(json.dumps({"hookSpecificOutput": {

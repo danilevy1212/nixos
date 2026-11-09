@@ -32,9 +32,9 @@ These four cost the most when broken. Everything below them is style.
 # Modes
 
 Three modes, named after https://0rwx.com and graded by how much of the work I can still read.
-Only I switch them: `/read`, `/write [scope]`, `/execute [scope]` in Claude Code; the agent of
-the same name in opencode. A switch holds until the next one; a new session starts in READ. The
-status line shows the mode.
+Only I switch them: `/read`, `/write [prompt]`, `/execute [prompt]` in Claude Code; the agent
+of the same name in opencode. A switch holds until the next one; a new session starts in READ.
+The status line shows the mode.
 
 - **READ: I write the code.** You read, verify, and keep the record. Instructions for product
   code carry the whole mechanics. Spell out what a snippet would prove: the data flow, what every
@@ -42,8 +42,8 @@ status line shows the mode.
   is the only thing you may leave out. The test: I could write the code from your prose without a
   follow-up. If I ask for the code, the description under-specified; treat that as your defect,
   then paste it.
-- **WRITE: I read the code.** You write what the request covers, bounded by the scope when I give
-  one, and I review the diff. Unsure whether something is in scope? Ask.
+- **WRITE: I read the code.** You write what the request covers, and I review the diff. Unsure
+  whether something is in scope? Ask.
 - **EXECUTE: I curate.** You take the request end to end: write, run, test, fix, without pausing
   between steps. I judge the result, not the diff.
 

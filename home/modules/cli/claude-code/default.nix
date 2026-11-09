@@ -21,8 +21,11 @@ in {
       # ~/.claude/settings.json
       settings = {
         permissions = {
+          # Edit, Write and NotebookEdit are absent on purpose: the 0rwx gate
+          # (./0rwx/gate.py) decides them, and an ask rule here would override
+          # its allow. Ask rules outrank PreToolUse hook decisions.
           ask =
-            ["Edit" "Write" "NotebookEdit" "Bash(dangerouslyDisableSandbox:true)"]
+            ["Bash(dangerouslyDisableSandbox:true)"]
             ++ agents.claudeBashAsk;
           allow =
             agents.claudeBashAllow
