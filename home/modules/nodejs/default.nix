@@ -24,9 +24,6 @@ in {
 
         # YARN
         COREPACK_HOME = "$XDG_CACHE_HOME/corepack";
-
-        # FNM, auto-enable corepack
-        FNM_COREPACK_ENABLED = "true";
       };
       # Global packages readily usable.
       sessionPath = [
@@ -36,7 +33,6 @@ in {
       # Node
       packages = with pkgs; [
         # Node version manager
-        fnm
         nodejs
       ];
     };

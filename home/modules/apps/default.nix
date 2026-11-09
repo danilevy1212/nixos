@@ -41,7 +41,7 @@ in {
     home.packages = with pkgs;
       [
         # Keep my passwords safe
-        keepassxc
+        stable.keepassxc
       ]
       ++ lib.optional (cfg.isWork && stdenv.hostPlatform.isLinux) stable.bitwarden-desktop
       ++ lib.optionals stdenv.hostPlatform.isLinux [
@@ -56,7 +56,7 @@ in {
         # Conferences
         zoom-us
         # Memorize
-        anki
+        stable.anki
         # Proprietary musicality
         spotify
         # Social closeness
