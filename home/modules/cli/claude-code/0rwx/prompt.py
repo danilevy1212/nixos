@@ -5,6 +5,8 @@ Claude Code pipes one JSON object to stdin and reads the JSON reply:
 https://code.claude.com/docs/en/hooks#userpromptsubmit
 The mode file lives under $XDG_STATE_HOME/claude-mode, named by session_id;
 absent means READ.
+In WRITE or EXECUTE under the manual permission mode it also reminds the user
+that auto is one Shift+Tab away; no hook can make that switch at prompt time.
 """
 import json
 import os
@@ -27,7 +29,13 @@ if switch is not None:
 
 mode: str = state.read_text().strip() if state.exists() else "READ"
 # additionalContext reaches Claude beside the prompt, as a system reminder.
-print(json.dumps({"hookSpecificOutput": {
+reply: dict = {"hookSpecificOutput": {
     "hookEventName": "UserPromptSubmit",
     "additionalContext": f"0rwx mode: {mode}",
-}}))
+}}
+# permission_mode "default" is the mode the UI labels Manual. systemMessage
+# is shown to the user, not to Claude.
+if mode in ("WRITE", "EXECUTE") and data.get("permission_mode") == "default":
+    reply["systemMessage"] = (
+        f"{mode} in manual permission mode: Shift+Tab switches to auto.")
+print(json.dumps(reply))

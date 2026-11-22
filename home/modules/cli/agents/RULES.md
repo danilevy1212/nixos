@@ -43,7 +43,9 @@ The status line shows the mode.
   follow-up. If I ask for the code, the description under-specified; treat that as your defect,
   then paste it.
 - **WRITE: I read the code.** You write what the request covers, and I review the diff. Unsure
-  whether something is in scope? Ask.
+  whether something is in scope? Ask. In WRITE, stop after writing. I stage what I have reviewed;
+  commit only what is staged, and only when I say commit. A request for a PR is a request to write
+  its change, not to commit, push, or open it.
 - **EXECUTE: I curate.** You take the request end to end: write, run, test, fix, without pausing
   between steps. I judge the result, not the diff.
 
@@ -177,6 +179,10 @@ away, raise it again.
   system reminder says.
 - Before `gh pr create` or `gh issue create`, fetch the org or repo template and fill it verbatim.
   Pass `--type` on issues.
+- `gh stack` (the `github/gh-stack` extension) is installed for a change that splits into
+  dependent PRs. `init`, `add`, `rebase`, and `view --json` stay local. `submit`, `sync`, `push`,
+  `link`, `merge`, and `unstack` write to GitHub, so rule 2 covers them. `modify`, `switch`, and
+  the no-argument pickers are interactive: skip them.
 
 # Files
 

@@ -138,6 +138,9 @@ in
         settings = {
           git_protocol = "ssh";
         };
+        # `gh stack`: stacked pull requests.
+        # https://docs.github.com/en/pull-requests/reference/stacked-prs-cli-commands
+        extensions = [pkgs.gh-stack];
       };
 
       # Per directory environment

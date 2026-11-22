@@ -19,6 +19,8 @@ in {
         hooks = [(entry "gate")];
       }
     ];
+    # No matcher: a fork made by the desktop app or over ACP reports "resume".
+    SessionStart = [{hooks = [(entry "start")];}];
     SessionEnd = [{hooks = [(entry "end")];}];
   };
   # settings.statusLine

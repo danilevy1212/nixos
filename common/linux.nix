@@ -71,7 +71,6 @@ in {
       support32Bit = true;
     };
     pulse.enable = true;
-    jack.enable = true;
     wireplumber.enable = true;
   };
 
@@ -408,6 +407,7 @@ in {
     remotes = {
       flathub = "https://flathub.org/repo/flathub.flatpakrepo";
     };
+    runWithoutGui = true;
     packages = [];
   };
 

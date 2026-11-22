@@ -37,7 +37,6 @@ in {
             (lib.attrNames agents.skills);
           deny = ["Read(**/.env)" "Read(./secrets/**)"];
           disableBypassPermissionsMode = "disable";
-          disableAutoMode = "disable";
         };
         includeCoAuthoredBy = false;
         model = "opus[1m]";
@@ -84,6 +83,13 @@ in {
             "*.githubusercontent.com"
             "proxy.golang.org"
             "sum.golang.org"
+          ];
+
+          # Lets a sandboxed git reach the running agent to sign commits.
+          # The agent, outside the sandbox, still owns the key and the pinentry.
+          network.allowUnixSockets = [
+            "${config.home.homeDirectory}/.gnupg/S.gpg-agent"
+            "${config.home.homeDirectory}/.gnupg/S.keyboxd"
           ];
 
           # Deny rules for Read and Edit do not reach subprocesses. These rules do.

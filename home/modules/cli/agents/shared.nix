@@ -28,7 +28,7 @@
     (lib.filter (lib.hasPrefix "git ") cmds);
 
   # Auto-allowed for BOTH assistants.
-  readonlyBash = withGitC [
+  readonlyBash = [
     # git: inspection only. `git diff` also matches diff-tree and diff-index.
     # Short branch flags stay out: `git branch -v` would also pass
     # `git branch -v -D <name>`.
@@ -330,7 +330,9 @@ in rec {
   opencodeRule = action: resource: effect: {inherit action resource effect;};
   opencodePermissions =
     [(opencodeRule "shell" "*" "ask")]
-    ++ map (c: opencodeRule "shell" "${c} *" "allow") readonlyBash
+    # The `git -C` twins are for opencode only. In a Claude Code allow rule the
+    # twin's `*` is read literally, so it matches nothing.
+    ++ map (c: opencodeRule "shell" "${c} *" "allow") (withGitC readonlyBash)
     ++ map (c: opencodeRule "shell" c "ask") escalateBash
     ++ map (c: opencodeRule "shell" "${c} *" "ask") outwardBash
     ++ [
@@ -373,9 +375,12 @@ in rec {
   # Claude Code `permissions.allow` is a JSON ARRAY, so it keeps this order.
   claudeBashAllow = map (c: "Bash(${c}:*)") readonlyBash;
 
+  # The outward rules end in a bare `*`. Before a `:*` suffix Claude Code reads
+  # an earlier `*` literally, and a trailing ` *` matches the bare command only
+  # when it is the rule's one wildcard. Either would miss `git -C x push`.
   claudeBashAsk =
     map (c: "Bash(${c})") escalateBash
-    ++ map (c: "Bash(${c}:*)") outwardBash;
+    ++ map (c: "Bash(${c}*)") outwardBash;
 
   # Claude Code names them `mcp__<server>__<tool>`. home-manager ships mcpServers
   # as a generated plugin, so the server segment carries a plugin prefix.

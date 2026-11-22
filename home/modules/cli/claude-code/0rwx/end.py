@@ -1,5 +1,6 @@
-"""SessionEnd hook: drop the session's 0rwx mode file so the next session
-starts in READ. https://code.claude.com/docs/en/hooks#sessionend
+"""SessionEnd hook: drop the session's 0rwx mode file so the state directory
+does not grow. A resumed session gets its mode back from start.py.
+https://code.claude.com/docs/en/hooks#sessionend
 The file lives under $XDG_STATE_HOME/claude-mode, named by session_id.
 """
 import json
